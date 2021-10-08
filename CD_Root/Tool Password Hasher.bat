@@ -1,0 +1,1 @@
+start "" "LCControl Panel.exe" -passwordhasher

@@ -1,0 +1,58 @@
+<html>
+	<head>
+		<title>LastChaos Control Panel</title>
+		<link rel="icon" type="image/png" href="https://assets.frontend.gamigo.com/lastchaos_logo_970e302e-0c69-11e4-8310-f04da23e1770.png"/>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("#myForm").submit(function(e) {
+						$.ajax({
+							type: $(this).attr('method'),
+							url: $(this).attr('action'),
+							data: $(this).serialize(),
+							success: function(response) {
+							}
+						});
+					return false;
+				});
+			});
+		</script>
+	</head>
+	<body style="background-color: #4C5E66; color: #FE9652; font-family: Segoe UI; text-align: center; width: 100%;">
+		<h3>LastChaos Web Control Panel</h3>
+		<table border="1" bordercolor="#646464" style="margin: 0 auto; border-collapse: collapse;">
+			<th>
+				<form action="stopwebserver" method="get">
+					<input type="submit" name="" value="Stop Web Server"/>
+				</form>
+			</th>
+			<tr>
+				<td>Module</td>
+				<td>Status</td>
+				<td>Action</td>
+			</tr>
+			<tr>
+				<td>Messenger</td>
+				<td align="middle"><%luaeasyLanes.GetStatus(_G['MessengerLaneID'])%></td>
+				<td>
+					<form id="myForm" action="stop=Messenger" method="get">
+						<input type="submit" name="messenger" value="Restart"/>
+					</form>
+				</td>
+			</tr>
+			<tr>
+				<td>GameServer 1</td>
+				<td align="middle">
+					<%lua
+						easyLanes.GetStatus(_G['GameServer1LaneID']);
+					%>
+				</td>
+				<td>
+					<form id="myForm" action="stop=GameServer1" method="get">
+						<input type="submit" name="gameserver1" value="Restart"/>
+					</form>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>
