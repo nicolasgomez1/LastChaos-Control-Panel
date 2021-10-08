@@ -20,7 +20,7 @@
 	</head>
 	<body style="background-color: #4C5E66; color: #FE9652; font-family: Segoe UI; text-align: center; width: 100%;">
 		<h3>LastChaos Web Control Panel</h3>
-		<table border="1" style="margin: 0 auto;">
+		<table border="1" bordercolor="#646464" style="margin: 0 auto; border-collapse: collapse;">
 			<th>
 				<form action="stopwebserver" method="get">
 					<input type="submit" name="" value="Stop Web Server"/>
@@ -42,7 +42,11 @@
 			</tr>
 			<tr>
 				<td>GameServer 1</td>
-				<td align="middle"><%luaeasyLanes.GetStatus(_G['GameServer1LaneID'])%></td>
+				<td align="middle">
+					<%lua
+						easyLanes.GetStatus(_G['GameServer1LaneID']);
+					%>
+				</td>
 				<td>
 					<form id="myForm" action="stop=GameServer1" method="get">
 						<input type="submit" name="gameserver1" value="Restart"/>

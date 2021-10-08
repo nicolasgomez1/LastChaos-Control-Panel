@@ -63,7 +63,26 @@
 <Tracks/>
 </AudioBGMusic>
 <Globals>
-<Script>tblModules = ({
+<Script>require("lanes");
+require("socket.core");
+
+SettingsFile 	 = (_SourceFolder.."\\config.ini");
+ServerFolderPath = INIFile.GetValue(SettingsFile, "General", "ServerFolderPath");
+
+tblModulesEnvironment = ({
+	Messenger	= {LANE = nil, PID = nil, PORT = nil, TIMER = 1, STATUS = nil},
+	Connector	= {LANE = nil, PID = nil, PORT = nil, TIMER = 2, STATUS = nil},
+	Helper		= {LANE = nil, PID = nil, PORT = nil, TIMER = 3, STATUS = nil},
+	SubHelper	= {LANE = nil, PID = nil, PORT = nil, TIMER = 4, STATUS = nil},
+	LoginServer = {LANE = nil, PID = nil, PORT = nil, TIMER = 5, STATUS = nil},
+	CashServer	= {LANE = nil, PID = nil, PORT = nil, TIMER = 6, STATUS = nil},
+	GameServer1	= {LANE = nil, PID = nil, PORT = nil, TIMER = 7, STATUS = nil},
+	GameServer2	= {LANE = nil, PID = nil, PORT = nil, TIMER = 8, STATUS = nil},
+	GameServer3	= {LANE = nil, PID = nil, PORT = nil, TIMER = 9, STATUS = nil},
+	GameServer4	= {LANE = nil, PID = nil, PORT = nil, TIMER = 10, STATUS = nil}
+});
+
+tblModules = ({
 	"Messenger",
 	"Connector",
 	"Helper",
@@ -76,152 +95,90 @@
 	"GameServer4"
 });
 
-Timers = ({
-	Messenger   = (1),
-	Connector   = (2),
-	Helper	    = (3),
-	SubHelper   = (4),
-	LoginServer = (5),
-	CashServer  = (6),
-	GameServer1 = (7),
-	GameServer2 = (8),
-	GameServer3 = (9),
-	GameServer4 = (10)
-});
+tblControlPanel = ({"MESSENGER_LOG","CONNECTOR_LOG","HELPER_LOG","SUBHELPER_LOG","LOGINSERVER_LOG","CASHSERVER_LOG","GAMESERVER1_LOG","GAMESERVER2_LOG","GAMESERVER3_LOG","GAMESERVER4_LOG","CONTROLPANEL_FRAMETEXT","MESSENGER_STATUS","CONNECTOR_STATUS","PORT","MESSENGER_PORT","ACTIONS","MESSENGER_ACTION","MESSENGER_CONFIG","HELPER_STATUS","SUBHELPER_STATUS","LOGINSERVER_STATUS","CASHSERVER_STATUS","GAMESERVER1_STATUS","GAMESERVER2_STATUS","GAMESERVER3_STATUS","GAMESERVER4_STATUS","MODULE","CONNECTOR_ACTION","HELPER_ACTION","SUBHELPER_ACTION","LOGINSERVER_ACTION","CASHSERVER_ACTION","GAMESERVER1_ACTION","GAMESERVER2_ACTION","GAMESERVER3_ACTION","GAMESERVER4_ACTION","CONNECTOR_PORT","HELPER_PORT","SUBHELPER_PORT","LOGINSERVER_PORT","CASHSERVER_PORT","GAMESERVER1_PORT","GAMESERVER2_PORT","GAMESERVER3_PORT","GAMESERVER4_PORT","CONNECTOR_CONFIG","HELPER_CONFIG","SUBHELPER_CONFIG","LOGINSERVER_CONFIG","CASHSERVER_CONFIG","GAMESERVER1_CONFIG","GAMESERVER2_CONFIG","GAMESERVER3_CONFIG","GAMESERVER4_CONFIG"});
+tblConfigPanel	= ({"CONFIG_HARDCORE","CONFIG_ALLOWEXTERNALIP","CONFIG_FRAMETEXT","CONFIG_TEXT1","CONFIG_TEXT2","CONFIG_TEXT3","CONFIG_SERVERFOLDERPATHBROWSE","CONFIG_CLIENTFOLDERPATHBROWSE","CONFIG_TEXTEDITORPATHBROWSE","CONFIG_TEXTEDITORPATH","CONFIG_CLIENTFOLDERPATH","CONFIG_SERVERFOLDERPATH","CONFIG_TEXT4","CONFIG_MESSENGER_IP","CONFIG_MESSENGER_PORT","CONFIG_TEXT5","CONFIG_CONNECTOR_IP","CONFIG_CONNECTOR_PORT","CONFIG_TEXT6","CONFIG_HELPER_IP","CONFIG_HELPER_PORT","CONFIG_TEXT7","CONFIG_SUBHELPER_IP","CONFIG_SUBHELPER_PORT","CONFIG_TEXT8","CONFIG_LOGINSERVER_IP","CONFIG_LOGINSERVER_PORT","CONFIG_TEXT9","CONFIG_CASHSERVER_IP","CONFIG_CASHSERVER_PORT","CONFIG_TEXT10","CONFIG_GAMESERVER1_IP","CONFIG_GAMESERVER1_PORT","CONFIG_TEXT11","CONFIG_GAMESERVER2_IP","CONFIG_GAMESERVER2_PORT","CONFIG_TEXT12","CONFIG_GAMESERVER3_IP","CONFIG_GAMESERVER3_PORT","CONFIG_TEXT13","CONFIG_GAMESERVER4_IP","CONFIG_GAMESERVER4_PORT","CONFIG_GAMESERVER1_PK","CONFIG_GAMESERVER2_PK","CONFIG_GAMESERVER3_PK","CONFIG_GAMESERVER4_PK","CONFIG_TEXT14","CONFIG_SALT","CONFIG_SHOWHIDE_SALT","CONFIG_TEXT15","CONFIG_MYSQL_HOST","CONFIG_TEXT17","CONFIG_MYSQL_PASS","CONFIG_TEXT16","CONFIG_MYSQL_USERNAME","CONFIG_TEXT18","CONFIG_MYSQL_DATA","CONFIG_TEXT20","CONFIG_MYSQL_AUTH","CONFIG_TEXT19","CONFIG_MYSQL_USER","CONFIG_MYSQL_TESTCONNECTION","CONFIG_MYSQL_SAVE","CONFIG_MYSQL_PROFILESELECTOR","CONFIG_SECTIONSEDITOR","CONFIG_SAVEALL","CONFIG_SHOWHIDE_MYSQLPASS","CONFIG_AUTORESTARTSYSTEM","CONFIG_SETSAMEIPFORALL"});
 
-tblConfigPanel = ({
-	"CONFIG_HARDCORE",
-	"CONFIG_ALLOWEXTERNALIP",
-	"CONFIG_FRAMETEXT",
-	"CONFIG_TEXT1",
-	"CONFIG_TEXT2",
-	"CONFIG_TEXT3",
-	"CONFIG_SERVERFOLDERPATHBROWSE",
-	"CONFIG_CLIENTFOLDERPATHBROWSE",
-	"CONFIG_TEXTEDITORPATHBROWSE",
-	"CONFIG_TEXTEDITORPATH",
-	"CONFIG_CLIENTFOLDERPATH",
-	"CONFIG_SERVERFOLDERPATH",
-	"CONFIG_TEXT4",
-	"CONFIG_MESSENGER_IP",
-	"CONFIG_MESSENGER_PORT",
-	"CONFIG_TEXT5",
-	"CONFIG_CONNECTOR_IP",
-	"CONFIG_CONNECTOR_PORT",
-	"CONFIG_TEXT6",
-	"CONFIG_HELPER_IP",
-	"CONFIG_HELPER_PORT",
-	"CONFIG_TEXT7",
-	"CONFIG_SUBHELPER_IP",
-	"CONFIG_SUBHELPER_PORT",
-	"CONFIG_TEXT8",
-	"CONFIG_LOGINSERVER_IP",
-	"CONFIG_LOGINSERVER_PORT",
-	"CONFIG_TEXT9",
-	"CONFIG_CASHSERVER_IP",
-	"CONFIG_CASHSERVER_PORT",
-	"CONFIG_TEXT10",
-	"CONFIG_GAMESERVER1_IP",
-	"CONFIG_GAMESERVER1_PORT",
-	"CONFIG_TEXT11",
-	"CONFIG_GAMESERVER2_IP",
-	"CONFIG_GAMESERVER2_PORT",
-	"CONFIG_TEXT12",
-	"CONFIG_GAMESERVER3_IP",
-	"CONFIG_GAMESERVER3_PORT",
-	"CONFIG_TEXT13",
-	"CONFIG_GAMESERVER4_IP",
-	"CONFIG_GAMESERVER4_PORT",
-	"CONFIG_GAMESERVER1_PK",
-	"CONFIG_GAMESERVER2_PK",
-	"CONFIG_GAMESERVER3_PK",
-	"CONFIG_GAMESERVER4_PK",
-	"CONFIG_TEXT14",
-	"CONFIG_SALT",
-	"CONFIG_SHOWHIDE_SALT",
-	"CONFIG_TEXT15",
-	"CONFIG_MYSQL_HOST",
-	"CONFIG_TEXT17",
-	"CONFIG_MYSQL_PASS",
-	"CONFIG_TEXT16",
-	"CONFIG_MYSQL_USERNAME",
-	"CONFIG_TEXT18",
-	"CONFIG_MYSQL_DATA",
-	"CONFIG_TEXT20",
-	"CONFIG_MYSQL_AUTH",
-	"CONFIG_TEXT19",
-	"CONFIG_MYSQL_USER",
-	"CONFIG_MYSQL_TESTCONNECTION",
-	"CONFIG_MYSQL_SAVE",
-	"CONFIG_MYSQL_PROFILESELECTOR",
-	"CONFIG_SECTIONSEDITOR",
-	"CONFIG_SAVEALL",
-	"CONFIG_SHOWHIDE_MYSQLPASS",
-	"CONFIG_AUTORESTARTSYSTEM",
-	"CONFIG_SETSAMEIPFORALL"
-});
+tblTrayMenu = ({});
+table.insert(tblTrayMenu, #tblTrayMenu+1, {Text = "Start All", ID = 1, IconID = 0});
+table.insert(tblTrayMenu, #tblTrayMenu+1, {Text = "---", ID = 0});
 
-tblControlPanel = ({
-	"MESSENGER_LOG",
-	"CONNECTOR_LOG",
-	"HELPER_LOG",
-	"SUBHELPER_LOG",
-	"LOGINSERVER_LOG",
-	"CASHSERVER_LOG",
-	"GAMESERVER1_LOG",
-	"GAMESERVER2_LOG",
-	"GAMESERVER3_LOG",
-	"GAMESERVER4_LOG",
-	"CONTROLPANEL_FRAMETEXT",
-	"MESSENGER_STATUS",
-	"CONNECTOR_STATUS",
-	"PORT",
-	"MESSENGER_PORT",
-	"ACTIONS",
-	"MESSENGER_ACTION",
-	"MESSENGER_CONFIG",
-	"HELPER_STATUS",
-	"SUBHELPER_STATUS",
-	"LOGINSERVER_STATUS",
-	"CASHSERVER_STATUS",
-	"GAMESERVER1_STATUS",
-	"GAMESERVER2_STATUS",
-	"GAMESERVER3_STATUS",
-	"GAMESERVER4_STATUS",
-	"MODULE",
-	"CONNECTOR_ACTION",
-	"HELPER_ACTION",
-	"SUBHELPER_ACTION",
-	"LOGINSERVER_ACTION",
-	"CASHSERVER_ACTION",
-	"GAMESERVER1_ACTION",
-	"GAMESERVER2_ACTION",
-	"GAMESERVER3_ACTION",
-	"GAMESERVER4_ACTION",
-	"CONNECTOR_PORT",
-	"HELPER_PORT",
-	"SUBHELPER_PORT",
-	"LOGINSERVER_PORT",
-	"CASHSERVER_PORT",
-	"GAMESERVER1_PORT",
-	"GAMESERVER2_PORT",
-	"GAMESERVER3_PORT",
-	"GAMESERVER4_PORT",
-	"CONNECTOR_CONFIG",
-	"HELPER_CONFIG",
-	"SUBHELPER_CONFIG",
-	"LOGINSERVER_CONFIG",
-	"CASHSERVER_CONFIG",
-	"GAMESERVER1_CONFIG",
-	"GAMESERVER2_CONFIG",
-	"GAMESERVER3_CONFIG",
-	"GAMESERVER4_CONFIG"
-});
+for _, Module in pairs(tblModules) do
+	table.insert(tblTrayMenu, #tblTrayMenu+1, {Text = Module, ID = #tblTrayMenu, IconID = 0});
+end
 
+table.insert(tblTrayMenu, #tblTrayMenu+1, {Text = "---", ID = 0});
+table.insert(tblTrayMenu, #tblTrayMenu+1, {Text = "&amp;Exit", ID = 12, IconID = 2});
+
+--[[
+	Desc	:	Print logs on console.
+	Arg 1	:	Text(string)
+	Arg 2	:	Tooltip(string)
+	Arg 3	:	Log type(String) INFO / ERROR / SUCCESS / WARNING
+]]
+function PrintLog(Text, Tooltip, Type)
+	local Hint = ("");
+	
+	if(Type == "INFO")then			Type = ("&lt;font color='"..String.Replace(Theme.BlueColor, "0x", "#", false).."'&gt;INFO&lt;/font&gt;");
+	elseif(Type == "ERROR")then		Type = ("&lt;font color='"..String.Replace(Theme.RedColor, "0x", "#", false).."'&gt;ERROR&lt;/font&gt;");
+	elseif(Type == "SUCCESS")then	Type = ("&lt;font color='"..String.Replace(Theme.GreenColor, "0x", "#", false).."'&gt;SUCCESS&lt;/font&gt;");
+	elseif(Type == "WARNING")then	Type = ("&lt;font color='"..String.Replace(Theme.YellowColor, "0x", "#", false).."'&gt;WARNING&lt;/font&gt;");	end
+	
+	if(Tooltip ~= "")then	Hint = (" (*)");	end
+	
+	local ItemColor = ListBoxEx.GetItemColor("Logs", ListBoxEx.GetTotalItems("Logs"), LBXISTATE_NORMAL);
+	if(ItemColor[1] == -1 or ItemColor[1] == Math.HexColorToNumber(Theme.ObjectItemNormalColor))then	ListBoxEx.AddItem("Logs", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;"..System.GetTime(TIME_FMT_MIL).."&lt;/font&gt; "..Type.." &lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;- "..Text..Hint.."&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", Tooltip, "", "", 0, LBXITEM_HTML, 0, {Math.HexColorToNumber(Theme.ObjectItemNormalColorB)}, nil, nil);
+	elseif(ItemColor[1] == Math.HexColorToNumber(Theme.ObjectItemNormalColorB))then		ListBoxEx.AddItem("Logs", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;"..System.GetTime(TIME_FMT_MIL).."&lt;/font&gt; "..Type.." &lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;- "..Text..Hint.."&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", Tooltip, "", "", 0, LBXITEM_HTML, 0, {Math.HexColorToNumber(Theme.ObjectItemNormalColor)}, nil, nil);		end
+	
+	ListBoxEx.EnsureVisible("Logs", ListBoxEx.GetTotalItems("Logs"));
+end
+
+function DelimitedToTable(String, Delimiter)
+	if not(Delimiter or #Delimiter &lt; 1)then
+		return nil
+	end
+
+	local tbl = ({});
+	local sa = (String);
+	local sD = ("");
+	local nP = string.find(sa, Delimiter, 1, true);
+
+	while(nP)do
+		sD = string.sub(sa, 1, nP-1);
+		table.insert(tbl, #tbl+1, sD);
+		sa = string.sub(sa, nP+1, -1);
+		nP = string.find(sa, Delimiter, 1, true);
+	end
+
+	if(sa ~= "")then
+		Table.Insert(tbl, #tbl+1, sa)
+	end
+
+	return tbl;
+end
+
+--[[
+	Desc	:	Parse lua tags(&lt;%lua %&gt;) in a string.
+	Arg 1	:	String to parse(string)
+]]
+function ParseLuaTag(String)
+	local String = String:gsub("(.-)&lt;%%lua(.-)%%&gt;",
+		function(s, b)
+			return s..assert(loadstring("return "..b))();
+		end
+	);
+	
+	return String;
+end
+
+--[[
+	Desc	:	Show or Hide Object from a Table.
+	Arg 1	:	Objects Table(table)
+	Arg 2	:	Object Visible Status(boolean) true / false
+]]
 function ShowHide(ObjectsTable, Action)
-	for _, Obj in pairs(ObjectsTable)do
+	for _, Obj in pairs(ObjectsTable) do
 		local ObjType = Page.GetObjectType(Obj);
-		
+
 		if(ObjType == OBJECT_PARAGRAPH)then
 			Paragraph.SetVisible(Obj, Action);
 		elseif(ObjType == OBJECT_INPUT)then
@@ -236,226 +193,421 @@ function ShowHide(ObjectsTable, Action)
 			Image.SetVisible(Obj, Action);
 		end
 	end
-	
-	Page.Redraw();
 end
 
-LogItemColor = (0);
+function GetConfig(Section, Value)
+	return INIFile.GetValue(SettingsFile, Section, Value);
+end
 
-local ThemeConfig = INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "Theme");
-
-if(ThemeConfig == "auto")then
-	GetTheme = Registry.GetValue(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", "AppsUseLightTheme", true); --0 dark 1 light
+Theme = GetConfig("General", "Theme");
+if(Theme == "auto")then
+	Theme = Registry.GetValue(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", "AppsUseLightTheme", true); --1 light 0 dark
 else
-	GetTheme = (ThemeConfig);
+	Theme = (Theme);
 end
 
-if(GetTheme == "1")then		--LIGHT
+if(Theme == "1")then --LIGHT
 	Theme = ({
 		BackgroundColor = ("0xF0F0F0"),
-		--
-		ObjectBackgroundColor = 	("0xD5D5D5"),
-		ObjectItemNormalColor = 	("0xD5D5D5"),
-		ObjectItemNormalColorB = 	("0xE3E3E3"),
-		ObjectItemHighLightColor = 	("0x557D9C"),
-		ObjectItemSelectionColor = 	("0x385368"),
-		--
+		ObjectBackgroundColor = ("0xD5D5D5"),
+		ObjectItemNormalColor = ("0xD5D5D5"),
+		ObjectItemNormalColorB = ("0xE3E3E3"),
+		ObjectItemHighLightColor = ("0x557D9C"),
+		ObjectItemSelectionColor = ("0x385368"),
 		TextColor = ("0xFE9653"),
-		--
-		RedColor =		("0xDD5145"),
-		GreenColor = 	("0x18A05E"),
-		BlueColor = 	("0x4A8AF4"),
-		YellowColor = 	("0xFFCD43"),
-		--
+		RedColor = ("0xDD5145"),
+		GreenColor = ("0x18A05E"),
+		BlueColor = ("0x4A8AF4"),
+		YellowColor	= ("0xFFCD43"),
 		BarColor = ("0x26A0DA")
 	});
-elseif(GetTheme == "0")then	--DARK
+elseif(Theme == "0")then	--DARK
 	Theme = ({
-		BackgroundColor = ("0x4C5E66"),
-		--
-		ObjectBackgroundColor = 	("0x38454C"),
-		ObjectItemNormalColor = 	("0x38454C"),
-		ObjectItemNormalColorB = 	("0x404C53"),
-		ObjectItemHighLightColor = 	("0x557D9C"),
-		ObjectItemSelectionColor = 	("0x385368"),
-		--
+		BackgroundColor	= ("0x4C5E66"),
+		ObjectBackgroundColor =	("0x38454C"),
+		ObjectItemNormalColor =	("0x38454C"),
+		ObjectItemNormalColorB = ("0x404C53"),
+		ObjectItemHighLightColor = ("0x557D9C"),
+		ObjectItemSelectionColor = ("0x385368"),
 		TextColor = ("0xFE9653"),
-		--
-		RedColor =		("0xDD5145"),
-		GreenColor = 	("0x18A05E"),
-		BlueColor = 	("0x4A8AF4"),
-		YellowColor = 	("0xFFCD43"),
-		--
+		RedColor = ("0xDD5145"),
+		GreenColor = ("0x18A05E"),
+		BlueColor = ("0x4A8AF4"),
+		YellowColor = ("0xFFCD43"),
 		BarColor = ("0x26A0DA")
 	});
 end
 
-for _, Dialog in pairs(Application.GetDialogs())do
-	Application.SetDialogProperties(Dialog, {UseCustomSettings = true, BackgroundColor = Math.HexColorToNumber(Theme.BackgroundColor)});
+--[[
+	Desc	:	Create new lane.
+	Arg 1	:	Module name for add to table(string)
+	Arg 2	:	Function to trigger(string)
+]]
+CreateLane = function(Module, Function)
+	local LaneHandle = lanes.gen("*", {globals = _G}, Function);
+
+	tblModulesEnvironment[Module].LANE = ({LaneHandle});
+
+	return(tblModulesEnvironment[Module].LANE[1]);
 end
 
-AtLeastOneRunning = (false);
-
-function QueryAllowProjectClose()
-	Window.Hide(Application.GetWndHandle());
-	--Tray.ShowBalloonTip(TrayHandle, "LastChaos Control Panel", "LastChaos Control Panel now are working on background.", 1500, NIIF_INFO);
-	return false;
-end
-
-tblMenu = ({});
-	
-tblMenu[1] = ({});
-tblMenu[1].Text = ("Start All");
-tblMenu[1].ID = (1);
-tblMenu[1].IconID = (0);
-tblMenu[1].Enabled = (true);
----
-tblMenu[2] = ({});
-tblMenu[2].Text = ("---");
-tblMenu[2].ID = (0);
-tblMenu[2].Enabled = (true);
----
-tblMenu[3] = ({});
-tblMenu[3].Text = ("Messenger");
-tblMenu[3].ID = (2);
-tblMenu[3].IconID = (0);
-tblMenu[3].Enabled = (true);
----
-tblMenu[4] = ({});
-tblMenu[4].Text = ("Connector");
-tblMenu[4].ID = (3);
-tblMenu[4].IconID = (0);
-tblMenu[4].Enabled = (true);
----
-tblMenu[5] = ({});
-tblMenu[5].Text = ("Helper");
-tblMenu[5].ID = (4);
-tblMenu[5].IconID = (0);
-tblMenu[5].Enabled = (true);
----
-tblMenu[6] = ({});
-tblMenu[6].Text = ("SubHelper");
-tblMenu[6].ID = (5);
-tblMenu[6].IconID = (0);
-tblMenu[6].Enabled = (true);
----
-tblMenu[7] = ({});
-tblMenu[7].Text = ("LoginServer");
-tblMenu[7].ID = (6);
-tblMenu[7].IconID = (0);
-tblMenu[7].Enabled = (true);
----
-tblMenu[8] = ({});
-tblMenu[8].Text = ("CashServer");
-tblMenu[8].ID = (7);
-tblMenu[8].IconID = (0);
-tblMenu[8].Enabled = (true);
----
-tblMenu[9] = ({});
-tblMenu[9].Text = ("GameServer 1");
-tblMenu[9].ID = (8);
-tblMenu[9].IconID = (0);
-tblMenu[9].Enabled = (true);
----
-tblMenu[10] = ({});
-tblMenu[10].Text = ("GameServer 2");
-tblMenu[10].ID = (9);
-tblMenu[10].IconID = (0);
-tblMenu[10].Enabled = (true);
----
-tblMenu[11] = ({});
-tblMenu[11].Text = ("GameServer 3");
-tblMenu[11].ID = (10);
-tblMenu[11].IconID = (0);
-tblMenu[11].Enabled = (true);
----
-tblMenu[12] = ({});
-tblMenu[12].Text = ("GameServer 4");
-tblMenu[12].ID = (11);
-tblMenu[12].IconID = (0);
-tblMenu[12].Enabled = (true);
----
-tblMenu[13] = ({});
-tblMenu[13].Text = ("---");
-tblMenu[13].ID = (0);
-tblMenu[13].Enabled = (true);
----
-tblMenu[14] = ({});
-tblMenu[14].Text = ("&amp;Exit");
-tblMenu[14].ID = (12);
-tblMenu[14].IconID = (2);
-tblMenu[14].Enabled = (true);
-
-function TrayCallBack(strMouseEvent)
-	if(strMouseEvent == "WM_RBUTTONUP")then
-		local Ret = System.GetMousePosition(false, nil);
-		local ID = Application.ShowPopupMenu(Ret.X, Ret.Y, tblMenu, TPM_RIGHTALIGN, TPM_BOTTOMALIGN, true, false);
-		
-		if(ID == 1)then
-			local getStatus = (tblMenu[1].Text);
-			
-			if(getStatus == "Start All")then
-				for _, Module in pairs(tblModules)do
-					if(easyLanes.GetStatus(_G[Module.."LaneID"]) ~= "running")then
-						Start(Module);
-					end
-				end
-				
-				if(AtLeastOneRunning == true)then
-					tblMenu[1].Text = ("Stop All");
-					tblMenu[1].IconID = (1);
-				end
-			elseif(getStatus == "Stop All")then
-				for _, Module in pairs(tblModules)do
-					if(easyLanes.GetStatus(_G[Module.."LaneID"]) == "running")then
-						Stop(Module);
-					end
-				end
-				
-				if(AtLeastOneRunning == false)then
-					tblMenu[1].Text = ("Start All");
-					tblMenu[1].IconID = (0);
-				end
-			end
-		end
-		
-		if(ID == 2 or ID == 3 or ID == 4 or ID == 5 or ID == 6 or ID == 7 or ID == 8 or ID == 9 or ID == 10 or ID == 11)then
-			if(tblMenu[ID+1].IconID == 0)then
-				Start(String.Replace(tblMenu[ID+1].Text, " ", "", false));
-			elseif(tblMenu[ID+1].IconID == 1)then
-				Stop(String.Replace(tblMenu[ID+1].Text, " ", "", false));
-			end
-		end
-		
-		if(ID == 12)then
-			MySQL:close();
-			Tray.Destroy(TrayHandle);
-			Window.Close(Application.GetWndHandle(), CLOSEWND_TERMINATE);
-		end
-	elseif(strMouseEvent == "WM_LBUTTONDBLCLK")then
-		Window.Restore(Application.GetWndHandle());
-		Window.SetOrder(Application.GetWndHandle(), HWND_TOP);
+LaneStatus = function(Module)
+	local Status = (tblModulesEnvironment[Module].STATUS);
+	if(Status ~= nil)then
+		return(Status.status);
+	else
+		return("");
 	end
 end
 
-socket = require("socket");
+function RunThread(Module, Path)
+	local SplitModulePath = String.SplitPath(Path);
+	local WaitForReturn = Shell.Execute(Path, "open", "", SplitModulePath.Drive..SplitModulePath.Folder, SW_HIDE, true);
+
+	while(true)do
+		if(WaitForReturn)then
+			break;
+		end
+	end
+end
+
+function StopThread(Module, Path)
+	local SplitModulePath = String.SplitPath(Path);
+	local Stop = (false);
+	
+	while(true)do
+		for PID, ProcessPath in pairs(System.EnumerateProcesses()) do
+			local SplitProcessPath = String.SplitPath(ProcessPath);
+			
+			if(string.lower(SplitModulePath.Filename..SplitModulePath.Extension) == string.lower(SplitProcessPath.Filename..SplitProcessPath.Extension) and string.lower(SplitProcessPath.Drive..SplitProcessPath.Folder..SplitProcessPath.Filename..SplitProcessPath.Extension) == string.lower(Path))then
+				if(System.TerminateProcess(PID))then
+					Stop = (true);
+					break;
+				end
+			end
+		end
+
+		if(Stop == true)then
+			break;
+		end
+	end
+end
+
+function CheckPIDThread(Module, mPID)
+	local StillRunning = (true);
+
+	while(true)do
+		for PID, ProcessPath in pairs(System.EnumerateProcesses()) do
+			if(PID == mPID)then
+				StillRunning = (true);
+				break;
+			else
+				StillRunning = (false);
+			end
+		end
+	
+		if(StillRunning == false)then
+			break;
+		end
+	end
+end
+
+function StartLane(Module, Path)
+	local Lane = CreateLane(Module, RunThread);
+	local LaneTable = Lane(Module, Path);
+	tblModulesEnvironment[Module].STATUS = (LaneTable);
+end
+
+--[[
+	Desc	:	Check if any module is running.
+	Return	:	none running = false / any running = true
+]]
+function CheckIsRunning()
+	local AtLeastOneRunning = (false);
+
+	for _, Module in pairs(tblModules)do
+		if(LaneStatus(Module) == "running")then
+			AtLeastOneRunning = (true);
+			break;
+		end
+	end
+
+	if(AtLeastOneRunning == false)then
+		ListBoxEx.SetItemText("Menu", "1", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;Start All&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;");
+		ListBoxEx.SetItemData("Menu", "1", "Start All");
+		ListBoxEx.SetItemIcon("Menu", "1", 1);
+		-------------------------------------------------------------------------------------------------------------------------------------------
+		tblTrayMenu[1].Text = ("Start All");
+		tblTrayMenu[1].IconID = (0);
+		-------------------------------------------------------------------------------------------------------------------------------------------
+		return false;
+	elseif(AtLeastOneRunning == true)then
+		ListBoxEx.SetItemText("Menu", 1, "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;Stop All&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;");
+		ListBoxEx.SetItemData("Menu", 1, "Stop All");
+		ListBoxEx.SetItemIcon("Menu", 1, 2);
+		-------------------------------------------------------------------------------------------------------------------------------------------
+		tblTrayMenu[1].Text = ("Stop All");
+		tblTrayMenu[1].IconID = (1);
+		-------------------------------------------------------------------------------------------------------------------------------------------
+		return true;
+	end
+end
+
+function ShowHideModule(Module, Action)
+	if(ServerFolderPath ~= "" and Folder.DoesExist(ServerFolderPath))then
+		local EXENAME = GetConfig("Key_Names", Module.."EXE");
+		local EXEPath = File.Find(ServerFolderPath.."\\", EXENAME, true, false, nil, nil);
+		if(EXEPath ~= nil)then
+			if(Action == "HIDE")then
+				for WH, WindowdTitle in pairs(Window.EnumerateTitles(false)) do
+					if(string.lower(WindowdTitle) == string.lower(EXEPath[1]))then
+						Window.Hide(WH);
+						break;
+					end
+				end
+			end
+
+			if(Action == "SHOW")then
+				for WH, WindowdTitle in pairs(Window.EnumerateTitles(false)) do
+					if(string.lower(WindowdTitle) == string.lower(EXEPath[1]))then
+						Window.Show(WH);
+						break;
+					end
+				end
+			end
+		end
+	end
+end
+
+function Start(Module)
+	if(ServerFolderPath ~= "" and Folder.DoesExist(ServerFolderPath))then
+		local EXENAME = GetConfig("Key_Names", Module.."EXE");
+		
+		local EXEPath = File.Find(ServerFolderPath.."\\", EXENAME, true, false, nil, nil);
+		if(EXEPath ~= nil)then
+			PrintLog("Attempting to start : "..Module.."...", "", "INFO");
+			Paragraph.SetProperties(string.upper(Module).."_STATUS", {BGColor = Math.HexColorToNumber(Theme.BlueColor)});
+			
+			StartLane(Module, EXEPath[1]);
+			
+			Application.Sleep(100);
+
+			if(LaneStatus(Module) == "running")then
+				_G[Module.."ReUpTrys"] = (0);
+				
+				PrintLog(Module.." -&gt; ran successfully and is running in the background.", "", "SUCCESS");
+				
+				Paragraph.SetProperties(string.upper(Module).."_STATUS", {BGColor = Math.HexColorToNumber(Theme.GreenColor)});
+				
+				local CONFIGNAME = GetConfig("Key_Names", Module.."CONFIG");
+				
+				local SplitProcessPath = String.SplitPath(EXEPath[1]);
+				--Esto tiene que quedar asi por los gameservers, suponer situaciones y poner filtros, ALTA PAJA.
+				local CONFIGPath = File.Find(SplitProcessPath.Drive..SplitProcessPath.Folder.."\\", CONFIGNAME, true, false, nil, nil);
+				if(CONFIGPath ~= nil)then
+					local ModulePort;
+					if(Module == "CashServer")then
+						ModulePort = INIFile.GetValue(CONFIGPath[1], "CashServer", "Port");
+					else
+						ModulePort = INIFile.GetValue(CONFIGPath[1], "Server", "Port");
+					end
+
+					Paragraph.SetText(string.upper(Module).."_PORT", ModulePort);
+					xButton.SetText(string.upper(Module).."_ACTION", "STOP");
+					
+					tblTrayMenu[tblModulesEnvironment[Module].TIMER+2].IconID = (1);
+					tblModulesEnvironment[Module].PORT = (ModulePort);
+				else
+					PrintLog("Could not find the Configuration file : '"..CONFIGNAME.."' of the Module : '"..EXENAME.."' but the module seems to be running.", "Magic bruh WTF.", "WARNING");
+				end
+
+				Page.StartTimer(GetConfig("General", "CheckInterval"), tblModulesEnvironment[Module].TIMER);
+			end
+			
+			CheckIsRunning();
+		else
+			PrintLog(Module.." -&gt; does not exist, check the server folder for errors.", "File name should be : '"..EXENAME.."'.", "ERROR");
+		end
+	else
+		PrintLog("You need to define the server folder path on settings.", "", "ERROR");
+	end
+end
+
+function Stop(Module)
+	if(LaneStatus(Module) == "running")then
+		PrintLog("Attempting to stop : "..Module.."...", "", "INFO");
+		
+		local EXENAME = GetConfig("Key_Names", Module.."EXE");
+		local EXEPath = File.Find(ServerFolderPath.."\\", EXENAME, true, false, nil, nil);
+		if(EXEPath ~= nil)then
+			--[[
+				¿Posible conflicto por reemplazar la lane en la tabla environment?
+			]]
+			local Lane = CreateLane(Module, StopThread);
+			local LaneTable = Lane(Module, EXEPath[1]);
+			--no funciona, necesito una funcion callback que trigerre esto
+			Application.Sleep(100);
+			
+			_G[Module.."StopCall"] = (true);
+			
+			if(LaneStatus(Module) == "done")then
+				--_G[Module.."StopCall"] = (true);
+				Page.StopTimer(tblModulesEnvironment[Module].TIMER);
+
+				PrintLog(Module.." -&gt; successfully stopped.", "", "SUCCESS");
+
+				Paragraph.SetProperties(string.upper(Module).."_STATUS", {BGColor = Math.HexColorToNumber(Theme.BackgroundColor)});
+				Paragraph.SetText(string.upper(Module).."_PORT", "");
+				xButton.SetText(string.upper(Module).."_ACTION", "START");
+
+				tblTrayMenu[tblModulesEnvironment[Module].TIMER+2].IconID = (0);
+
+				tblModulesEnvironment[Module].PORT = (nil);
+				--tblModulesEnvironment[Module].PID = (nil);
+
+				CheckIsRunning();
+			end
+		end
+	end
+end
+
+function OpenConfig(Module)
+	if(ServerFolderPath ~= "" and Folder.DoesExist(ServerFolderPath))then
+		local EXENAME = GetConfig("Key_Names", Module.."EXE");
+		
+		local EXEPath = File.Find(ServerFolderPath.."\\", EXENAME, true, false, nil, nil);
+		if(EXEPath ~= nil)then
+			local CONFIGNAME = GetConfig("Key_Names", Module.."CONFIG");
+			local SplitProcessPath = String.SplitPath(EXEPath[1]);
+			local CONFIGPath = File.Find(SplitProcessPath.Drive..SplitProcessPath.Folder.."\\", CONFIGNAME, true, false, nil, nil);
+			if(CONFIGPath ~= nil)then
+				local TextEditorPath = GetConfig("General", "TextEditorPath");
+				if(TextEditorPath ~= "" and File.DoesExist(TextEditorPath))then
+					PrintLog("Executing : '"..TextEditorPath.."' ARG : '"..CONFIGPath[1].."'.", "", "INFO");
+					Shell.Execute(TextEditorPath, "open", CONFIGPath[1], "", SW_SHOWNORMAL, false);
+				else
+					PrintLog("Executing : '"..CONFIGPath[1].."'.", "", "INFO");
+					Shell.Execute(CONFIGPath[1], "edit", "", "", SW_SHOWNORMAL, false);
+				end
+			else
+				PrintLog(Module.." -&gt; configuration file not found.", "File name should be : '"..CONFIGNAME.."'.", "ERROR");
+			end
+		else
+			PrintLog(Module.." -&gt; path not found.", "File name should be : '"..EXENAME.."'.", "ERROR");
+		end
+	end
+end
+
+function OpenLog(Module)
+	if(ServerFolderPath ~= "" and Folder.DoesExist(ServerFolderPath))then
+		local LogsPath = File.Find(ServerFolderPath.."\\", "*.log", true, false, nil, nil);
+		if(LogsPath ~= nil)then
+			local FileToFind, LOGPATH;
+
+			if(Module == "GameServer1" or Module == "GameServer2" or Module == "GameServer3" or Module == "GameServer4")then
+				FileToFind = ("Gameserver_1_"..String.Right(Module, 1));
+			else
+				FileToFind = (Module);
+			end
+
+			for Count = 1, #LogsPath do
+				local SplitLogPath = String.SplitPath(LogsPath[Count]);
+				if(String.Find(SplitLogPath.Filename, String.Replace(System.GetDate(DATE_FMT_ISO), "-", "", false).."_"..FileToFind, 1, true) ~= -1)then
+					if(Module == "Helper" and String.Find(SplitLogPath.Filename, "Sub", 1, true) == -1)then
+						LOGPATH = (LogsPath[Count]);
+
+						break;
+					elseif(Module == "Messenger" or Module == "Connector" or Module == "SubHelper" or Module == "LoginServer" or Module == "CashServer" or Module == "GameServer1" or Module == "GameServer2" or Module == "GameServer3" or Module == "GameServer4")then
+						LOGPATH = (LogsPath[Count]);
+
+						break;
+					end
+				end
+			end
+			
+			if(LOGPATH ~= nil)then
+				local TextEditorPath = GetConfig("General", "TextEditorPath");
+				if(TextEditorPath ~= "" and File.DoesExist(TextEditorPath))then
+					PrintLog("Executing : '"..TextEditorPath.."' ARG : '"..LOGPATH.."'.", "", "INFO");
+					Shell.Execute(TextEditorPath, "open", LOGPATH, "", SW_SHOWNORMAL, false);
+				else
+					PrintLog("Executing : '"..LOGPATH.."'.", "", "INFO");
+					Shell.Execute(LOGPATH, "open", "", "", SW_SHOWNORMAL, false);
+				end
+			end
+		end
+	end
+end
+
+function LogList(Module)
+	local tblLogs = ({});
+	table.insert(tblLogs, #tblLogs+1, {Text = "Open Logs Folder", ID = 1});
+	table.insert(tblLogs, #tblLogs+1, {Text = "---", ID = 0});
+
+	if(ServerFolderPath ~= "" and Folder.DoesExist(ServerFolderPath))then
+		local LogsPath = File.Find(ServerFolderPath.."\\", "*.log", true, false, nil, nil);
+		if(LogsPath ~= nil)then
+			local FileToFind;
+			
+			if(Module == "GameServer1" or Module == "GameServer2" or Module == "GameServer3" or Module == "GameServer4")then
+				FileToFind = ("Gameserver_1_"..String.Right(Module, 1));
+			else
+				FileToFind = (Module);
+			end
+
+			for Count = 1, #LogsPath do
+				local SplitLogPath = String.SplitPath(LogsPath[Count]);
+
+				if(String.Find(SplitLogPath.Filename, FileToFind, 1, true) ~= -1)then
+					if(Module == "Helper" and String.Find(SplitLogPath.Filename, "Sub", 1, true) == -1)then
+						table.insert(tblLogs, #tblLogs+1, {Text = LogsPath[Count], ID = #tblLogs});
+					elseif(Module == "Messenger" or Module == "Connector" or Module == "SubHelper" or Module == "LoginServer" or Module == "CashServer" or Module == "GameServer1" or Module == "GameServer2" or Module == "GameServer3" or Module == "GameServer4")then
+						table.insert(tblLogs, #tblLogs+1, {Text = LogsPath[Count], ID = #tblLogs});
+					end
+				end
+			end
+		end
+	end
+	
+	local Ret = System.GetMousePosition(false, nil);
+	local ID = Application.ShowPopupMenu(Ret.X, Ret.Y, tblLogs, TPM_CENTERALIGN, TPM_TOPALIGN, true, false);
+	if(ID == 1)then
+		if(ServerFolderPath ~= "" and Folder.DoesExist(ServerFolderPath))then
+			PrintLog("Executing : '"..ServerFolderPath.."\\LogFiles".."'.", "", "INFO");
+			Shell.Execute(ServerFolderPath.."\\LogFiles", "explore", "", "", SW_SHOWNORMAL, false);
+		else
+			PrintLog("You need to define the server folder path on settings.", "", "ERROR");
+		end
+	else
+		if(ID ~= 0)then
+			local TextEditorPath = GetConfig("General", "TextEditorPath");
+			if(TextEditorPath ~= "" and File.DoesExist(TextEditorPath))then
+				PrintLog("Executing : '"..TextEditorPath.."' ARG : '"..tblLogs[ID].Text.."'.", "", "INFO");
+				Shell.Execute(TextEditorPath, "open", tblLogs[ID].Text, "", SW_SHOWNORMAL, false);
+			else
+				PrintLog("Executing : '"..tblLogs[ID].Text.."'.", "", "INFO");
+				Shell.Execute(tblLogs[ID].Text, "open", "", "", SW_SHOWNORMAL, false);
+			end
+		end
+	end
+end
 
 function StartWebServer()
 	ServerHandle, Error = socket.tcp();
 	if(ServerHandle ~= nil)then
 		ServerHandle:setoption("reuseaddr", true);
-		
-		local WebServerIP = INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "WebServerIP");
+
+		local WebServerIP = GetConfig("General", "WebServerIP");
 		if(WebServerIP == "auto")then
 			WebServerIP = System.GetLANInfo().IP;
 		end
 		
-		local Status, Error = ServerHandle:bind(WebServerIP, INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "WebServerPort"));
+		local Status, Error = ServerHandle:bind(WebServerIP, GetConfig("General", "WebServerPort"), -1);
 		if(Status ~= nil)then
 			local Status, Error = ServerHandle:listen(32);
 			if(Status ~= nil)then 
 				ServerHandle:settimeout(.01);
-				
+
 				local ServerIP, ServerPort = ServerHandle:getsockname();
 				if(ServerIP ~= nil)then
 					return ServerHandle, ServerIP, ServerPort;
@@ -473,501 +625,73 @@ function StartWebServer()
 	end
 end
 
-require("lanes");
-easyLanes = ({});
-easyLanes.Lanes = ({});
-easyLanes.Timers = ({});
-
-easyLanes.NewAMSLane = function (sName, sFunc)
-	local n,s;
-	s = (sName or "noname");
-	n = (#easyLanes.Lanes + 1);
-	local a = lanes.gen("*", {globals=_G}, sFunc);
-	table.insert(easyLanes.Lanes, n, {a, name=s});
-	
-	return easyLanes.Lanes[n][1];
+function QueryAllowProjectClose()
+	Window.Hide(Application.GetWndHandle());
+	--Tray.ShowBalloonTip(TrayHandle, "LastChaos Control Panel", "LastChaos Control Panel now are working on background.", 1500, NIIF_INFO);
+	return false;
 end
 
-easyLanes.GetStatus = function(id)
-	if(type(id) == "number")then
-		if(easyLanes.Timers[id] ~= nil)then
-			return(easyLanes.Timers[id].var.status);
-		end
-	elseif(type(id)=="table" and id.status)then
-		return(id.status);
-	end
-	
-	return("off");
-end
-
-function Run(FullModulePath)
-	local SplitModulePath = String.SplitPath(FullModulePath);
-	local WaitForReturn = Shell.Execute(FullModulePath, "open", "", SplitModulePath.Drive..SplitModulePath.Folder, SW_HIDE, true);
-
-	while(true)do
-		if(WaitForReturn)then
-			break;
-		end
-	end
-end
-
-function CheckByPID(PID)
-	local Running = (false);
-
-	while(true)do
-		for getPID, _ in pairs(System.EnumerateProcesses())do
-			if(getPID == PID)then
-				Running = (true);
-				break;
-			else
-				Running = (false);
-			end
-		end
-		
-		if(Running == false)then
-			break;
-		end
-	end
-end
-
---Reg lane
-RegThread = easyLanes.NewAMSLane(nil, Run);
-RegTemp = easyLanes.NewAMSLane(nil, CheckByPID);
-
-function CheckAndUpdate()
-	AtLeastOneRunning = (false);
-	
-	for _, Module in pairs(tblModules)do
-		if(easyLanes.GetStatus(_G[Module.."LaneID"]) == "running")then
-			AtLeastOneRunning = (true);
-		end
-		
-		local ServerFolderPath = INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "ServerFolderPath");
-		if(ServerFolderPath ~= "" and Folder.DoesExist(ServerFolderPath))then
-			local EXEPath = File.Find(ServerFolderPath.."\\", INIFile.GetValue(_SourceFolder.."\\config.ini", "Key_Names", Module.."EXE"), true, false, nil, nil);
-			if(EXEPath ~= nil)then
-				xButton.SetEnabled(string.upper(Module).."_ACTION", true);
-				xButton.SetEnabled(string.upper(Module).."_CONFIG", true);
-				xButton.SetEnabled(string.upper(Module).."_LOG", true);
-			else
-				xButton.SetEnabled(string.upper(Module).."_ACTION", false);
-				xButton.SetEnabled(string.upper(Module).."_CONFIG", false);
-				xButton.SetEnabled(string.upper(Module).."_LOG", false);
-			end
-		end
-	end
-	
-	if(AtLeastOneRunning == false)then
-		ListBoxEx.SetItemText("Menu", "1", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;Start All&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;");
-		ListBoxEx.SetItemData("Menu", "1", "Start All");
-		ListBoxEx.SetItemIcon("Menu", "1", 1);
-		---
-		tblMenu[1].Text = ("Start All");
-		tblMenu[1].IconID = (0);
-	elseif(AtLeastOneRunning == true)then
-		ListBoxEx.SetItemText("Menu", 1, "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;Stop All&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;");
-		ListBoxEx.SetItemData("Menu", 1, "Stop All");
-		ListBoxEx.SetItemIcon("Menu", 1, 2);
-		---
-		tblMenu[1].Text = ("Stop All");
-		tblMenu[1].IconID = (1);
-	end
-end
-
-function Start(Module)
-	local ServerFolderPath = INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "ServerFolderPath");
-	if(ServerFolderPath ~= "" and Folder.DoesExist(ServerFolderPath))then
-		local EXENAME = INIFile.GetValue(_SourceFolder.."\\config.ini", "Key_Names", Module.."EXE");
-		
-		local EXEPath = File.Find(ServerFolderPath.."\\", EXENAME, true, false, nil, nil);
-		if(EXEPath ~= nil)then
-			PrintLog("Attempting to start "..Module.."...", "", "", "INFO");
-			
-			local NewLane = RegThread(EXEPath[1]);
-			
-			if(easyLanes.GetStatus(NewLane) == "pending")then
-				Paragraph.SetProperties(string.upper(Module).."_STATUS", {BGColor = Math.HexColorToNumber(Theme.BlueColor)});
-			end
-			
-			Application.Sleep(200);
-			
-			if(easyLanes.GetStatus(NewLane) == "running")then
-				--TEST
-				_G[Module.."ReUpTrys"] = (0);
-				
-				PrintLog(Module.." ran successfully and is running in the background.", "", "", "SUCCESS");
-				
-				Paragraph.SetProperties(string.upper(Module).."_STATUS", {BGColor = Math.HexColorToNumber(Theme.GreenColor)});
-				
-				local CONFIGNAME = INIFile.GetValue(_SourceFolder.."\\config.ini", "Key_Names", Module.."CONFIG");
-				
-				local SplitProcessPath = String.SplitPath(EXEPath[1]);
-				--Esto tiene que quedar asi por los gameservers, suponer situaciones y poner filtros, ALTA PAJA.
-				local CONFIGPath = File.Find(SplitProcessPath.Drive..SplitProcessPath.Folder.."\\", CONFIGNAME, true, false, nil, nil);
-				if(CONFIGPath ~= nil)then
-					local ModulePort;
-					if(Module == "CashServer")then
-						ModulePort = INIFile.GetValue(CONFIGPath[1], "CashServer", "Port");
-					else
-						ModulePort = INIFile.GetValue(CONFIGPath[1], "Server", "Port");
-					end
-
-					Paragraph.SetText(string.upper(Module).."_PORT", ModulePort);
-				else
-					PrintLog("Could not find the Configuration file : '"..CONFIGNAME.."' of the Module : '"..EXENAME.."' but the module seems to be running. (*)", "", "Magic bruh WTF.", "WARNING");
-				end
-				
-				xButton.SetText(string.upper(Module).."_ACTION", "STOP");
-				
-				for _, MN in pairs(tblModules)do
-					if(MN == Module)then
-						tblMenu[_+2].IconID = (1);
+function TrayCallBack(strMouseEvent)
+	if(strMouseEvent == "WM_RBUTTONUP")then
+		local Ret = System.GetMousePosition(false, nil);
+		local ID = Application.ShowPopupMenu(Ret.X, Ret.Y, tblTrayMenu, TPM_RIGHTALIGN, TPM_BOTTOMALIGN, true, false);
+		if(ID == 1)then		--Start / Stop All
+			local Status = (tblTrayMenu[ID].Text);
+			if(Status == "Start All")then
+				for _, Module in pairs(tblModules)do
+					if(LaneStatus(Module) ~= "running" or LaneStatus(Module) ~= "pending")then
+						Start(Module);
 					end
 				end
-				
-				_G[Module.."LaneID"] = (NewLane);
-				
-				for ModuleName, TimerID in pairs(Timers)do
-					if(ModuleName == Module)then
-						Page.StartTimer(INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "CheckInterval"), TimerID);
-						AtLeastOneRunning = (true);
-						break;
-					end
-				end
-			end
-		else
-			PrintLog(Module.." does not exist, check the server folder for errors. (*)", "", "File name should be : "..EXENAME, "ERROR");
-		end
-	else
-		PrintLog("You need to define the server folder path on settings.", "", "", "ERROR");
-	end
-	
-	CheckAndUpdate();
-end
-
-function Stop(Module)
-	if(easyLanes.GetStatus(_G[Module.."LaneID"]) == "running")then
-		PrintLog("Attempting to stop "..Module.."...", "", "", "INFO");
-		
-		local EXENAME = INIFile.GetValue(_SourceFolder.."\\config.ini", "Key_Names", Module.."EXE");
-		
-		for PID, ProcessPath in pairs(System.EnumerateProcesses()) do
-    		local SplitProcessPath = String.SplitPath(ProcessPath);
-			
-			if(string.lower(EXENAME) == string.lower(SplitProcessPath.Filename..SplitProcessPath.Extension))then
-				local EXEPath = File.Find(ServerFolderPath.."\\", EXENAME, true, false, nil, nil);
-				if(EXEPath ~= nil)then
-					if(string.lower(SplitProcessPath.Drive..SplitProcessPath.Folder..SplitProcessPath.Filename..SplitProcessPath.Extension) == string.lower(EXEPath[1]))then
-						if(System.TerminateProcess(PID))then
-		        			Paragraph.SetProperties(string.upper(Module).."_STATUS", {BGColor = Math.HexColorToNumber(Theme.BackgroundColor)});
-							Paragraph.SetText(string.upper(Module).."_PORT", "");
-							xButton.SetText(string.upper(Module).."_ACTION", "START");
-							xButton.SetEnabled(string.upper(Module).."_CONFIG", true);
-							
-							for _, MN in pairs(tblModules)do
-								if(MN == Module)then
-									tblMenu[_+2].IconID = (0);
-								end
-							end
-							
-							for ModuleName, TimerID in pairs(Timers)do
-								if(ModuleName == Module)then
-									Page.StopTimer(TimerID);
-									break;
-								end
-							end
-							
-							PrintLog(Module.." successfully stopped.", "", "", "SUCCESS");
-		        		end
-					end
-				end
-
-        		break;
-    		end
-		end
-	end
-	
-	CheckAndUpdate();
-end
-
-function ShowHideModule(Module, Action)
-	local ServerFolderPath = INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "ServerFolderPath");
-	if(ServerFolderPath ~= "" and Folder.DoesExist(ServerFolderPath))then
-		local EXENAME = INIFile.GetValue(_SourceFolder.."\\config.ini", "Key_Names", Module.."EXE");
-		
-		local EXEPath = File.Find(ServerFolderPath.."\\", EXENAME, true, false, nil, nil);
-		if(EXEPath ~= nil)then
-			if(Action == "HIDE")then
-				for WH, WindowdTitle in pairs(Window.EnumerateTitles(false)) do
-					if(string.lower(WindowdTitle) == string.lower(EXEPath[1]))then
-						Window.Hide(WH);
-						break;
-			    	end
-				end
-			end
-			
-			if(Action == "SHOW")then
-				for WH, WindowdTitle in pairs(Window.EnumerateTitles(false)) do
-					if(string.lower(WindowdTitle) == string.lower(EXEPath[1]))then
-						Window.Show(WH);
-						break;
-				    end
-				end
-			end
-		end
-	end
-end
-
-function OpenConfig(Module)
-	local ServerFolderPath = INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "ServerFolderPath");
-	if(ServerFolderPath ~= "" and Folder.DoesExist(ServerFolderPath))then
-		local EXENAME = INIFile.GetValue(_SourceFolder.."\\config.ini", "Key_Names", Module.."EXE");
-		
-		local EXEPath = File.Find(ServerFolderPath.."\\", EXENAME, true, false, nil, nil);
-		if(EXEPath ~= nil)then
-			local CONFIGNAME = INIFile.GetValue(_SourceFolder.."\\config.ini", "Key_Names", Module.."CONFIG");
-
-			local SplitProcessPath = String.SplitPath(EXEPath[1]);
-			
-			local CONFIGPath = File.Find(SplitProcessPath.Drive..SplitProcessPath.Folder.."\\", CONFIGNAME, true, false, nil, nil);
-			if(CONFIGPath ~= nil)then
-				local TextEditorPath = INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "TextEditorPath");
-				if(TextEditorPath ~= "" and File.DoesExist(TextEditorPath))then
-					PrintLog("Executing : '"..TextEditorPath.."' ARG : '"..CONFIGPath[1].."'.", "", "", "INFO");
-					Shell.Execute(TextEditorPath, "open", CONFIGPath[1], "", SW_SHOWNORMAL, false);
-				else
-					PrintLog("Executing : '"..CONFIGPath[1].."'.", "", "", "INFO");
-					Shell.Execute(CONFIGPath[1], "edit", "", "", SW_SHOWNORMAL, false);
-				end
-			else
-				PrintLog(Module.." configuration file not found. (*)", "", "File name should be : "..CONFIGNAME, "ERROR");
-			end
-		else
-			PrintLog(Module.." path not found. (*)", "", "File name should be : "..EXENAME, "ERROR");
-		end
-	end
-end
-
-function OpenLog(Module)
-	local ServerFolderPath = INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "ServerFolderPath");
-	if(ServerFolderPath ~= "" and Folder.DoesExist(ServerFolderPath))then
-		local LogsPath = File.Find(ServerFolderPath.."\\", "*.log", true, false, nil, nil);
-		if(LogsPath ~= nil)then
-			local FileToFind;
-			
-			if(Module == "Helper" or Module == "SubHelper")then
-				FileToFind = (Module.."_1");
-			elseif(Module == "LoginServer")then
-				FileToFind = ("Loginserver");
-			elseif(Module == "GameServer1" or Module == "GameServer2" or Module == "GameServer3" or Module == "GameServer4")then
-				FileToFind = ("Gameserver_1_"..String.Right(Module, 1));
-			else
-				FileToFind = (Module);
-			end
-			
-			local LOGPATH;
-			
-			for Count = 1, #LogsPath do
-				local SplitLogPath = String.SplitPath(LogsPath[Count]);
-				if(String.Find(SplitLogPath.Filename, String.Replace(System.GetDate(DATE_FMT_ISO), "-", "", false).."_"..FileToFind, 1, true) ~= -1)then
-					if(Module == "Helper" and String.Find(SplitLogPath.Filename, "Sub", 1, true) == -1)then
-						LOGPATH = (LogsPath[Count]);
-						
-						break;
-					elseif(Module == "Messenger" or Module == "Connector" or Module == "SubHelper" or Module == "LoginServer" or Module == "CashServer" or Module == "GameServer1" or Module == "GameServer2" or Module == "GameServer3" or Module == "GameServer4")then
-						LOGPATH = (LogsPath[Count]);
-						
-						break;
-					end
-				end
-			end
-			
-			if(LOGPATH ~= nil)then
-				local TextEditorPath = INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "TextEditorPath");
-				if(TextEditorPath ~= "" and File.DoesExist(TextEditorPath))then
-					PrintLog("Executing : '"..TextEditorPath.."' ARG : '"..LOGPATH.."'.", "", "", "INFO");
-					Shell.Execute(TextEditorPath, "open", LOGPATH, "", SW_SHOWNORMAL, false);
-				else
-					PrintLog("Executing : '"..LOGPATH.."'.", "", "", "INFO");
-					Shell.Execute(LOGPATH, "open", "", "", SW_SHOWNORMAL, false);
-				end
-			end
-		end
-	end
-end
-
-function LogList(Module)
-	local tblLogs = ({});
-	tblLogs[1] = ({});
-	tblLogs[1].Text = ("Open Log Folder");
-	tblLogs[1].ID = (1);
-	---
-	tblLogs[2] = ({});
-	tblLogs[2].Text = ("---");
-	tblLogs[2].ID = (0);
-	
-	local ServerFolderPath = INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "ServerFolderPath");
-	if(ServerFolderPath ~= "" and Folder.DoesExist(ServerFolderPath))then
-		local LogsPath = File.Find(ServerFolderPath.."\\", "*.log", true, false, nil, nil);
-		if(LogsPath ~= nil)then
-			local FileToFind;
-			
-			if(Module == "Helper" or Module == "SubHelper")then
-				FileToFind = (Module.."_1");
-			elseif(Module == "LoginServer")then
-				FileToFind = ("Loginserver");
-			elseif(Module == "GameServer1" or Module == "GameServer2" or Module == "GameServer3" or Module == "GameServer4")then
-				FileToFind = ("Gameserver_1_"..String.Right(Module, 1));
-			else
-				FileToFind = (Module);
-			end
-			
-			for Count = 1, #LogsPath do
-				local SplitLogPath = String.SplitPath(LogsPath[Count]);
-
-				if(String.Find(SplitLogPath.Filename, FileToFind, 1, true) ~= -1)then
-					if(Module == "Helper" and String.Find(SplitLogPath.Filename, "Sub", 1, true) == -1)then
-						tblLogs[#tblLogs+1] = ({});
-						tblLogs[#tblLogs].Text = (LogsPath[Count]);
-						tblLogs[#tblLogs].ID = (#tblLogs);
-					elseif(Module == "Messenger" or Module == "Connector" or Module == "SubHelper" or Module == "LoginServer" or Module == "CashServer" or Module == "GameServer1" or Module == "GameServer2" or Module == "GameServer3" or Module == "GameServer4")then
-						tblLogs[#tblLogs+1] = ({});
-						tblLogs[#tblLogs].Text = (LogsPath[Count]);
-						tblLogs[#tblLogs].ID = (#tblLogs);
+			elseif(Status == "Stop All")then
+				for _, Module in pairs(tblModules)do
+					if(LaneStatus(Module) == "running" or LaneStatus(Module) == "pending")then
+						Stop(Module);
 					end
 				end
 			end
 		end
-	end
-	
-	local Ret = System.GetMousePosition(false, nil);
-	
-	local ID = Application.ShowPopupMenu(Ret.X, Ret.Y, tblLogs, TPM_CENTERALIGN, TPM_TOPALIGN, true, false);
-	if(ID == 1)then
-		local ServerFolderPath = INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "ServerFolderPath");
-		if(ServerFolderPath ~= "" and Folder.DoesExist(ServerFolderPath))then
-			PrintLog("Executing : '"..ServerFolderPath.."\\LogFiles".."'.", "", "", "INFO");
-			Shell.Execute(ServerFolderPath.."\\LogFiles", "explore", "", "", SW_SHOWNORMAL, false);
-		else
-			PrintLog("You need to define the server folder path on settings.", "", "", "ERROR");
-		end
-	else
-		if(ID ~= 0)then
-			local TextEditorPath = INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "TextEditorPath");
-			if(TextEditorPath ~= "" and File.DoesExist(TextEditorPath))then
-				PrintLog("Executing : '"..TextEditorPath.."' ARG : '"..tblLogs[ID].Text.."'.", "", "", "INFO");
-				Shell.Execute(TextEditorPath, "open", tblLogs[ID].Text, "", SW_SHOWNORMAL, false);
-			else
-				PrintLog("Executing : '"..tblLogs[ID].Text.."'.", "", "", "INFO");
-				Shell.Execute(tblLogs[ID].Text, "open", "", "", SW_SHOWNORMAL, false);
+
+		if(ID &gt; 1 and ID &lt; 12)then	--All Modules
+			local Status = (tblTrayMenu[ID+1].IconID);
+			if(Status == 0)then
+				Start(tblTrayMenu[ID+1].Text);
+			elseif(Status == 1)then
+				Stop(tblTrayMenu[ID+1].Text);
 			end
 		end
-	end
-end
 
-function PrintLog(Text, Desc, Tooltip, Type)
-	if(Type == "INFO")then
-		Type = ("&lt;font color='"..String.Replace(Theme.BlueColor, "0x", "#", false).."'&gt;INFO &lt;/font&gt;");
-	elseif(Type == "ERROR")then
-		Type = ("&lt;font color='"..String.Replace(Theme.RedColor, "0x", "#", false).."'&gt;ERROR &lt;/font&gt;");
-	elseif(Type == "SUCCESS")then
-		Type = ("&lt;font color='"..String.Replace(Theme.GreenColor, "0x", "#", false).."'&gt;SUCCESS &lt;/font&gt;");
-	elseif(Type == "WARNING")then
-		Type = ("&lt;font color='"..String.Replace(Theme.YellowColor, "0x", "#", false).."'&gt;WARNING &lt;/font&gt;");
+		if(ID == 12)then	--Exit
+			MySQL:close();
+			Tray.Destroy(TrayHandle);
+			Window.Close(Application.GetWndHandle(), CLOSEWND_TERMINATE);
+		end
+	elseif(strMouseEvent == "WM_LBUTTONDBLCLK")then
+		Window.Restore(Application.GetWndHandle());
+		Window.SetOrder(Application.GetWndHandle(), HWND_TOP);
 	end
-
-	if(LogItemColor == 0)then
-		ListBoxEx.AddItem("Logs", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;"..System.GetTime(TIME_FMT_MIL).."&lt;/font&gt; "..Type.."&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;- "..Text.."&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", Tooltip, "", "", 0, LBXITEM_HTML, 0, {Math.HexColorToNumber(Theme.ObjectItemNormalColorB)}, nil, nil);
-		LogItemColor = (1);
-	elseif(LogItemColor == 1)then
-		ListBoxEx.AddItem("Logs", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;"..System.GetTime(TIME_FMT_MIL).."&lt;/font&gt; "..Type.."&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;- "..Text.."&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", Tooltip, "", "", 0, LBXITEM_HTML, 0, {Math.HexColorToNumber(Theme.ObjectItemNormalColor)}, nil, nil);
-		LogItemColor = (0);
-	end
-	
-	ListBoxEx.EnsureVisible("Logs", ListBoxEx.GetTotalItems("Logs"));
 end
 
 function LoadProfiles()
 	ComboBox.ResetContent("CONFIG_MYSQL_PROFILESELECTOR");
 	
 	for _, Profile in pairs(INIFile.GetValueNames(_SourceFolder.."\\config.ini", "MySQL_Profiles")) do
-		local getValue = DelimitedToTable(INIFile.GetValue(_SourceFolder.."\\config.ini", "MySQL_Profiles", Profile), ",");
+		local getValue = DelimitedToTable(GetConfig("MySQL_Profiles", Profile), ",");
 
 		ComboBox.AddItem("CONFIG_MYSQL_PROFILESELECTOR", Profile, getValue[1]..","..getValue[2]..","..getValue[3]..","..getValue[4]..","..getValue[5]..","..getValue[6]);
 		
-		local Selected = INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "SelectedProfile");
+		local Selected = GetConfig("General", "SelectedProfile");
 		if(Selected ~= "")then
 			if(Profile == Selected)then
 				ComboBox.SetSelected("CONFIG_MYSQL_PROFILESELECTOR", _);
 			end
 		end
 	end
-end
-
-function DelimitedToTable(String, Delimiter)
-    if not(Delimiter or #Delimiter &lt; 1)then
-    	return nil
-    end
-    
-    local tbl = ({});
-    local sa = (String);
-    local sD = ("");
-    local nP = string.find(sa, Delimiter, 1, true);
-    
-    while(nP)do
-        sD = string.sub(sa, 1, nP-1);
-        table.insert(tbl, #tbl+1, sD);
-        sa = string.sub(sa, nP+1, -1);
-    	nP = string.find(sa, Delimiter, 1, true);
-    end
-    
-    if(sa ~= '')then
-        Table.Insert(tbl, #tbl+1, sa)
-    end
-    
-    return tbl;
-end
---[[
-function DownloadCallback (Downloaded, Total, Speed, ETA, ETAFormat, MSG)
-	local Percent = Math.Round((Downloaded/Total)*100,0);
-	if(Percent ~= "-1.#IND")then
-		Paragraph.SetText("UpdateProgress", "Downloaded: "..Percent.."% ETA: "..ETAFormat.." Speed: "..String.GetFormattedSize(Speed*100.0, FMTSIZE_AUTOMATIC, true).."/s");
-		Progress.SetCurrentPos("UpdateProgressBar", Percent);
-	end
-	
-	if(DownloadCanceled)then
-		return false;
-	else
-		return true; 
-	end
-end
-
-function Update()
-	local LocalVersion = (0);
-	local OnlineVersion = (0);
-	
-	if(OnlineVersion ~= LocalVersion)then
-		if(OnlineVersion &gt;= LocalVersion)then
-			PrintLog("Update Avalible", "", "", "INFO");
-		end
-	else
-		PrintLog("Application updated.", "", "", "INFO");
-	end
-end
-]]
-function ParseLuaTag(str)
-	str = str:gsub("(.-)&lt;%%lua(.-)%%&gt;",
-		function(s, b)
-			return s..assert(loadstring("return "..b))();
-		end
-	);
-	
-	return str;
 end</Script>
 <BookMarks count="0">
 </BookMarks>
-<DesignCodeLine>726</DesignCodeLine>
-<DesignCodeCol>26</DesignCodeCol>
+<DesignCodeLine>199</DesignCodeLine>
+<DesignCodeCol>115</DesignCodeCol>
 </Globals>
 <Defaults>
 <StartupPage>_PageFirst</StartupPage>
@@ -981,7 +705,7 @@ end</Script>
 <CustomSize>0</CustomSize>
 </TargetMedia>
 <Group>
-<CurrentGrounp>33</CurrentGrounp>
+<CurrentGrounp>35</CurrentGrounp>
 </Group>
 <ActionPlugins>
 <Plugin>Clipboard\Clipboard.lmd</Plugin>
@@ -1040,8 +764,8 @@ end</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>3</DesignCodeLine>
-<DesignCodeCol>40</DesignCodeCol>
+<DesignCodeLine>7</DesignCodeLine>
+<DesignCodeCol>3</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -1196,7 +920,7 @@ Tray.Destroy(TrayHandle);</Script>
 <TreeState>0</TreeState>
 </TreeStates>
 <DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>29</DesignCodeCol>
+<DesignCodeCol>0</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -1226,8 +950,46 @@ for _, Obj in pairs({"Menu", "Logs"})do
 	ListBoxEx.SetSeparatorsColor(Obj, Math.HexColorToNumber(Theme.ObjectBackgroundColor));
 	ListBoxEx.SetTooltipProperties(Obj, Math.HexColorToNumber(Theme.TextColor), Math.HexColorToNumber(Theme.ObjectBackgroundColor), Math.HexColorToNumber(Theme.ObjectBackgroundColor), Math.HexColorToNumber(Theme.ObjectBackgroundColor), 790);
 end
-
+--INIT
 ListBoxEx.AddItem("Logs", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;Initializing LastChaos Control Panel...&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", "", "", "", 0, LBXITEM_HTML, 0, nil, nil, nil);
+
+function Scan()
+	if(ServerFolderPath ~= "" and Folder.DoesExist(ServerFolderPath))then
+		for _, Module in pairs(tblModules)do
+			local EXENAME = GetConfig("Key_Names", Module.."EXE");
+			local EXEPATH = File.Find(ServerFolderPath.."\\", EXENAME, true, false, nil, nil);
+			if(EXEPATH ~= nil)then
+				Paragraph.SetProperties(string.upper(Module).."_STATUS", {BGColor = Math.HexColorToNumber(Theme.BackgroundColor)});
+				Paragraph.SetText(string.upper(Module).."_PORT", "");
+				xButton.SetText(string.upper(Module).."_ACTION", "START");
+
+				tblTrayMenu[tblModulesEnvironment[Module].TIMER+2].IconID = (0);
+				tblTrayMenu[tblModulesEnvironment[Module].TIMER+2].Enabled = (true);
+
+				tblModulesEnvironment[Module].PORT = (nil);
+				
+				xButton.SetEnabled(string.upper(Module).."_ACTION", true);
+				xButton.SetEnabled(string.upper(Module).."_CONFIG", true);
+				xButton.SetEnabled(string.upper(Module).."_LOG", true);
+			else
+				Paragraph.SetProperties(string.upper(Module).."_STATUS", {BGColor = Math.HexColorToNumber(Theme.BackgroundColor)});
+				Paragraph.SetText(string.upper(Module).."_PORT", "");
+				xButton.SetText(string.upper(Module).."_ACTION", "START");
+
+				tblTrayMenu[tblModulesEnvironment[Module].TIMER+2].IconID = (0);
+				tblTrayMenu[tblModulesEnvironment[Module].TIMER+2].Enabled = (false);
+
+				tblModulesEnvironment[Module].PORT = (nil);
+				
+				xButton.SetEnabled(string.upper(Module).."_ACTION", false);
+				xButton.SetEnabled(string.upper(Module).."_CONFIG", false);
+				xButton.SetEnabled(string.upper(Module).."_LOG", false);
+			end
+		end
+	end
+end
+
+Scan();
 
 ListBoxEx.AddItem("Menu", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;Start All&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", "", "Start All", "", 1, LBXITEM_HTML, 0, {Math.HexColorToNumber(Theme.ObjectItemNormalColor)}, nil, nil);
 
@@ -1253,38 +1015,32 @@ end
 
 ListBoxEx.AddItem("Logs", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;Compatibility information :\r\n"..CompatList.."&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", "", "", "", 0, LBXITEM_HTML, 0, nil, nil, nil);
 
-ServerFolderPath = INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "ServerFolderPath");
-
 if(ServerFolderPath ~= "" and Folder.DoesExist(ServerFolderPath))then
-	PrintLog("Checking for running Modules...", "", "", "INFO");
+	PrintLog("Checking for running Modules...", "", "INFO");
 	
 	for _, Module in pairs(tblModules)do
-		local EXENAME = INIFile.GetValue(_SourceFolder.."\\config.ini", "Key_Names", Module.."EXE");
+		local EXENAME = GetConfig("Key_Names", Module.."EXE");
 		
 		for PID, ProcessPath in pairs(System.EnumerateProcesses()) do
 			local SplitProcessPath = String.SplitPath(ProcessPath);
-			
 			if(string.lower(EXENAME) == string.lower(SplitProcessPath.Filename..SplitProcessPath.Extension))then
 				local EXEPath = File.Find(ServerFolderPath.."\\", EXENAME, true, false, nil, nil);
 				if(EXEPath ~= nil)then
 					if(string.lower(SplitProcessPath.Drive..SplitProcessPath.Folder..SplitProcessPath.Filename..SplitProcessPath.Extension) == string.lower(EXEPath[1]))then
-						PrintLog(Module.." process was detected PID : '"..PID.."' in execution...", "", "", "INFO");
+						PrintLog(Module.." -&gt; process was detected PID : '"..PID.."' in execution...", "", "INFO");
+						Paragraph.SetProperties(string.upper(Module).."_STATUS", {BGColor = Math.HexColorToNumber(Theme.BlueColor)});
+
+						local Lane = CreateLane(Module, CheckPIDThread);
+						local LaneTable = Lane(Module, PID);
+						tblModulesEnvironment[Module].STATUS = (LaneTable);
+
+						Application.Sleep(100);
 						
-						local NewLane = RegTemp(PID);
-		
-						if(easyLanes.GetStatus(NewLane) == "pending")then
-							Paragraph.SetProperties(string.upper(Module).."_STATUS", {BGColor = Math.HexColorToNumber(Theme.BlueColor)});
-						end
-						
-						Application.Sleep(200);
-						
-						if(easyLanes.GetStatus(NewLane) == "running")then
-							PrintLog("Starting Check Timer.", "", "", "INFO");
-							
+						if(LaneStatus(Module) == "running")then
+							PrintLog(Module.." -&gt; Starting Check Timer for PID : '"..PID.."'.", "", "INFO");
 							Paragraph.SetProperties(string.upper(Module).."_STATUS", {BGColor = Math.HexColorToNumber(Theme.GreenColor)});
 							
-							local CONFIGNAME = INIFile.GetValue(_SourceFolder.."\\config.ini", "Key_Names", Module.."CONFIG");
-
+							local CONFIGNAME = GetConfig("Key_Names", Module.."CONFIG");
 							--Esto tiene que quedar asi por los gameservers, suponer situaciones y poner filtros, ALTA PAJA.
 							local CONFIGPath = File.Find(SplitProcessPath.Drive..SplitProcessPath.Folder.."\\", CONFIGNAME, true, false, nil, nil);
 							if(CONFIGPath ~= nil)then
@@ -1296,25 +1052,21 @@ if(ServerFolderPath ~= "" and Folder.DoesExist(ServerFolderPath))then
 								end
 								
 								Paragraph.SetText(string.upper(Module).."_PORT", ModulePort);
+								
+								tblModulesEnvironment[Module].PORT = (ModulePort);
 							else
-								PrintLog("Could not find the Configuration file : '"..CONFIGNAME.."' of the Module : '"..EXENAME.."' but the module seems to be running. (*)", "", "Magic bruh WTF.", "WARNING");
+								PrintLog("Could not find the Configuration file : '"..CONFIGNAME.."' of the Module : '"..EXENAME.."' but the module seems to be running.", "Magic bruh WTF.", "WARNING");
 							end
 
-							xButton.SetText(string.upper(Module).."_ACTION", "STOP");
+							tblTrayMenu[tblModulesEnvironment[Module].TIMER+2].IconID = (1);
 							
-							tblMenu[_+2].IconID = (1);
-							
-							_G[Module.."LaneID"] = (NewLane);
-							--TEST
 							_G[Module.."ReUpTrys"] = (0);
 							
-							for ModuleName, TimerID in pairs(Timers)do
-								if(ModuleName == Module)then
-									Page.StartTimer(INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "CheckInterval"), TimerID);
-									AtLeastOneRunning = (true);
-									break;
-								end
-							end
+							Page.StartTimer(GetConfig("General", "CheckInterval"), tblModulesEnvironment[Module].TIMER);
+							
+							xButton.SetText(string.upper(Module).."_ACTION", "STOP");
+							
+							CheckIsRunning();
 						end
 						
 						break;
@@ -1323,20 +1075,18 @@ if(ServerFolderPath ~= "" and Folder.DoesExist(ServerFolderPath))then
 			end
 		end
 	end
-	
-	CheckAndUpdate();
 end
 
+
 ListBoxEx.AddItem("Logs", "&lt;p&gt;&lt;b&gt;&lt;font color='#00F2F2'&gt;LastChaos Control Panel Ready.&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", "", "", "", 0, LBXITEM_HTML, 0, nil, nil, nil);
+ListBoxEx.EnsureVisible("Logs", ListBoxEx.GetTotalItems("Logs"));
 
 --function v2
 function LoadSettings()
-	Input.SetText("CONFIG_SERVERFOLDERPATH", String.AbbreviateFilePath(INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "ServerFolderPath"), 24));
-	Input.SetText("CONFIG_CLIENTFOLDERPATH", String.AbbreviateFilePath(INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "ClientFolderPath"), 24));
-	Input.SetText("CONFIG_TEXTEDITORPATH", String.AbbreviateFilePath(INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "TextEditorPath"), 24));
-	
-	ServerFolderPath = INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "ServerFolderPath");
-	
+	Input.SetText("CONFIG_SERVERFOLDERPATH", String.AbbreviateFilePath(GetConfig("General", "ServerFolderPath"), 24));
+	Input.SetText("CONFIG_CLIENTFOLDERPATH", String.AbbreviateFilePath(GetConfig("General", "ClientFolderPath"), 24));
+	Input.SetText("CONFIG_TEXTEDITORPATH", String.AbbreviateFilePath(GetConfig("General", "TextEditorPath"), 24));
+
 	if(ServerFolderPath ~= "" and Folder.DoesExist(ServerFolderPath))then
 		--TEST local ConnectorSALT, LoginServerSALT = (nil);
 		local ConnectorSALT	  = (nil);
@@ -1344,11 +1094,11 @@ function LoadSettings()
 		MaxSubServer 		  = (0);
 
 		for _, Module in pairs(tblModules)do
-			local EXENAME = INIFile.GetValue(_SourceFolder.."\\config.ini", "Key_Names", Module.."EXE");
+			local EXENAME = GetConfig("Key_Names", Module.."EXE");
 			local EXEPATH = File.Find(ServerFolderPath.."\\", EXENAME, true, false, nil, nil);
 			if(EXEPATH ~= nil)then
 				if(#EXEPATH &gt; 1)then
-					PrintLog("There is a duplicate : '"..EXENAME.."', please disable all but one to continue.", "", "", "ERROR");
+					PrintLog("There is a duplicate : '"..EXENAME.."', please disable all but one to continue.", "", "ERROR");
 
 					while(true)do
 						--TEST local tblEXENAMES, tblEXEPATHS = ({});
@@ -1386,9 +1136,9 @@ function LoadSettings()
 								
 								local Error = Application.GetLastError();
 								if(Error ~= 0)then
-		    						PrintLog(Module.." -&gt; ".._tblErrorMessages[Error], "", "", "ERROR");
+		    						PrintLog(Module.." -&gt; ".._tblErrorMessages[Error], "", "ERROR");
 								else
-									PrintLog(EXENAME.."("..Ret..") was disabled.", "", "", "INFO");
+									PrintLog(EXENAME.." ("..Ret..") was disabled.", "", "INFO");
 									EXEPATH = File.Find(ServerFolderPath.."\\", EXENAME, true, false, nil, nil);
 									break;
 								end
@@ -1402,11 +1152,11 @@ function LoadSettings()
 				end--IF-END there duplicate files executables
 
 				local SplitModulePath = String.SplitPath(EXEPATH[1]);
-				local CONFIGNAME = INIFile.GetValue(_SourceFolder.."\\config.ini", "Key_Names", Module.."CONFIG");
+				local CONFIGNAME = GetConfig("Key_Names", Module.."CONFIG");
 				local CONFIGPATH = File.Find(SplitModulePath.Drive..SplitModulePath.Folder.."\\", CONFIGNAME, true, false, nil, nil);
 				if(CONFIGPATH ~= nil)then
 					if(#CONFIGPATH &gt; 1)then
-						PrintLog("There is a duplicate : '"..CONFIGNAME.."', please disable all but one to continue.", "", "", "ERROR");
+						PrintLog("There is a duplicate : '"..CONFIGNAME.."', please disable all but one to continue.", "", "ERROR");
 						
 						while(true)do
 							--TEST tblCONFIGNAMES, tblCONFIGPATHS = ({});
@@ -1442,9 +1192,9 @@ function LoadSettings()
 									
 									local Error = Application.GetLastError();
 									if(Error ~= 0)then
-			    						PrintLog(Module.." -&gt; ".._tblErrorMessages[Error], "", "", "ERROR");
+			    						PrintLog(Module.." -&gt; ".._tblErrorMessages[Error], "", "ERROR");
 									else
-										PrintLog(CONFIGNAME.."("..Ret..") was disabled.", "", "", "INFO");
+										PrintLog(CONFIGNAME.." ("..Ret..") was disabled.", "", "INFO");
 										CONFIGPATH = File.Find(SplitModulePath.Drive..SplitModulePath .Folder.."\\", CONFIGNAME, true, false, nil, nil);
 										break;
 									end
@@ -1476,12 +1226,12 @@ function LoadSettings()
 							elseif(HardCore == "TRUE")then
 								CheckBox.SetChecked("CONFIG_HARDCORE", true);
 							else
-								PrintLog(Module.." -&gt; 'FALSE' was assigned as default value to : 'HARDCORE' in the configuration file.", "", "", "INFO");
+								PrintLog(Module.." -&gt; 'FALSE' was assigned as default value to : 'HARDCORE' in the configuration file.", "", "INFO");
 								INIFile.SetValue(CONFIGPATH[1], "Server", "HARDCORE", "FALSE");
 								CheckBox.SetChecked("CONFIG_HARDCORE", false);
 							end
 						else
-							PrintLog(Module.." -&gt; 'HARDCORE' does not exist in the configuration file : '"..CONFIGNAME.."', the value was created and 'FALSE' was defined by default.", "", "", "INFO");
+							PrintLog(Module.." -&gt; 'HARDCORE' does not exist in the configuration file : '"..CONFIGNAME.."', the value was created and 'FALSE' was defined by default.", "", "INFO");
 							INIFile.SetValue(CONFIGPATH[1], "Server", "HARDCORE", "FALSE");
 							CheckBox.SetChecked("CONFIG_HARDCORE", false);
 						end
@@ -1497,7 +1247,7 @@ function LoadSettings()
 								LoginServerSALT = (Salt);
 							end
 						else
-							PrintLog(Module.." -&gt; 'Salt' does not exist in the configuration file : '"..CONFIGNAME.."', the value was created and 'phoohie1yaihooyaequae7PuiWoeNgahjieth3ru3yeeghaepahb7aeYaipe2we6zii6mai6uweig8siasheinoungeoyeiLohShi2xoh2xi8ooxee9ahpiehahc9Phe' was defined by default.", "", "", "INFO");
+							PrintLog(Module.." -&gt; 'Salt' does not exist in the configuration file : '"..CONFIGNAME.."', the value was created and 'phoohie1yaihooyaequae7PuiWoeNgahjieth3ru3yeeghaepahb7aeYaipe2we6zii6mai6uweig8siasheinoungeoyeiLohShi2xoh2xi8ooxee9ahpiehahc9Phe' was defined by default.", "", "INFO");
 							INIFile.SetValue(CONFIGPATH[1], "SHA256", "Salt", "phoohie1yaihooyaequae7PuiWoeNgahjieth3ru3yeeghaepahb7aeYaipe2we6zii6mai6uweig8siasheinoungeoyeiLohShi2xoh2xi8ooxee9ahpiehahc9Phe");
 						end
 					end
@@ -1517,11 +1267,11 @@ function LoadSettings()
 
 						if(Number ~= "")then
 							if(Number ~= "1")then
-								PrintLog(Module.." -&gt; '1' was assigned as default value to : '"..Type.."' in the configuration file.", "", "", "INFO");
+								PrintLog(Module.." -&gt; '1' was assigned as default value to : '"..Type.."' in the configuration file.", "", "INFO");
 								INIFile.SetValue(CONFIGPATH[1], "Server", Type, "1");
 							end
 						else
-							PrintLog(Module.." -&gt; '"..Type.."' does not exist in the configuration file : '"..CONFIGNAME.."', the value was created and '1' was defined by default.", "", "", "INFO");
+							PrintLog(Module.." -&gt; '"..Type.."' does not exist in the configuration file : '"..CONFIGNAME.."', the value was created and '1' was defined by default.", "", "INFO");
 							INIFile.SetValue(CONFIGPATH[1], "Server", Type, "1");
 						end
 					end
@@ -1531,7 +1281,7 @@ function LoadSettings()
 						local AllowExternalIP = INIFile.GetValue(CONFIGPATH[1], "Server", "AllowExternalIP");
 						if(AllowExternalIP ~= "")then
 							if(AllowExternalIP == "TRUE" or AllowExternalIP == "FALSE")then
-								PrintLog(Module.." -&gt; AllowExternalIP : '"..AllowExternalIP.."'. (*)", "", "Pressing 'Save All' updates the value of All Modules.", "INFO");
+								PrintLog(Module.." -&gt; AllowExternalIP : '"..AllowExternalIP.."'.", "By pressing 'Save All' this value will be updated in all Modules.", "INFO");
 								
 								if(AllowExternalIP == "TRUE")then
 									CheckBox.SetChecked("CONFIG_ALLOWEXTERNALIP", true);
@@ -1539,12 +1289,12 @@ function LoadSettings()
 									CheckBox.SetChecked("CONFIG_ALLOWEXTERNALIP", false);
 								end
 							else
-								PrintLog(Module.." -&gt; 'TRUE' was assigned as default value to : 'AllowExternalIP' in the configuration file.", "", "", "INFO");
+								PrintLog(Module.." -&gt; 'TRUE' was assigned as default value to : 'AllowExternalIP' in the configuration file.", "", "INFO");
 								INIFile.SetValue(CONFIGPATH[1], "Server", "AllowExternalIP", "TRUE");
 								CheckBox.SetChecked("CONFIG_ALLOWEXTERNALIP", true);
 							end
 						else
-							PrintLog(Module.." -&gt; 'AllowExternalIP' does not exist in the configuration file : '"..CONFIGNAME.."', the value was created and 'TRUE' was defined by default.", "", "", "INFO");
+							PrintLog(Module.." -&gt; 'AllowExternalIP' does not exist in the configuration file : '"..CONFIGNAME.."', the value was created and 'TRUE' was defined by default.", "", "INFO");
 							INIFile.SetValue(CONFIGPATH[1], "Server", "AllowExternalIP", "TRUE");
 							CheckBox.SetChecked("CONFIG_ALLOWEXTERNALIP", true);
 						end
@@ -1555,11 +1305,11 @@ function LoadSettings()
 						local Connectors = INIFile.GetValue(CONFIGPATH[1], "Connector Server", "Count");
 						if(Connectors ~= "")then
 							if(Connectors ~= "1")then
-								PrintLog(Module.." -&gt; '1' was assigned as default value to : '"..Type.."' in the configuration file.", "", "", "INFO");
+								PrintLog(Module.." -&gt; '1' was assigned as default value to : '"..Type.."' in the configuration file.", "", "INFO");
 								INIFile.SetValue(CONFIGPATH[1], "Connector Server", "Count", "1");
 							end
 						else
-							PrintLog(Module.." -&gt; 'Count' does not exist in the configuration file : '"..CONFIGNAME.."', the value was created and '1' was defined by default.", "", "", "INFO");
+							PrintLog(Module.." -&gt; 'Count' does not exist in the configuration file : '"..CONFIGNAME.."', the value was created and '1' was defined by default.", "", "INFO");
 							INIFile.SetValue(CONFIGPATH[1], "Connector Server", "Count", "1");
 						end
 					end
@@ -1572,11 +1322,11 @@ function LoadSettings()
 								--nothing no hay checkbox para esta opcion, no tengo ni la menor idea de que diferencia hace tener esto en TRUE/FALSE.
 								--dejo el if por si en el futuro me gasto en ver que hace y si es relevante...
 							else
-								PrintLog(Module.." -&gt; 'FALSE' was assigned as default value to : 'SPEED_SERVER' in the configuration file.", "", "", "INFO");
+								PrintLog(Module.." -&gt; 'FALSE' was assigned as default value to : 'SPEED_SERVER' in the configuration file.", "", "INFO");
 								INIFile.SetValue(CONFIGPATH[1], "Server", "SPEED_SERVER", "FALSE");
 							end
 						else
-							PrintLog(Module.." -&gt; 'SPEED_SERVER' does not exist in the configuration file : '"..CONFIGNAME.."', the value was created and 'FALSE' was defined by default.", "", "", "INFO");
+							PrintLog(Module.." -&gt; 'SPEED_SERVER' does not exist in the configuration file : '"..CONFIGNAME.."', the value was created and 'FALSE' was defined by default.", "", "INFO");
 							INIFile.SetValue(CONFIGPATH[1], "Server", "SPEED_SERVER", "FALSE");
 						end
 
@@ -1586,11 +1336,11 @@ function LoadSettings()
 								--nothing no hay checkbox para esta opcion, no tengo ni la menor idea de que diferencia hace tener esto en TRUE/FALSE.
 								--dejo el if por si en el futuro me gasto en ver que hace y si es relevante...
 							else
-								PrintLog(Module.." -&gt; 'FALSE' was assigned as default value to : 'IntergrationServer' in the configuration file.", "", "", "INFO");
+								PrintLog(Module.." -&gt; 'FALSE' was assigned as default value to : 'IntergrationServer' in the configuration file.", "", "INFO");
 								INIFile.SetValue(CONFIGPATH[1], "Server", "IntergrationServer", "FALSE");
 							end
 						else
-							PrintLog(Module.." -&gt; 'IntergrationServer' does not exist in the configuration file : '"..CONFIGNAME.."', the value was created and 'FALSE' was defined by default.", "", "", "INFO");
+							PrintLog(Module.." -&gt; 'IntergrationServer' does not exist in the configuration file : '"..CONFIGNAME.."', the value was created and 'FALSE' was defined by default.", "", "INFO");
 							INIFile.SetValue(CONFIGPATH[1], "Server", "IntergrationServer", "FALSE");
 						end
 
@@ -1601,12 +1351,12 @@ function LoadSettings()
 							elseif(NON_PK == "TRUE")then
 								CheckBox.SetChecked("CONFIG_"..string.upper(Module).."_PK", false);
 							else
-								PrintLog(Module.." -&gt; 'TRUE' was assigned as default value to : 'NON_PK' in the configuration file.", "", "", "INFO");
+								PrintLog(Module.." -&gt; 'TRUE' was assigned as default value to : 'NON_PK' in the configuration file.", "", "INFO");
 								INIFile.SetValue(CONFIGPATH[1], "Server", "NON_PK", "TRUE");
 								CheckBox.SetChecked("CONFIG_"..string.upper(Module).."_PK", false);
 							end
 						else
-							PrintLog(Module.." -&gt; 'NON_PK' does not exist in the configuration file : '"..CONFIGNAME.."', the value was created and 'TRUE' was defined by default.", "", "", "INFO");
+							PrintLog(Module.." -&gt; 'NON_PK' does not exist in the configuration file : '"..CONFIGNAME.."', the value was created and 'TRUE' was defined by default.", "", "INFO");
 							INIFile.SetValue(CONFIGPATH[1], "Server", "NON_PK", "TRUE");
 							CheckBox.SetChecked("CONFIG_"..string.upper(Module).."_PK", false);
 						end						
@@ -1652,11 +1402,13 @@ function LoadSettings()
 		xButton.SetEnabled("CONFIG_SAVEALL", false);
 	end
 
-	if(INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "AutoReUp") == "true")then
+	if(GetConfig("General", "AutoReUp") == "true")then
 		CheckBox.SetChecked("CONFIG_AUTORESTARTSYSTEM", true);
 	end
 	
 	LoadProfiles();
+	
+	Scan();
 end
 
 Group.Create("ControlPanel");
@@ -1665,14 +1417,15 @@ Group.AddObject("ControlPanel", "CONTROLPANEL_FRAME");
 
 Group.Create("ConfigPanel");
 
-Group.AddObject("ConfigPanel", "CONFIG_FRAME");</Script>
+Group.AddObject("ConfigPanel", "CONFIG_FRAME");
+Group.AddObject("ConfigPanel", "CONFIG_FRAME2");</Script>
 <TreeStates>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>24</DesignCodeLine>
-<DesignCodeCol>39</DesignCodeCol>
+<DesignCodeLine>117</DesignCodeLine>
+<DesignCodeCol>25</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -1693,84 +1446,88 @@ Group.AddObject("ConfigPanel", "CONFIG_FRAME");</Script>
 <Event>
 <Name>On Timer</Name>
 <Args>number e_ID</Args>
-<Script>for Module, TimerID in pairs(Timers)do
-	if(TimerID == e_ID)then
-		if(easyLanes.GetStatus(_G[Module.."LaneID"]) == "done")then
+<Script>for _, Module in pairs(tblModules)do
+	if(tblModulesEnvironment[Module].TIMER == e_ID)then
+		if(LaneStatus(Module) == "done")then
 			Page.StopTimer(e_ID);
 	
-			--PrintLog(Module.." stopped unexpectedly.", "", "", "ERROR");
-				
 			Paragraph.SetProperties(string.upper(Module).."_STATUS", {BGColor = Math.HexColorToNumber(Theme.RedColor)});
 			Paragraph.SetText(string.upper(Module).."_PORT", "");
 			xButton.SetText(string.upper(Module).."_ACTION", "START");
-				
-			if(INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "AutoReUp") == "true")then
-				--TEST
-				local MaxReTrys = tonumber(INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "MaxReUpTrys"));
-				if(_G[Module.."ReUpTrys"] &gt;= MaxReTrys)then
-					PrintLog("No more re-up trys (".._G[Module.."ReUpTrys"].."/"..MaxReTrys..") for Module : "..Module..".", "", "", "INFO");
-					CheckAndUpdate();
-					_G[Module.."ReUpTrys"] = (0);
-				else
-					_G[Module.."ReUpTrys"] = (_G[Module.."ReUpTrys"]+1);
-					
-					PrintLog("Trying to re-up the Module : "..Module.." Try : ".._G[Module.."ReUpTrys"].."/"..MaxReTrys.."...", "", "", "INFO");
-				
-					local EXENAME = INIFile.GetValue(_SourceFolder.."\\config.ini", "Key_Names", Module.."EXE");
-	
-					local EXEPath = File.Find(ServerFolderPath.."\\", EXENAME, true, false, nil, nil);
-					if(EXEPath ~= nil)then
-						local NewLane = RegThread(EXEPath[1]);
-						
-						if(easyLanes.GetStatus(NewLane) == "pending")then
-							Paragraph.SetProperties(string.upper(Module).."_STATUS", {BGColor = Math.HexColorToNumber(Theme.BlueColor)});
-						end
-						
-						Application.Sleep(200);
-						
-						if(easyLanes.GetStatus(NewLane) == "running")then
-							PrintLog(Module.." is Up and Running again.", "", "", "SUCCESS");
-								
-							Paragraph.SetProperties(string.upper(Module).."_STATUS", {BGColor = Math.HexColorToNumber(Theme.GreenColor)});
-							
-							local CONFIGNAME = INIFile.GetValue(_SourceFolder.."\\config.ini", "Key_Names", Module.."CONFIG");
-					
-							local SplitProcessPath = String.SplitPath(EXEPath[1]);
-							--Esto tiene que quedar asi por los gameservers, suponer situaciones y poner filtros, ALTA PAJA.
-							local CONFIGPath = File.Find(SplitProcessPath.Drive..SplitProcessPath.Folder.."\\", CONFIGNAME, true, false, nil, nil);
-							if(CONFIGPath ~= nil)then
-								local ModulePort;
-								if(Module == "CashServer")then
-									ModulePort = INIFile.GetValue(CONFIGPath[1], "CashServer", "Port");
-								else
-									ModulePort = INIFile.GetValue(CONFIGPath[1], "Server", "Port");
-								end
+
+			tblTrayMenu[tblModulesEnvironment[Module].TIMER+2].IconID = (0);
+
+			tblModulesEnvironment[Module].PORT = (nil);
+			--tblModulesEnvironment[Module].PID = (nil);
 			
-								Paragraph.SetText(string.upper(Module).."_PORT", ModulePort);
-							else
-								PrintLog("Could not find the Configuration file : '"..CONFIGNAME.."' of the Module : '"..EXENAME.."' but the module seems to be running. (*)", "", "Magic bruh WTF.", "WARNING");
-							end
+			local IsStopcalled = (_G[Module.."StopCall"]);
+			
+			if(GetConfig("General", "AutoReUp") == "true")then
+				if(IsStopcalled ~= nil and IsStopcalled == false)then
+					local MaxReTrys = tonumber(GetConfig("General", "MaxReUpTrys"));
+					if(_G[Module.."ReUpTrys"] &gt;= MaxReTrys)then
+						PrintLog("No more re-up trys (".._G[Module.."ReUpTrys"].."/"..MaxReTrys..") for Module : "..Module..".", "", "INFO");
+						
+						CheckIsRunning();
+						
+						_G[Module.."ReUpTrys"] = (0);
+					else
+						_G[Module.."ReUpTrys"] = (_G[Module.."ReUpTrys"]+1);
+						
+						PrintLog("Trying to re-up the Module : "..Module.." Try : ".._G[Module.."ReUpTrys"].."/"..MaxReTrys.."...", "", "INFO");
+						Paragraph.SetProperties(string.upper(Module).."_STATUS", {BGColor = Math.HexColorToNumber(Theme.BlueColor)});
+						
+						local EXENAME = GetConfig("Key_Names", Module.."EXE");
+						local EXEPath = File.Find(ServerFolderPath.."\\", EXENAME, true, false, nil, nil);
+						if(EXEPath ~= nil)then
+							StartLane(Module, EXEPath[1]);
 							
-							xButton.SetText(string.upper(Module).."_ACTION", "STOP");
+							Application.Sleep(100);
 							
-							tblMenu[TimerID+2].IconID = (1);
-							
-							_G[Module.."LaneID"] = (NewLane);
+							if(LaneStatus(Module) == "running")then
+								PrintLog(Module.." -&gt; is Up and Running again.", "", "SUCCESS");
+									
+								Paragraph.SetProperties(string.upper(Module).."_STATUS", {BGColor = Math.HexColorToNumber(Theme.GreenColor)});
+								
+								local CONFIGNAME = GetConfig("Key_Names", Module.."CONFIG");
+						
+								local SplitProcessPath = String.SplitPath(EXEPath[1]);
+								--Esto tiene que quedar asi por los gameservers, suponer situaciones y poner filtros, ALTA PAJA.
+								local CONFIGPath = File.Find(SplitProcessPath.Drive..SplitProcessPath.Folder.."\\", CONFIGNAME, true, false, nil, nil);
+								if(CONFIGPath ~= nil)then
+									local ModulePort;
+									
+									if(Module == "CashServer")then
+										ModulePort = INIFile.GetValue(CONFIGPath[1], "CashServer", "Port");
+									else
+										ModulePort = INIFile.GetValue(CONFIGPath[1], "Server", "Port");
+									end
+				
+									Paragraph.SetText(string.upper(Module).."_PORT", ModulePort);
+								else
+									PrintLog("Could not find the Configuration file : '"..CONFIGNAME.."' of the Module : '"..EXENAME.."' but the module seems to be running.", "Magic bruh WTF.", "WARNING");
+								end
+								
+								xButton.SetText(string.upper(Module).."_ACTION", "STOP");
+								tblTrayMenu[tblModulesEnvironment[Module].TIMER+2].IconID = (1);
+								
+								tblModulesEnvironment[Module].PORT = (ModulePort);
+								
+								Page.StartTimer(GetConfig("General", "CheckInterval"), tblModulesEnvironment[Module].TIMER);
 	
-							Page.StartTimer(INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "CheckInterval"), TimerID);
-							
-							AtLeastOneRunning = (true);
-							
-							break;
+								break;
+							end
 						end
 					end
 				end
-			else
-				PrintLog(Module.." stopped unexpectedly.", "", "", "ERROR");
-				CheckAndUpdate();
 			end
-		elseif(easyLanes.GetStatus(_G[Module.."LaneID"]) == "done")then
-			--TEST
+			
+			if(IsStopcalled == nil or IsStopcalled == false)then
+				PrintLog(Module.." -&gt; stopped unexpectedly.", "", "ERROR");
+			end
+			
+			CheckIsRunning();
+		elseif(LaneStatus(Module) == "done")then
 			_G[Module.."ReUpTrys"] = (0);
 		end
 	end
@@ -1790,13 +1547,13 @@ if(e_ID == 11)then
 			
 			if(Command ~= "/favicon.ico")then
 				if(ClientIP ~= nil)then
-					PrintLog("Web Server -&gt; New client connection detected : "..ClientIP..":"..ClientPort, "", "", "INFO");
+					PrintLog("Web Server -&gt; New client connection detected : "..ClientIP..":"..ClientPort, "", "INFO");
 				else
-					PrintLog("Web Server -&gt; New client connection detected : Unknown origin.", "", "", "INFO");
+					PrintLog("Web Server -&gt; New client connection detected : Unknown origin.", "", "INFO");
 				end
 				
 				if(Command ~= "/")then
-					PrintLog("Web Server -&gt; Command received : "..Command, "", "", "INFO");
+					PrintLog("Web Server -&gt; Command received : "..Command, "", "INFO");
 				end
 				
 				local CommandsTable = DelimitedToTable(String.Replace(Command, "/", "", false), "=");
@@ -1813,21 +1570,19 @@ if(e_ID == 11)then
 					ListBoxEx.SetItemText("Menu", 7, "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;Start Web Server&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;");
 					ListBoxEx.SetItemIcon("Menu", 7, 7);
 					
-					PrintLog("Web Server -&gt; Stopping by Web Control Panel.", "", "", "INFO");
+					PrintLog("Web Server -&gt; Stopping by Web Control Panel.", "", "INFO");
 					
 					Page.StopTimer(11);
-					
 					ServerHandle:close();
 					ServerHandle = (nil);
-					
 					return false;
 				end
 				
-				ClientHandle:send("HTTP/1.1 200 OK\r\n\r\n"..[[]]..ParseLuaTag(TextFile.ReadToString(_SourceFolder.."\\htcdocs\\index.html"))..[[]]);
+				ClientHandle:send("HTTP/1.1 200 OK\r\n\r\n"..[[]]..ParseLuaTag(TextFile.ReadToString(_SourceFolder.."\\Data\\htcdocs\\index.html"))..[[]]);
 				ClientHandle:close();
 			end
 		else
-			PrintLog("Web Server -&gt; Error receiving command : "..Error, "", "", "ERROR");
+			PrintLog("Web Server -&gt; Error receiving command : "..Error, "", "ERROR");
 		end
 		
 		ClientHandle:close();
@@ -1838,8 +1593,8 @@ end</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>139</DesignCodeLine>
-<DesignCodeCol>3</DesignCodeCol>
+<DesignCodeLine>11</DesignCodeLine>
+<DesignCodeCol>15</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -2223,27 +1978,27 @@ ListBoxEx.AddIcon(this, "AutoPlay\\Icons\\favicon.ico");</Script>
 <Name>On Select</Name>
 <Args>number e_Index</Args>
 <Script>if(e_Index == 1)then
-	local getStatus = ListBoxEx.GetItemData(this, e_Index);
-	if(getStatus == "Start All")then
+	local Status = ListBoxEx.GetItemData(this, e_Index);
+	if(Status == "Start All")then
 		for _, Module in pairs(tblModules)do
-			if(easyLanes.GetStatus(_G[Module.."LaneID"]) ~= "running")then
+			if(LaneStatus(Module) ~= "running")then
 				Start(Module);
 			end
 		end
 		
-		if(AtLeastOneRunning == true)then
+		if(CheckIsRunning() == true)then
 			ListBoxEx.SetItemText(this, e_Index, "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;Stop All&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;");
 			ListBoxEx.SetItemData(this, e_Index, "Stop All");
 			ListBoxEx.SetItemIcon(this, e_Index, 2);
 		end
-	elseif(getStatus == "Stop All")then
+	elseif(Status == "Stop All")then
 		for _, Module in pairs(tblModules)do
-			if(easyLanes.GetStatus(_G[Module.."LaneID"]) == "running")then
+			if(LaneStatus(Module) == "running")then
 				Stop(Module);
 			end
 		end
 		
-		if(AtLeastOneRunning == false)then
+		if(CheckIsRunning() == false)then
 			ListBoxEx.SetItemText(this, e_Index, "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;Start All&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;");
 			ListBoxEx.SetItemData(this, e_Index, "Start All");
 			ListBoxEx.SetItemIcon(this, e_Index, 1);
@@ -2252,16 +2007,16 @@ ListBoxEx.AddIcon(this, "AutoPlay\\Icons\\favicon.ico");</Script>
 end
 
 if(e_Index == 2)then
-	local ClientFolderPath = INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "ClientFolderPath");
+	local ClientFolderPath = GetConfig("General", "ClientFolderPath");
 	if(ClientFolderPath ~= "" and Folder.DoesExist(ClientFolderPath))then
 		if(File.DoesExist(ClientFolderPath.."\\Bin\\Nksp.exe"))then
-			PrintLog("Executing : '"..ClientFolderPath.."\\Bin\\Nksp.exe' ARG : 'fkzktlfgod!'.", "", "", "INFO");
+			PrintLog("Executing : '"..ClientFolderPath.."\\Bin\\Nksp.exe' ARG : 'fkzktlfgod!'.", "", "INFO");
 			Shell.Execute(ClientFolderPath.."\\Bin\\Nksp.exe", "open", "fkzktlfgod!", "", SW_SHOWNORMAL, false);
 		else
-			PrintLog(ClientFolderPath.."\\Bin\\Nksp.exe not found.", "", "", "ERROR");
+			PrintLog(ClientFolderPath.."\\Bin\\Nksp.exe not found.", "", "ERROR");
 		end
 	else
-		PrintLog("Client Folder not defined.", "", "", "ERROR");
+		PrintLog("Client Folder not defined.", "", "ERROR");
 	end
 end
 
@@ -2285,17 +2040,16 @@ if(e_Index == 4)then
 end
 
 if(e_Index == 5)then
-	local ServerFolderPath = INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "ServerFolderPath");
 	if(ServerFolderPath ~= "" and Folder.DoesExist(ServerFolderPath))then
-		PrintLog("Executing : '"..ServerFolderPath.."'.", "", "", "INFO");
+		PrintLog("Executing : '"..ServerFolderPath.."'.", "", "INFO");
 		Shell.Execute(ServerFolderPath, "explore", "", "", SW_SHOWNORMAL, false);
 	else
-		PrintLog("Server Folder not defined.", "", "", "ERROR");
+		PrintLog("Server Folder not defined.", "", "ERROR");
 	end
 end
 
 if(e_Index == 6)then
-	local ClientFolderPath = INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "ClientFolderPath");
+	local ClientFolderPath = GetConfig("General", "ClientFolderPath");
 	if(ClientFolderPath ~= "" and Folder.DoesExist(ClientFolderPath))then
 		PrintLog("Executing : '"..ClientFolderPath.."'.", "", "", "INFO");
 		Shell.Execute(ClientFolderPath, "explore", "", "", SW_SHOWNORMAL, false);
@@ -2311,16 +2065,16 @@ if(e_Index == 7)then
 		if(ServerHandle)then
 			ListBoxEx.SetItemText(this, e_Index, "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;Stop Web Server&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;");
 			ListBoxEx.SetItemIcon(this, e_Index, 8);
-			PrintLog("Web Server -&gt; Server started created at IP : "..ServerIP.." PORT : "..ServerPort, "", "", "INFO");
+			PrintLog("Web Server -&gt; Server started created at IP : "..ServerIP.." PORT : "..ServerPort, "", "INFO");
 			_G['ServerHandle'] = (ServerHandle);
 			Page.StartTimer(1000, 11);
 		else
-			PrintLog("Web Server -&gt; Couldn't create server : "..ServerIP, "", "", "ERROR");
+			PrintLog("Web Server -&gt; Couldn't create server : "..ServerIP, "", "ERROR");
 		end
 	elseif(getStatus == "Stop Web Server")then
 		ListBoxEx.SetItemText(this, e_Index, "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;Start Web Server&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;");
 		ListBoxEx.SetItemIcon(this, e_Index, 7);
-		PrintLog("Web Server -&gt; Stopped.", "", "", "INFO");
+		PrintLog("Web Server -&gt; Stopped.", "", "INFO");
 		Page.StopTimer(11);
 		ServerHandle:close();
 		ServerHandle = (nil);
@@ -2333,8 +2087,8 @@ ListBoxEx.SelectNone(this);</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>82</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
+<DesignCodeLine>21</DesignCodeLine>
+<DesignCodeCol>21</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -2357,49 +2111,41 @@ ListBoxEx.SelectNone(this);</Script>
 <Args>number e_Index</Args>
 <Script>if(e_Index == 2)then
 	local tblLaunchOptions = ({});
-	
-	tblLaunchOptions[1] = ({});
-	tblLaunchOptions[1].Text = ("Launch NKSP");
-	tblLaunchOptions[1].ID = (1);
-	tblLaunchOptions[1].IconID = (4);
-	---
-	tblLaunchOptions[2] = ({});
-	tblLaunchOptions[2].Text = ("Launch Launcher");
-	tblLaunchOptions[2].ID = (2);
-	tblLaunchOptions[2].IconID = (3);
+	table.insert(tblLaunchOptions, #tblLaunchOptions+1, {Text = "Launch NKSP", ID = 1, IconID = 4});
+	table.insert(tblLaunchOptions, #tblLaunchOptions+1, {Text = "Launch Launcher", ID = 2, IconID = 3});
 
 	local Ret = System.GetMousePosition(false, nil);
 	local ID = Application.ShowPopupMenu(Ret.X, Ret.Y, tblLaunchOptions, TPM_CENTERALIGN, TPM_TOPALIGN, true, false);
 	if(ID == 1)then
-		local ClientFolderPath = INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "ClientFolderPath");
+		local ClientFolderPath = GetConfig("General", "ClientFolderPath");
 		if(ClientFolderPath ~= "" and Folder.DoesExist(ClientFolderPath))then
 			if(File.DoesExist(ClientFolderPath.."\\Bin\\Nksp.exe"))then
-				PrintLog("Executing : '"..ClientFolderPath.."\\Bin\\Nksp.exe' ARG : 'fkzktlfgod!'.", "", "", "INFO");
+				PrintLog("Executing : '"..ClientFolderPath.."\\Bin\\Nksp.exe' ARG : 'fkzktlfgod!'.", "", "INFO");
 				Shell.Execute(ClientFolderPath.."\\Bin\\Nksp.exe", "open", "fkzktlfgod!", "", SW_SHOWNORMAL, false);
 			else
-				PrintLog(ClientFolderPath.."\\Bin\\Nksp.exe not found.", "", "", "ERROR");
+				PrintLog(ClientFolderPath.."\\Bin\\Nksp.exe not found.", "", "ERROR");
 			end
 		else
-			PrintLog("Client Folder not defined.", "", "", "ERROR");
+			PrintLog("Client Folder not defined.", "", "ERROR");
 		end
 	elseif(ID == 2)then
-		local ClientFolderPath = INIFile.GetValue(_SourceFolder.."\\config.ini", "General", "ClientFolderPath");
+		local ClientFolderPath = GetConfig("General", "ClientFolderPath");
 		if(ClientFolderPath ~= "" and Folder.DoesExist(ClientFolderPath))then
 			if(File.DoesExist(ClientFolderPath.."\\LC.exe"))then
-				PrintLog("Executing : '"..ClientFolderPath.."\\LC.exe'.", "", "", "INFO");
+				PrintLog("Executing : '"..ClientFolderPath.."\\LC.exe'.", "", "INFO");
 				Shell.Execute(ClientFolderPath.."\\LC.exe", "open", "", "", SW_SHOWNORMAL, false);
 			else
-				PrintLog(ClientFolderPath.."\\LC.exe not found.", "", "", "ERROR");
+				PrintLog(ClientFolderPath.."\\LC.exe not found.", "", "ERROR");
 			end
 		else
-			PrintLog("Client Folder not defined.", "", "", "ERROR");
+			PrintLog("Client Folder not defined.", "", "ERROR");
 		end
 	end
 end
 
 if(e_Index == 7)then
 	local IndexPath = (_SourceFolder.."\\Data\\htcdocs");
-	PrintLog("Executing : '"..IndexPath.."'.", "", "", "INFO");
+	PrintLog("Executing : '"..IndexPath.."'.", "", "INFO");
 	Shell.Execute(IndexPath, "explore", "", "", SW_SHOWNORMAL, false);
 end
 
@@ -2409,8 +2155,8 @@ ListBoxEx.SelectNone(this);</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>44</DesignCodeLine>
-<DesignCodeCol>1</DesignCodeCol>
+<DesignCodeLine>4</DesignCodeLine>
+<DesignCodeCol>0</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -8067,6 +7813,186 @@ end</Script>
 </FontData>
 </Object>
 <Object>
+<Type>40</Type>
+<Name>CONFIG_FRAME</Name>
+<VisibleAtDesignTime>1</VisibleAtDesignTime>
+<VisibleAtRunTime>0</VisibleAtRunTime>
+<Locked>1</Locked>
+<Enabled>1</Enabled>
+<ToolTip/>
+<Cursor>0</Cursor>
+<Group>35</Group>
+<MaintainAspectRatio>0</MaintainAspectRatio>
+<Pin>0</Pin>
+<TabIndex>-1</TabIndex>
+<AutoResize>0</AutoResize>
+<Coordinates>
+<Top>10</Top>
+<Bottom>341</Bottom>
+<Left>180</Left>
+<Right>721</Right>
+</Coordinates>
+<Ratios>
+<WidthRatio>-1.000000</WidthRatio>
+<HeightRatio>-1.000000</HeightRatio>
+</Ratios>
+<Event>
+<Name>On Enter</Name>
+<Args/>
+<Script/>
+<TreeStates>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+</TreeStates>
+<DesignCodeLine>0</DesignCodeLine>
+<DesignCodeCol>0</DesignCodeCol>
+<BookMarks count="0">
+</BookMarks>
+</Event>
+<Event>
+<Name>On Leave</Name>
+<Args/>
+<Script/>
+<TreeStates>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+</TreeStates>
+<DesignCodeLine>0</DesignCodeLine>
+<DesignCodeCol>0</DesignCodeCol>
+<BookMarks count="0">
+</BookMarks>
+</Event>
+<Event>
+<Name>On Click</Name>
+<Args/>
+<Script/>
+<TreeStates>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+</TreeStates>
+<DesignCodeLine>0</DesignCodeLine>
+<DesignCodeCol>0</DesignCodeCol>
+<BookMarks count="0">
+</BookMarks>
+</Event>
+<Event>
+<Name>On RightClick</Name>
+<Args/>
+<Script/>
+<TreeStates>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+</TreeStates>
+<DesignCodeLine>0</DesignCodeLine>
+<DesignCodeCol>0</DesignCodeCol>
+<BookMarks count="0">
+</BookMarks>
+</Event>
+<Actions/>
+<PLUGIN>
+<DLLFile>ShapeEx\ShapeEx.apo</DLLFile>
+<CustomData>0,6579300,1,-1,30,30,110,30,20,2,0,0,0</CustomData>
+</PLUGIN>
+<MouseOverSndMode>0</MouseOverSndMode>
+<MouseOverSound/>
+<MouseClickSndMode>0</MouseClickSndMode>
+<MouseClickSound/>
+</Object>
+<Object>
+<Type>40</Type>
+<Name>CONFIG_FRAME2</Name>
+<VisibleAtDesignTime>1</VisibleAtDesignTime>
+<VisibleAtRunTime>0</VisibleAtRunTime>
+<Locked>1</Locked>
+<Enabled>1</Enabled>
+<ToolTip/>
+<Cursor>0</Cursor>
+<Group>35</Group>
+<MaintainAspectRatio>0</MaintainAspectRatio>
+<Pin>0</Pin>
+<TabIndex>-1</TabIndex>
+<AutoResize>0</AutoResize>
+<Coordinates>
+<Top>150</Top>
+<Bottom>341</Bottom>
+<Left>500</Left>
+<Right>721</Right>
+</Coordinates>
+<Ratios>
+<WidthRatio>-1.000000</WidthRatio>
+<HeightRatio>-1.000000</HeightRatio>
+</Ratios>
+<Event>
+<Name>On Enter</Name>
+<Args/>
+<Script/>
+<TreeStates>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+</TreeStates>
+<DesignCodeLine>0</DesignCodeLine>
+<DesignCodeCol>0</DesignCodeCol>
+<BookMarks count="0">
+</BookMarks>
+</Event>
+<Event>
+<Name>On Leave</Name>
+<Args/>
+<Script/>
+<TreeStates>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+</TreeStates>
+<DesignCodeLine>0</DesignCodeLine>
+<DesignCodeCol>0</DesignCodeCol>
+<BookMarks count="0">
+</BookMarks>
+</Event>
+<Event>
+<Name>On Click</Name>
+<Args/>
+<Script/>
+<TreeStates>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+</TreeStates>
+<DesignCodeLine>0</DesignCodeLine>
+<DesignCodeCol>0</DesignCodeCol>
+<BookMarks count="0">
+</BookMarks>
+</Event>
+<Event>
+<Name>On RightClick</Name>
+<Args/>
+<Script/>
+<TreeStates>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+</TreeStates>
+<DesignCodeLine>0</DesignCodeLine>
+<DesignCodeCol>0</DesignCodeCol>
+<BookMarks count="0">
+</BookMarks>
+</Event>
+<Actions/>
+<PLUGIN>
+<DLLFile>ShapeEx\ShapeEx.apo</DLLFile>
+<CustomData>0,6579300,1,-1,30,30,110,30,20,2,0,0,0</CustomData>
+</PLUGIN>
+<MouseOverSndMode>0</MouseOverSndMode>
+<MouseOverSound/>
+<MouseClickSndMode>0</MouseClickSndMode>
+<MouseClickSound/>
+</Object>
+<Object>
 <Type>20</Type>
 <Name>MESSENGER_CONFIG</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
@@ -8337,105 +8263,15 @@ end</Script>
 </FontData>
 </Object>
 <Object>
-<Type>40</Type>
-<Name>CONFIG_FRAME</Name>
-<VisibleAtDesignTime>1</VisibleAtDesignTime>
-<VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
-<Enabled>1</Enabled>
-<ToolTip/>
-<Cursor>0</Cursor>
-<Group>31</Group>
-<MaintainAspectRatio>0</MaintainAspectRatio>
-<Pin>0</Pin>
-<TabIndex>-1</TabIndex>
-<AutoResize>0</AutoResize>
-<Coordinates>
-<Top>10</Top>
-<Bottom>341</Bottom>
-<Left>180</Left>
-<Right>721</Right>
-</Coordinates>
-<Ratios>
-<WidthRatio>-1.000000</WidthRatio>
-<HeightRatio>-1.000000</HeightRatio>
-</Ratios>
-<Event>
-<Name>On Enter</Name>
-<Args/>
-<Script/>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Event>
-<Name>On Leave</Name>
-<Args/>
-<Script/>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Event>
-<Name>On Click</Name>
-<Args/>
-<Script/>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Event>
-<Name>On RightClick</Name>
-<Args/>
-<Script/>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Actions/>
-<PLUGIN>
-<DLLFile>ShapeEx\ShapeEx.apo</DLLFile>
-<CustomData>0,6579300,1,-1,30,30,110,30,20,2,0,0,0</CustomData>
-</PLUGIN>
-<MouseOverSndMode>0</MouseOverSndMode>
-<MouseOverSound/>
-<MouseClickSndMode>0</MouseClickSndMode>
-<MouseClickSound/>
-</Object>
-<Object>
 <Type>2</Type>
 <Name>CONFIG_FRAMETEXT</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -8554,11 +8390,11 @@ end</Script>
 <Name>CONFIG_TEXT1</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -8677,11 +8513,11 @@ end</Script>
 <Name>CONFIG_TEXT2</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -8800,11 +8636,11 @@ end</Script>
 <Name>CONFIG_TEXT3</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -8923,11 +8759,11 @@ end</Script>
 <Name>CONFIG_TEXT4</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -9046,11 +8882,11 @@ end</Script>
 <Name>CONFIG_TEXT5</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -9169,11 +9005,11 @@ end</Script>
 <Name>CONFIG_TEXT6</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -9292,11 +9128,11 @@ end</Script>
 <Name>CONFIG_TEXT7</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -9415,11 +9251,11 @@ end</Script>
 <Name>CONFIG_TEXT8</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -9538,11 +9374,11 @@ end</Script>
 <Name>CONFIG_TEXT9</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -9661,11 +9497,11 @@ end</Script>
 <Name>CONFIG_TEXT10</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -9784,11 +9620,11 @@ end</Script>
 <Name>CONFIG_TEXT11</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -9907,11 +9743,11 @@ end</Script>
 <Name>CONFIG_TEXT12</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -10030,11 +9866,11 @@ end</Script>
 <Name>CONFIG_TEXT13</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -10153,11 +9989,11 @@ end</Script>
 <Name>CONFIG_TEXT14</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -10276,11 +10112,11 @@ end</Script>
 <Name>CONFIG_TEXT15</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -10399,11 +10235,11 @@ end</Script>
 <Name>CONFIG_TEXT17</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -10522,11 +10358,11 @@ end</Script>
 <Name>CONFIG_TEXT16</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -10645,11 +10481,11 @@ end</Script>
 <Name>CONFIG_TEXT18</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -10768,11 +10604,11 @@ end</Script>
 <Name>CONFIG_TEXT20</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -10891,11 +10727,11 @@ end</Script>
 <Name>CONFIG_TEXT19</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip>User / Char / DB</ToolTip>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -11014,11 +10850,11 @@ end</Script>
 <Name>CONFIG_SAVEALL</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>0</Enabled>
 <ToolTip>Save on Server files.</ToolTip>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -11042,12 +10878,14 @@ end</Script>
 		StatusDlg.Show(MB_ICONNONE, false);
 		StatusDlg.SetTitle("Saving Server files");
 		StatusDlg.ShowProgressMeter(false);
+		
 		for _, Module in pairs(tblModules)do
 			StatusDlg.SetStatusText("(".._.."/"..#tblModules..") - "..Module);
-			local EXEPath = File.Find(getServerFolderPath.."\\", INIFile.GetValue(_SourceFolder.."\\config.ini", "Key_Names", Module.."EXE"), true, false, nil, nil);
+			
+			local EXEPath = File.Find(getServerFolderPath.."\\", GetConfig("Key_Names", Module.."EXE"), true, false, nil, nil);
 			if(EXEPath ~= nil)then
 				local SplitEXEPath = String.SplitPath(EXEPath[1]);
-				local CONFIGPath = File.Find(SplitEXEPath.Drive..SplitEXEPath.Folder.."\\", INIFile.GetValue(_SourceFolder.."\\config.ini", "Key_Names", Module.."CONFIG"), true, false, nil, nil);
+				local CONFIGPath = File.Find(SplitEXEPath.Drive..SplitEXEPath.Folder.."\\", GetConfig("Key_Names", Module.."CONFIG"), true, false, nil, nil);
 				if(CONFIGPath ~= nil)then
 					if(Module == "CashServer")then
 						---------------------------------------------------------------------------------------------------------------------------------------------------------------CASHSERVER &gt;&gt; SERVER
@@ -11157,7 +10995,7 @@ end</Script>
 						elseif(CheckBox.GetChecked("CONFIG_"..Module.."_PK") == true)then
 							INIFile.SetValue(CONFIGPath[1], "Server", "NON_PK", "FALSE");
 						end
-						--esto no se si es necesario, no encuentro informacion en el source(CHECK PENDING)
+						--esto no se si es necesario, CHECK PENDING ####################################################################
 						---------------------------------------------------------------------------------------------------------------------------------------------------------------GAMESERVERS &gt;&gt; CONNECTOR SERVER
 						INIFile.SetValue(CONFIGPath[1], "Connector Server", "IP", Input.GetText("CONFIG_CONNECTOR_IP"));
 						INIFile.SetValue(CONFIGPath[1], "Connector Server", "Port", Input.GetText("CONFIG_CONNECTOR_PORT"));
@@ -11172,22 +11010,17 @@ end</Script>
 						INIFile.SetValue(CONFIGPath[1], "SubHelper Server", "Port", Input.GetText("CONFIG_SUBHELPER_PORT"));
 					end
 					-------------------------------------------------------------------------------------------------------------------------------------------------------------------MySQL
-					for _, Section in pairs(INIFile.GetSectionNames(CONFIGPath[1]))do--Se podria poner un filtro para evitar algunas secciones, esto podria ahorrar tiempo.
-																																											--[[
-																																												todo el proceso sin filtros toma 0.6s o menos.
-																																												con filtros los resultados son variados pero en general superiores.
-																																											]]
-					--if(Section ~= "Server" or Section ~= "SHA256" or Section ~= "Billing Server" or Section ~= "Connector Server" or Section ~= "Messenger Server" or Section ~= "Helper Server" or Section ~= "SubHelper" or Section ~= "Zones" or Section ~= "Zone_0" or Section ~= "Zone_1" or Section ~= "Zone_2" or Section ~= "Zone_3" or Section ~= "Zone_4" or Section ~= "Zone_5" or Section ~= "Zone_6" or Section ~= "Zone_7" or Section ~= "Zone_8" or Section ~= "Zone_9" or Section ~= "Zone_10" or Section ~= "Zone_11" or Section ~= "Zone_12" or Section ~= "Zone_13" or Section ~= "Zone_14" or Section ~= "Zone_15" or Section ~= "Zone_16" or Section ~= "Zone_17" or Section ~= "Zone_18" or Section ~= "Zone_19" or Section ~= "Zone_20" or Section ~= "Zone_21" or Section ~= "Zone_22" or Section ~= "Zone_23" or Section ~= "Zone_24" or Section ~= "Zone_25" or Section ~= "Zone_26" or Section ~= "Zone_27" or Section ~= "Zone_28" or Section ~= "Zone_29" or Section ~= "Zone_30" or Section ~= "Zone_31" or Section ~= "Zone_32" or Section ~= "Zone_33" or Section ~= "Zone_34" or Section ~= "Zone_35" or Section ~= "Zone_36" or Section ~= "Zone_37" or Section ~= "Zone_38" or Section ~= "Zone_39" or Section ~= "Zone_40" or Section ~= "Zone_41" or Section ~= "Connector_0" or Section ~= "Block IP" or Section ~= "Block Band" or Section ~= "Auto Block" or Section ~= "Block ExID")then
+					local tblData = DelimitedToTable(GetConfig("MySQL_Sections", "DATA"), ",");
+					local tblUser = DelimitedToTable(GetConfig("MySQL_Sections", "USER"), ",");
+					local tblAuth = DelimitedToTable(GetConfig("MySQL_Sections", "AUTH"), ",");
+					
+					for _, Section in pairs(INIFile.GetSectionNames(CONFIGPath[1]))do
 						if(Module == "CashServer")then
 							if(Section == "DataBase")then------------------------------------------------------------------------------------------------------------------------------CASHSERVER (REZAS/WIZATEK) &gt;&gt; DataBase
 								INIFile.SetValue(CONFIGPath[1], Section, "Address", Input.GetText("CONFIG_MYSQL_HOST"));
 								INIFile.SetValue(CONFIGPath[1], Section, "UserName", Input.GetText("CONFIG_MYSQL_USERNAME"));
 								INIFile.SetValue(CONFIGPath[1], Section, "Password", Input.GetText("CONFIG_MYSQL_PASS"));
-								
-								local tblData = DelimitedToTable(INIFile.GetValue(_SourceFolder.."\\config.ini", "MySQL_Sections", "DATA"), ",");
-								local tblUser = DelimitedToTable(INIFile.GetValue(_SourceFolder.."\\config.ini", "MySQL_Sections", "USER"), ",");
-								local tblAuth = DelimitedToTable(INIFile.GetValue(_SourceFolder.."\\config.ini", "MySQL_Sections", "AUTH"), ",");
-								
+
 								for _, Value in pairs(INIFile.GetValueNames(CONFIGPath[1], Section))do
 									for	Type, tblValues in pairs({DATA = tblData, USER = tblUser, AUTH = tblAuth})do
 										for _, ValueB in pairs(tblValues)do
@@ -11199,10 +11032,6 @@ end</Script>
 								end
 							end
 						else
-							local tblData = DelimitedToTable(INIFile.GetValue(_SourceFolder.."\\config.ini", "MySQL_Sections", "DATA"), ",");
-							local tblUser = DelimitedToTable(INIFile.GetValue(_SourceFolder.."\\config.ini", "MySQL_Sections", "USER"), ",");
-							local tblAuth = DelimitedToTable(INIFile.GetValue(_SourceFolder.."\\config.ini", "MySQL_Sections", "AUTH"), ",");
-							
 							for	Type, tblSections in pairs({DATA = tblData, USER = tblUser, AUTH = tblAuth})do
 								for _, SectionB in pairs(tblSections)do
 									if(Section == SectionB)then
@@ -11214,7 +11043,6 @@ end</Script>
 								end
 							end
 						end
-					--end
 					end
 				end
 			end
@@ -11224,20 +11052,18 @@ end</Script>
 		StatusDlg.SetMessage("Done!");
 		StatusDlg.Hide();
 		Dialog.TimedMessage("Save Server files", "The configuration of All Modules were updated.", 1200, MB_ICONINFORMATION);
-		--PrintLog("The configuration of all Modules were updated. It took : "..os.clock()-Start, "", "", "SUCCESS");
+		--PrintLog("The configuration of all Modules were updated. It took : "..os.clock()-Start, "", "SUCCESS");
 	else
 		Dialog.TimedMessage("Salt Code Error", "The Salt Code field is empty, you must define a salt to continue.", 2000, MB_ICONSTOP);
 	end
-else
-	--error, debe definir la carpeta del servidor, esto en teoria ¿no es una situacion posible?.
 end</Script>
 <TreeStates>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>121</DesignCodeLine>
-<DesignCodeCol>88</DesignCodeCol>
+<DesignCodeLine>183</DesignCodeLine>
+<DesignCodeCol>4</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -11341,11 +11167,11 @@ end</Script>
 <Name>CONFIG_MYSQL_SAVE</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip>Save on Profile.</ToolTip>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -11381,8 +11207,8 @@ end</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>5</DesignCodeLine>
-<DesignCodeCol>241</DesignCodeCol>
+<DesignCodeLine>11</DesignCodeLine>
+<DesignCodeCol>1</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -11486,11 +11312,11 @@ end</Script>
 <Name>CONFIG_MYSQL_TESTCONNECTION</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip>Test MySQL Connection(Setup from fields, not need be saved on first place).</ToolTip>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -11524,9 +11350,9 @@ if(getHOST ~= "" and getUSERNAME ~= "")then
 		TEST, STATUS = MySQL:connect(Input.GetText("CONFIG_MYSQL_"..DB), getUSERNAME, Input.GetText("CONFIG_MYSQL_PASS"), getHOST, 3306);
 		
 		if(TEST and STATUS == nil)then
-			PrintLog(DB.." -&gt; Connection established successfully.", "", "", "INFO");
+			PrintLog(DB.." -&gt; Connection established successfully.", "", "INFO");
 		else
-			PrintLog(DB.." -&gt; "..STATUS..".", "", "", "WARNING");
+			PrintLog(DB.." -&gt; "..STATUS..".", "", "WARNING");
 		end
 	end
 	
@@ -11538,8 +11364,8 @@ end</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>18</DesignCodeLine>
-<DesignCodeCol>53</DesignCodeCol>
+<DesignCodeLine>16</DesignCodeLine>
+<DesignCodeCol>64</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -11643,11 +11469,11 @@ end</Script>
 <Name>CONFIG_MYSQL_PROFILESELECTOR</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip>Select Profile with MySQL setup.</ToolTip>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -11742,11 +11568,11 @@ INIFile.SetValue(_SourceFolder.."\\config.ini", "General", "SelectedProfile", Co
 <Name>CONFIG_MYSQL_AUTH</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -11838,11 +11664,11 @@ INIFile.SetValue(_SourceFolder.."\\config.ini", "General", "SelectedProfile", Co
 <Name>CONFIG_MYSQL_USER</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -11934,11 +11760,11 @@ INIFile.SetValue(_SourceFolder.."\\config.ini", "General", "SelectedProfile", Co
 <Name>CONFIG_MYSQL_DATA</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -12030,11 +11856,11 @@ INIFile.SetValue(_SourceFolder.."\\config.ini", "General", "SelectedProfile", Co
 <Name>CONFIG_SHOWHIDE_MYSQLPASS</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>1</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>1</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -12137,11 +11963,11 @@ Input.SetProperties("CONFIG_MYSQL_PASS", {InputStyle = 1});</Script>
 <Name>CONFIG_MYSQL_PASS</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -12233,11 +12059,11 @@ Input.SetProperties("CONFIG_MYSQL_PASS", {InputStyle = 1});</Script>
 <Name>CONFIG_MYSQL_USERNAME</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -12329,11 +12155,11 @@ Input.SetProperties("CONFIG_MYSQL_PASS", {InputStyle = 1});</Script>
 <Name>CONFIG_MYSQL_HOST</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -12425,11 +12251,11 @@ Input.SetProperties("CONFIG_MYSQL_PASS", {InputStyle = 1});</Script>
 <Name>CONFIG_SETSAMEIPFORALL</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip>Set common IP for ALL Modules.</ToolTip>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -12564,11 +12390,11 @@ FOR ALL</Text>
 <Name>CONFIG_SECTIONSEDITOR</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -12698,11 +12524,11 @@ FOR ALL</Text>
 <Name>CONFIG_AUTORESTARTSYSTEM</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -12786,7 +12612,247 @@ FOR ALL</Text>
 </Action>
 </Actions>
 <Options>
-<Text>Auro-ReUp System</Text>
+<Text>Auto-ReUp System</Text>
+<NormalColor format="hex">000000</NormalColor>
+<HighlightColor format="hex">000000</HighlightColor>
+<MouseDownColor format="hex">000000</MouseDownColor>
+<Disabled format="hex">c0c0c0</Disabled>
+<Alignment>0</Alignment>
+<ButtonAlign>0</ButtonAlign>
+<RTLReadingOrder>0</RTLReadingOrder>
+<Checked>0</Checked>
+<MouseOverSoundMode>0</MouseOverSoundMode>
+<MouseOverSound/>
+<MouseClickSoundMode>0</MouseClickSoundMode>
+<MouseClickSound/>
+</Options>
+<Font>
+<FontData>
+<FontName>Segoe UI</FontName>
+<CharacterSet>0</CharacterSet>
+<Height>-12</Height>
+<Weight>400</Weight>
+<Italic>0</Italic>
+<Underline>0</Underline>
+<StrikeOut>0</StrikeOut>
+<AntiAlias>1</AntiAlias>
+</FontData>
+</Font>
+</Object>
+<Object>
+<Type>15</Type>
+<Name>CONFIG_ALLOWEXTERNALIP</Name>
+<VisibleAtDesignTime>1</VisibleAtDesignTime>
+<VisibleAtRunTime>0</VisibleAtRunTime>
+<Locked>1</Locked>
+<Enabled>1</Enabled>
+<ToolTip>Allow External IP (External Connections) for ALL Modules.</ToolTip>
+<Cursor>0</Cursor>
+<Group>0</Group>
+<MaintainAspectRatio>0</MaintainAspectRatio>
+<Pin>0</Pin>
+<TabIndex>-1</TabIndex>
+<AutoResize>0</AutoResize>
+<Coordinates>
+<Top>173</Top>
+<Bottom>203</Bottom>
+<Left>410</Left>
+<Right>493</Right>
+</Coordinates>
+<Ratios>
+<WidthRatio>-1.000000</WidthRatio>
+<HeightRatio>-1.000000</HeightRatio>
+</Ratios>
+<Event>
+<Name>On Click</Name>
+<Args/>
+<Script>INIFile.SetValue(_SourceFolder.."\\config.ini", "General", "AllowExternalIP", tostring(CheckBox.GetChecked(this)));</Script>
+<TreeStates>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+</TreeStates>
+<DesignCodeLine>0</DesignCodeLine>
+<DesignCodeCol>60</DesignCodeCol>
+<BookMarks count="0">
+</BookMarks>
+</Event>
+<Event>
+<Name>On Right-Click</Name>
+<Args/>
+<Script/>
+<TreeStates>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+</TreeStates>
+<DesignCodeLine>0</DesignCodeLine>
+<DesignCodeCol>0</DesignCodeCol>
+<BookMarks count="0">
+</BookMarks>
+</Event>
+<Event>
+<Name>On Enter</Name>
+<Args/>
+<Script/>
+<TreeStates>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+</TreeStates>
+<DesignCodeLine>0</DesignCodeLine>
+<DesignCodeCol>0</DesignCodeCol>
+<BookMarks count="0">
+</BookMarks>
+</Event>
+<Event>
+<Name>On Leave</Name>
+<Args/>
+<Script/>
+<TreeStates>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+</TreeStates>
+<DesignCodeLine>0</DesignCodeLine>
+<DesignCodeCol>0</DesignCodeCol>
+<BookMarks count="0">
+</BookMarks>
+</Event>
+<Actions>
+<Action>
+<Type>0</Type>
+<Name>None</Name>
+<Exit>0</Exit>
+<TreeStates>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+</TreeStates>
+</Action>
+</Actions>
+<Options>
+<Text>Allow External IP</Text>
+<NormalColor format="hex">000000</NormalColor>
+<HighlightColor format="hex">000000</HighlightColor>
+<MouseDownColor format="hex">000000</MouseDownColor>
+<Disabled format="hex">c0c0c0</Disabled>
+<Alignment>0</Alignment>
+<ButtonAlign>0</ButtonAlign>
+<RTLReadingOrder>0</RTLReadingOrder>
+<Checked>0</Checked>
+<MouseOverSoundMode>0</MouseOverSoundMode>
+<MouseOverSound/>
+<MouseClickSoundMode>0</MouseClickSoundMode>
+<MouseClickSound/>
+</Options>
+<Font>
+<FontData>
+<FontName>Segoe UI</FontName>
+<CharacterSet>0</CharacterSet>
+<Height>-12</Height>
+<Weight>400</Weight>
+<Italic>0</Italic>
+<Underline>0</Underline>
+<StrikeOut>0</StrikeOut>
+<AntiAlias>1</AntiAlias>
+</FontData>
+</Font>
+</Object>
+<Object>
+<Type>15</Type>
+<Name>CONFIG_HARDCORE</Name>
+<VisibleAtDesignTime>1</VisibleAtDesignTime>
+<VisibleAtRunTime>0</VisibleAtRunTime>
+<Locked>1</Locked>
+<Enabled>1</Enabled>
+<ToolTip>Enable Hardcore on Connector and All GameServers.</ToolTip>
+<Cursor>0</Cursor>
+<Group>0</Group>
+<MaintainAspectRatio>0</MaintainAspectRatio>
+<Pin>0</Pin>
+<TabIndex>-1</TabIndex>
+<AutoResize>0</AutoResize>
+<Coordinates>
+<Top>153</Top>
+<Bottom>170</Bottom>
+<Left>410</Left>
+<Right>485</Right>
+</Coordinates>
+<Ratios>
+<WidthRatio>-1.000000</WidthRatio>
+<HeightRatio>-1.000000</HeightRatio>
+</Ratios>
+<Event>
+<Name>On Click</Name>
+<Args/>
+<Script/>
+<TreeStates>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+</TreeStates>
+<DesignCodeLine>0</DesignCodeLine>
+<DesignCodeCol>0</DesignCodeCol>
+<BookMarks count="0">
+</BookMarks>
+</Event>
+<Event>
+<Name>On Right-Click</Name>
+<Args/>
+<Script/>
+<TreeStates>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+</TreeStates>
+<DesignCodeLine>0</DesignCodeLine>
+<DesignCodeCol>0</DesignCodeCol>
+<BookMarks count="0">
+</BookMarks>
+</Event>
+<Event>
+<Name>On Enter</Name>
+<Args/>
+<Script/>
+<TreeStates>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+</TreeStates>
+<DesignCodeLine>0</DesignCodeLine>
+<DesignCodeCol>0</DesignCodeCol>
+<BookMarks count="0">
+</BookMarks>
+</Event>
+<Event>
+<Name>On Leave</Name>
+<Args/>
+<Script/>
+<TreeStates>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+</TreeStates>
+<DesignCodeLine>0</DesignCodeLine>
+<DesignCodeCol>0</DesignCodeCol>
+<BookMarks count="0">
+</BookMarks>
+</Event>
+<Actions>
+<Action>
+<Type>0</Type>
+<Name>None</Name>
+<Exit>0</Exit>
+<TreeStates>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+<TreeState>0</TreeState>
+</TreeStates>
+</Action>
+</Actions>
+<Options>
+<Text>Hardcore</Text>
 <NormalColor format="hex">000000</NormalColor>
 <HighlightColor format="hex">000000</HighlightColor>
 <MouseDownColor format="hex">000000</MouseDownColor>
@@ -12818,11 +12884,11 @@ FOR ALL</Text>
 <Name>CONFIG_SHOWHIDE_SALT</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>1</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>1</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -12925,11 +12991,11 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Name>CONFIG_SALT</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -13021,11 +13087,11 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Name>CONFIG_GAMESERVER4_PK</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip>Player kill.</ToolTip>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -13141,11 +13207,11 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Name>CONFIG_GAMESERVER4_PORT</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -13237,11 +13303,11 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Name>CONFIG_GAMESERVER4_IP</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -13333,11 +13399,11 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Name>CONFIG_GAMESERVER3_PK</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip>Player kill.</ToolTip>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -13453,11 +13519,11 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Name>CONFIG_GAMESERVER3_PORT</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -13549,11 +13615,11 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Name>CONFIG_GAMESERVER3_IP</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -13645,11 +13711,11 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Name>CONFIG_GAMESERVER2_PK</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip>Player kill.</ToolTip>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -13765,11 +13831,11 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Name>CONFIG_GAMESERVER2_PORT</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -13861,11 +13927,11 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Name>CONFIG_GAMESERVER2_IP</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -13957,11 +14023,11 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Name>CONFIG_GAMESERVER1_PK</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip>Player kill.</ToolTip>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -14077,11 +14143,11 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Name>CONFIG_GAMESERVER1_PORT</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -14173,11 +14239,11 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Name>CONFIG_GAMESERVER1_IP</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -14269,11 +14335,11 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Name>CONFIG_CASHSERVER_PORT</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -14365,11 +14431,11 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Name>CONFIG_CASHSERVER_IP</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -14461,11 +14527,11 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Name>CONFIG_LOGINSERVER_PORT</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -14557,11 +14623,11 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Name>CONFIG_LOGINSERVER_IP</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -14653,11 +14719,11 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Name>CONFIG_SUBHELPER_PORT</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -14749,11 +14815,11 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Name>CONFIG_SUBHELPER_IP</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -14845,11 +14911,11 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Name>CONFIG_HELPER_PORT</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -14941,11 +15007,11 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Name>CONFIG_HELPER_IP</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -15033,135 +15099,15 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 </Box>
 </Object>
 <Object>
-<Type>15</Type>
-<Name>CONFIG_HARDCORE</Name>
-<VisibleAtDesignTime>1</VisibleAtDesignTime>
-<VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
-<Enabled>1</Enabled>
-<ToolTip>Enable Hardcore on Connector and All GameServers.</ToolTip>
-<Cursor>0</Cursor>
-<Group>31</Group>
-<MaintainAspectRatio>0</MaintainAspectRatio>
-<Pin>0</Pin>
-<TabIndex>-1</TabIndex>
-<AutoResize>0</AutoResize>
-<Coordinates>
-<Top>153</Top>
-<Bottom>170</Bottom>
-<Left>410</Left>
-<Right>485</Right>
-</Coordinates>
-<Ratios>
-<WidthRatio>-1.000000</WidthRatio>
-<HeightRatio>-1.000000</HeightRatio>
-</Ratios>
-<Event>
-<Name>On Click</Name>
-<Args/>
-<Script/>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Event>
-<Name>On Right-Click</Name>
-<Args/>
-<Script/>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Event>
-<Name>On Enter</Name>
-<Args/>
-<Script/>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Event>
-<Name>On Leave</Name>
-<Args/>
-<Script/>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Actions>
-<Action>
-<Type>0</Type>
-<Name>None</Name>
-<Exit>0</Exit>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-</Action>
-</Actions>
-<Options>
-<Text>Hardcore</Text>
-<NormalColor format="hex">000000</NormalColor>
-<HighlightColor format="hex">000000</HighlightColor>
-<MouseDownColor format="hex">000000</MouseDownColor>
-<Disabled format="hex">c0c0c0</Disabled>
-<Alignment>0</Alignment>
-<ButtonAlign>0</ButtonAlign>
-<RTLReadingOrder>0</RTLReadingOrder>
-<Checked>0</Checked>
-<MouseOverSoundMode>0</MouseOverSoundMode>
-<MouseOverSound/>
-<MouseClickSoundMode>0</MouseClickSoundMode>
-<MouseClickSound/>
-</Options>
-<Font>
-<FontData>
-<FontName>Segoe UI</FontName>
-<CharacterSet>0</CharacterSet>
-<Height>-12</Height>
-<Weight>400</Weight>
-<Italic>0</Italic>
-<Underline>0</Underline>
-<StrikeOut>0</StrikeOut>
-<AntiAlias>1</AntiAlias>
-</FontData>
-</Font>
-</Object>
-<Object>
 <Type>7</Type>
 <Name>CONFIG_CONNECTOR_PORT</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -15253,11 +15199,11 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Name>CONFIG_CONNECTOR_IP</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -15349,11 +15295,11 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Name>CONFIG_MESSENGER_PORT</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -15445,11 +15391,11 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Name>CONFIG_MESSENGER_IP</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -15541,11 +15487,11 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Name>CONFIG_TEXTEDITORPATHBROWSE</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>1</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>1</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -15651,11 +15597,11 @@ end</Script>
 <Name>CONFIG_TEXTEDITORPATH</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -15747,11 +15693,11 @@ end</Script>
 <Name>CONFIG_CLIENTFOLDERPATHBROWSE</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>1</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>1</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -15857,11 +15803,11 @@ end</Script>
 <Name>CONFIG_CLIENTFOLDERPATH</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -15953,11 +15899,11 @@ end</Script>
 <Name>CONFIG_SERVERFOLDERPATHBROWSE</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>1</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>1</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -15991,6 +15937,10 @@ if(ServerFolder ~= "CANCEL")then
 				Dialog.TimedMessage("Key Names", "Please confirm Key Names for continue.", 1600, MB_ICONSTOP);
 			end
 		end
+		
+		ServerFolderPath = (ServerFolder);
+		
+		Scan();
 	end
 end</Script>
 <TreeStates>
@@ -15998,8 +15948,8 @@ end</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>16</DesignCodeLine>
-<DesignCodeCol>4</DesignCodeCol>
+<DesignCodeLine>19</DesignCodeLine>
+<DesignCodeCol>2</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -16075,11 +16025,11 @@ end</Script>
 <Name>CONFIG_SERVERFOLDERPATH</Name>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
+<Locked>1</Locked>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>31</Group>
+<Group>35</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -16165,126 +16115,6 @@ end</Script>
 <MaskRetMode>0</MaskRetMode>
 <ReadOnly>1</ReadOnly>
 </Box>
-</Object>
-<Object>
-<Type>15</Type>
-<Name>CONFIG_ALLOWEXTERNALIP</Name>
-<VisibleAtDesignTime>1</VisibleAtDesignTime>
-<VisibleAtRunTime>0</VisibleAtRunTime>
-<Locked>0</Locked>
-<Enabled>1</Enabled>
-<ToolTip>Allow External IP (External Connections) for ALL Modules.</ToolTip>
-<Cursor>0</Cursor>
-<Group>31</Group>
-<MaintainAspectRatio>0</MaintainAspectRatio>
-<Pin>0</Pin>
-<TabIndex>-1</TabIndex>
-<AutoResize>0</AutoResize>
-<Coordinates>
-<Top>173</Top>
-<Bottom>203</Bottom>
-<Left>410</Left>
-<Right>493</Right>
-</Coordinates>
-<Ratios>
-<WidthRatio>-1.000000</WidthRatio>
-<HeightRatio>-1.000000</HeightRatio>
-</Ratios>
-<Event>
-<Name>On Click</Name>
-<Args/>
-<Script>INIFile.SetValue(_SourceFolder.."\\config.ini", "General", "AllowExternalIP", tostring(CheckBox.GetChecked(this)));</Script>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>60</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Event>
-<Name>On Right-Click</Name>
-<Args/>
-<Script/>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Event>
-<Name>On Enter</Name>
-<Args/>
-<Script/>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Event>
-<Name>On Leave</Name>
-<Args/>
-<Script/>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Actions>
-<Action>
-<Type>0</Type>
-<Name>None</Name>
-<Exit>0</Exit>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-</Action>
-</Actions>
-<Options>
-<Text>Allow External IP</Text>
-<NormalColor format="hex">000000</NormalColor>
-<HighlightColor format="hex">000000</HighlightColor>
-<MouseDownColor format="hex">000000</MouseDownColor>
-<Disabled format="hex">c0c0c0</Disabled>
-<Alignment>0</Alignment>
-<ButtonAlign>0</ButtonAlign>
-<RTLReadingOrder>0</RTLReadingOrder>
-<Checked>0</Checked>
-<MouseOverSoundMode>0</MouseOverSoundMode>
-<MouseOverSound/>
-<MouseClickSoundMode>0</MouseClickSoundMode>
-<MouseClickSound/>
-</Options>
-<Font>
-<FontData>
-<FontName>Segoe UI</FontName>
-<CharacterSet>0</CharacterSet>
-<Height>-12</Height>
-<Weight>400</Weight>
-<Italic>0</Italic>
-<Underline>0</Underline>
-<StrikeOut>0</StrikeOut>
-<AntiAlias>1</AntiAlias>
-</FontData>
-</Font>
 </Object>
 <Object>
 <Type>20</Type>
@@ -16579,7 +16409,7 @@ end</Script>
 <Event>
 <Name>On Click</Name>
 <Args/>
-<Script>OpenLog("Helper");</Script>
+<Script>OpenLog("Helper_1");</Script>
 <TreeStates>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
@@ -16593,14 +16423,14 @@ end</Script>
 <Event>
 <Name>On Right-Click</Name>
 <Args/>
-<Script>LogList("Helper");</Script>
+<Script>LogList("Helper_1");</Script>
 <TreeStates>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
 <DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>8</DesignCodeCol>
+<DesignCodeCol>17</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -16712,28 +16542,28 @@ end</Script>
 <Event>
 <Name>On Click</Name>
 <Args/>
-<Script>OpenLog("SubHelper");</Script>
+<Script>OpenLog("SubHelper_1");</Script>
 <TreeStates>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
 <DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>12</DesignCodeCol>
+<DesignCodeCol>20</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
 <Event>
 <Name>On Right-Click</Name>
 <Args/>
-<Script>LogList("SubHelper");</Script>
+<Script>LogList("SubHelper_1");</Script>
 <TreeStates>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
 <DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>12</DesignCodeCol>
+<DesignCodeCol>20</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -16845,28 +16675,28 @@ end</Script>
 <Event>
 <Name>On Click</Name>
 <Args/>
-<Script>OpenLog("LoginServer");</Script>
+<Script>OpenLog("Loginserver");</Script>
 <TreeStates>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
 <DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>21</DesignCodeCol>
+<DesignCodeCol>15</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
 <Event>
 <Name>On Right-Click</Name>
 <Args/>
-<Script>LogList("LoginServer");</Script>
+<Script>LogList("Loginserver");</Script>
 <TreeStates>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
 <DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>8</DesignCodeCol>
+<DesignCodeCol>15</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -17642,14 +17472,14 @@ end</Script>
 <Event>
 <Name>On Preload</Name>
 <Args/>
-<Script/>
+<Script>Application.SetDialogProperties(this, {UseCustomSettings = true, BackgroundColor = Math.HexColorToNumber(Theme.BackgroundColor)});</Script>
 <TreeStates>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
 <DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
+<DesignCodeCol>60</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -17674,8 +17504,8 @@ ComboBox.SetSelected("MYSQLSECTIONEDITOR_SECTIONSELECTOR", 1);</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>12</DesignCodeLine>
-<DesignCodeCol>62</DesignCodeCol>
+<DesignCodeLine>0</DesignCodeLine>
+<DesignCodeCol>1</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -18339,14 +18169,14 @@ end</Script>
 <Event>
 <Name>On Preload</Name>
 <Args/>
-<Script/>
+<Script>Application.SetDialogProperties(this, {UseCustomSettings = true, BackgroundColor = Math.HexColorToNumber(Theme.BackgroundColor)});</Script>
 <TreeStates>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
 <DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
+<DesignCodeCol>130</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -18848,14 +18678,14 @@ DialogEx.Close("10");</Script>
 <Event>
 <Name>On Preload</Name>
 <Args/>
-<Script/>
+<Script>Application.SetDialogProperties(this, {UseCustomSettings = true, BackgroundColor = Math.HexColorToNumber(Theme.BackgroundColor)});</Script>
 <TreeStates>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
 <DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
+<DesignCodeCol>130</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -18878,7 +18708,7 @@ DialogEx.Close("10");</Script>
 	end
 end
 
-Page.Redraw();
+DialogEx.Redraw();
 
 ListBox.DeleteItem("From", -1);
 ListBox.DeleteItem("To", -1);
@@ -18912,8 +18742,8 @@ LoadFrom();</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>25</DesignCodeLine>
-<DesignCodeCol>1</DesignCodeCol>
+<DesignCodeLine>19</DesignCodeLine>
+<DesignCodeCol>26</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -19777,539 +19607,6 @@ end</Script>
 </Object>
 <HGuidelines/>
 <VGuidelines/>
-</Page>
-</PageDialog>
-<PageDialog width="400" height="100" dialog_title="Updater" dialog_style="0" movable="1" use_custom_icon="0" custom_icon="" always_on_top="0" resizable="0" min_width="400" min_height="100" fit_custom_mask_to_window="1" custom_mask="">
-<Page>
-<Name>Updater</Name>
-<InheritObs/>
-<InheritBG/>
-<Description/>
-<Keywords/>
-<Background>
-<Type>0</Type>
-<ImageStyle>0</ImageStyle>
-<TopColor>16711680</TopColor>
-<BottomColor>16777215</BottomColor>
-<UseCustomBackgroundSettings>0</UseCustomBackgroundSettings>
-<TransitionEffect/>
-<TransProps/>
-<NormalImage>
-<Filename/>
-</NormalImage>
-</Background>
-<Event>
-<Name>On Preload</Name>
-<Args/>
-<Script/>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Event>
-<Name>On Show</Name>
-<Args/>
-<Script>for _, Object in pairs(DialogEx.EnumerateObjects())do
-	local ObjType = DialogEx.GetObjectType(Object);
-
-	if(ObjType == OBJECT_PARAGRAPH)then
-		Paragraph.SetProperties(Object, {ColorNormal = Math.HexColorToNumber(Theme.TextColor), ColorHighlight = Math.HexColorToNumber(Theme.TextColor), ColorDown = Math.HexColorToNumber(Theme.TextColor)});
-	elseif(ObjType == OBJECT_PROGRESS)then
-		Progress.SetProperties("UpdateProgressBar", {BackgroundColor = Math.HexColorToNumber(Theme.ObjectBackgroundColor), BarColor = Math.HexColorToNumber(Theme.BarColor), TextColor = Math.HexColorToNumber(Theme.TextColor)});
-	end
-end
-
-Progress.SetRange("UpdateProgressBar", 0, 100);
-
-local UpdateLink = ("https://speed.hetzner.de/1GB.bin");
-local UpdateName = (DelimitedToTable(UpdateLink, "/")[#DelimitedToTable(UpdateLink, "/")]);
-
-Paragraph.SetText("UpdateName", String.Left(UpdateName, String.Length(UpdateName)-4));
-
-HTTP.DownloadSecure("https://speed.hetzner.de/1GB.bin", _TempFolder.."\\"..UpdateName, MODE_BINARY, 20, 443, nil, nil, DownloadCallback);
-
-local Error = Application.GetLastError();
-if(Error ~= 0)then
-	Dialog.Message("Error", _tblErrorMessages[error], MB_OK, MB_ICONEXCLAMATION, MB_DEFBUTTON1);
-else
-	local CRC = File.GetCRC(_TempFolder.."\\"..UpdateName);
-	if(LocalCRC == OnlineCRC)then
-		--here exec the next step after download de file.
-		--File.Run(_TempFolder.."\\"..UpdateName, "", "", SW_SHOWNORMAL, true);
-	else
-		Dialog.Message("Error", "The downloaded file is incomplete. Please try downloading again.", MB_OK, MB_ICONSTOP, MB_DEFBUTTON1);
-	end
-end</Script>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>25</DesignCodeLine>
-<DesignCodeCol>51</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Event>
-<Name>On Close</Name>
-<Args/>
-<Script>DownloadCanceled = (true);</Script>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>24</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Event>
-<Name>On Timer</Name>
-<Args>number e_ID</Args>
-<Script/>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Event>
-<Name>On Audio</Name>
-<Args>number e_Channel, string e_State</Args>
-<Script/>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Event>
-<Name>On Key</Name>
-<Args>number e_Key, table e_Modifiers</Args>
-<Script/>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Event>
-<Name>On Mouse Button</Name>
-<Args>number e_Type, number e_X, number e_Y</Args>
-<Script/>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Event>
-<Name>On Mouse Move</Name>
-<Args>number e_X, number e_Y</Args>
-<Script/>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Event>
-<Name>On Mouse Wheel</Name>
-<Args>table e_Flags, number e_Delta, number e_X, number e_Y</Args>
-<Script/>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Event>
-<Name>On Size</Name>
-<Args>number e_WindowWidth, number e_WindowHeight, number e_DialogWidth, number e_DialogHeight, number e_Type</Args>
-<Script/>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Object>
-<Type>11</Type>
-<Name>UpdateProgressBar</Name>
-<VisibleAtDesignTime>1</VisibleAtDesignTime>
-<VisibleAtRunTime>1</VisibleAtRunTime>
-<Locked>0</Locked>
-<Enabled>1</Enabled>
-<ToolTip/>
-<Cursor>0</Cursor>
-<Group>0</Group>
-<MaintainAspectRatio>0</MaintainAspectRatio>
-<Pin>0</Pin>
-<TabIndex>-1</TabIndex>
-<AutoResize>0</AutoResize>
-<Coordinates>
-<Top>76</Top>
-<Bottom>91</Bottom>
-<Left>10</Left>
-<Right>391</Right>
-</Coordinates>
-<Ratios>
-<WidthRatio>-1.000000</WidthRatio>
-<HeightRatio>-1.000000</HeightRatio>
-</Ratios>
-<Event>
-<Name>On Click</Name>
-<Args/>
-<Script/>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>37748777</DesignCodeLine>
-<DesignCodeCol>4</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Actions>
-<Action>
-<Type>0</Type>
-<Name>None</Name>
-<Exit>0</Exit>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-</Action>
-</Actions>
-<Options>
-<Orientation>0</Orientation>
-<Style>1</Style>
-<XPStyleBars>0</XPStyleBars>
-<Maximum>100</Maximum>
-<Minimum>0</Minimum>
-<Step>10</Step>
-<BarColor format="hex">819830</BarColor>
-<BackgroundColor format="hex">ffffff</BackgroundColor>
-<TextColor format="hex">000000</TextColor>
-<ProgressText/>
-<UseCustomColours>1</UseCustomColours>
-</Options>
-<Font>
-<FontData>
-<FontName>Segoe UI</FontName>
-<CharacterSet>0</CharacterSet>
-<Height>-12</Height>
-<Weight>400</Weight>
-<Italic>0</Italic>
-<Underline>0</Underline>
-<StrikeOut>0</StrikeOut>
-<AntiAlias>1</AntiAlias>
-</FontData>
-</Font>
-</Object>
-<Object>
-<Type>2</Type>
-<Name>UpdateName</Name>
-<VisibleAtDesignTime>1</VisibleAtDesignTime>
-<VisibleAtRunTime>1</VisibleAtRunTime>
-<Locked>1</Locked>
-<Enabled>1</Enabled>
-<ToolTip/>
-<Cursor>0</Cursor>
-<Group>0</Group>
-<MaintainAspectRatio>0</MaintainAspectRatio>
-<Pin>0</Pin>
-<TabIndex>-1</TabIndex>
-<AutoResize>0</AutoResize>
-<Coordinates>
-<Top>10</Top>
-<Bottom>58</Bottom>
-<Left>10</Left>
-<Right>391</Right>
-</Coordinates>
-<Ratios>
-<WidthRatio>-1.000000</WidthRatio>
-<HeightRatio>-1.000000</HeightRatio>
-</Ratios>
-<Event>
-<Name>On Click</Name>
-<Args/>
-<Script/>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>13625</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Event>
-<Name>On Right-Click</Name>
-<Args/>
-<Script/>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>17747</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Event>
-<Name>On Enter</Name>
-<Args/>
-<Script/>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>7274542</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Event>
-<Name>On Leave</Name>
-<Args/>
-<Script/>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Actions>
-<Action>
-<Type>0</Type>
-<Name>None</Name>
-<Exit>0</Exit>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-</Action>
-</Actions>
-<Text>
-<Body>-</Body>
-<NormalColor>0</NormalColor>
-<HighlightColor>0</HighlightColor>
-<MouseDownColor>0</MouseDownColor>
-<DisabledColor>12632256</DisabledColor>
-<BorderColor>0</BorderColor>
-<BackColor>16777215</BackColor>
-<FontData>
-<FontName>Segoe UI</FontName>
-<CharacterSet>0</CharacterSet>
-<Height>-12</Height>
-<Weight>700</Weight>
-<Italic>0</Italic>
-<Underline>0</Underline>
-<StrikeOut>0</StrikeOut>
-<AntiAlias>1</AntiAlias>
-</FontData>
-<Alignment>0</Alignment>
-<TransBG>1</TransBG>
-<VSMode>0</VSMode>
-<HSMode>2</HSMode>
-<SBStyle>1</SBStyle>
-<SBSkin>Windows7</SBSkin>
-<Border>0</Border>
-<MouseOverSndMode>0</MouseOverSndMode>
-<MouseOverSound/>
-<MouseClickSndMode>0</MouseClickSndMode>
-<MouseClickSound/>
-</Text>
-</Object>
-<Object>
-<Type>2</Type>
-<Name>UpdateProgress</Name>
-<VisibleAtDesignTime>1</VisibleAtDesignTime>
-<VisibleAtRunTime>1</VisibleAtRunTime>
-<Locked>1</Locked>
-<Enabled>1</Enabled>
-<ToolTip/>
-<Cursor>0</Cursor>
-<Group>0</Group>
-<MaintainAspectRatio>0</MaintainAspectRatio>
-<Pin>0</Pin>
-<TabIndex>-1</TabIndex>
-<AutoResize>0</AutoResize>
-<Coordinates>
-<Top>57</Top>
-<Bottom>105</Bottom>
-<Left>10</Left>
-<Right>391</Right>
-</Coordinates>
-<Ratios>
-<WidthRatio>-1.000000</WidthRatio>
-<HeightRatio>-1.000000</HeightRatio>
-</Ratios>
-<Event>
-<Name>On Click</Name>
-<Args/>
-<Script/>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>13625</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Event>
-<Name>On Right-Click</Name>
-<Args/>
-<Script/>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>17747</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Event>
-<Name>On Enter</Name>
-<Args/>
-<Script/>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>7274542</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Event>
-<Name>On Leave</Name>
-<Args/>
-<Script/>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
-<BookMarks count="0">
-</BookMarks>
-</Event>
-<Actions>
-<Action>
-<Type>0</Type>
-<Name>None</Name>
-<Exit>0</Exit>
-<TreeStates>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-<TreeState>0</TreeState>
-</TreeStates>
-</Action>
-</Actions>
-<Text>
-<Body>-</Body>
-<NormalColor>0</NormalColor>
-<HighlightColor>0</HighlightColor>
-<MouseDownColor>0</MouseDownColor>
-<DisabledColor>12632256</DisabledColor>
-<BorderColor>0</BorderColor>
-<BackColor>16777215</BackColor>
-<FontData>
-<FontName>Segoe UI</FontName>
-<CharacterSet>0</CharacterSet>
-<Height>-12</Height>
-<Weight>400</Weight>
-<Italic>0</Italic>
-<Underline>0</Underline>
-<StrikeOut>0</StrikeOut>
-<AntiAlias>1</AntiAlias>
-</FontData>
-<Alignment>0</Alignment>
-<TransBG>1</TransBG>
-<VSMode>0</VSMode>
-<HSMode>2</HSMode>
-<SBStyle>1</SBStyle>
-<SBSkin>Windows7</SBSkin>
-<Border>0</Border>
-<MouseOverSndMode>0</MouseOverSndMode>
-<MouseOverSound/>
-<MouseClickSndMode>0</MouseClickSndMode>
-<MouseClickSound/>
-</Text>
-</Object>
-<HGuidelines>
-<Guideline>
-<pt>10</pt>
-<locked>0</locked>
-</Guideline>
-<Guideline>
-<pt>390</pt>
-<locked>0</locked>
-</Guideline>
-</HGuidelines>
-<VGuidelines>
-<Guideline>
-<pt>10</pt>
-<locked>0</locked>
-</Guideline>
-<Guideline>
-<pt>90</pt>
-<locked>0</locked>
-</Guideline>
-</VGuidelines>
 </Page>
 </PageDialog>
 </SugDialogs>
