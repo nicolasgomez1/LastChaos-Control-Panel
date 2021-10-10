@@ -451,7 +451,6 @@ function Stop(Module)
 			_G[Module.."StopCall"] = (true);
 			
 			if(LaneStatus(Module) == "done")then
-				--_G[Module.."StopCall"] = (true);
 				Page.StopTimer(tblModulesEnvironment[Module].TIMER);
 
 				PrintLog(Module.." -&gt; successfully stopped.", "", "SUCCESS");
@@ -690,8 +689,8 @@ function LoadProfiles()
 end</Script>
 <BookMarks count="0">
 </BookMarks>
-<DesignCodeLine>35</DesignCodeLine>
-<DesignCodeCol>19</DesignCodeCol>
+<DesignCodeLine>399</DesignCodeLine>
+<DesignCodeCol>4</DesignCodeCol>
 </Globals>
 <Defaults>
 <StartupPage>_PageFirst</StartupPage>
@@ -966,6 +965,8 @@ function Scan()
 			local EXENAME = GetConfig("Key_Names", Module.."EXE");
 			local EXEPATH = File.Find(ServerFolderPath.."\\", EXENAME, true, false, nil, nil);
 			if(EXEPATH ~= nil)then
+			--conflicto, se se estan ejecutando los modulos y se cambi ade settings a el control panel nuevamente, se cambia el estados de los indicadores. yo me entiendo.
+			--[[
 				Paragraph.SetProperties(string.upper(Module).."_STATUS", {BGColor = Math.HexColorToNumber(Theme.BackgroundColor)});
 				Paragraph.SetText(string.upper(Module).."_PORT", "");
 				xButton.SetText(string.upper(Module).."_ACTION", "START");
@@ -974,11 +975,12 @@ function Scan()
 				tblTrayMenu[tblModulesEnvironment[Module].TIMER+2].Enabled = (true);
 
 				tblModulesEnvironment[Module].PORT = (nil);
-				
+			]]--	
 				xButton.SetEnabled(string.upper(Module).."_ACTION", true);
 				xButton.SetEnabled(string.upper(Module).."_CONFIG", true);
 				xButton.SetEnabled(string.upper(Module).."_LOG", true);
 			else
+			--[[
 				Paragraph.SetProperties(string.upper(Module).."_STATUS", {BGColor = Math.HexColorToNumber(Theme.BackgroundColor)});
 				Paragraph.SetText(string.upper(Module).."_PORT", "");
 				xButton.SetText(string.upper(Module).."_ACTION", "START");
@@ -987,7 +989,7 @@ function Scan()
 				tblTrayMenu[tblModulesEnvironment[Module].TIMER+2].Enabled = (false);
 
 				tblModulesEnvironment[Module].PORT = (nil);
-				
+			]]--	
 				xButton.SetEnabled(string.upper(Module).."_ACTION", false);
 				xButton.SetEnabled(string.upper(Module).."_CONFIG", false);
 				xButton.SetEnabled(string.upper(Module).."_LOG", false);
@@ -1366,7 +1368,9 @@ function LoadSettings()
 							PrintLog(Module.." -&gt; 'NON_PK' does not exist in the configuration file : '"..CONFIGNAME.."', the value was created and 'TRUE' was defined by default.", "", "INFO");
 							INIFile.SetValue(CONFIGPATH[1], "Server", "NON_PK", "TRUE");
 							CheckBox.SetChecked("CONFIG_"..string.upper(Module).."_PK", false);
-						end						
+						end
+						
+						MaxSubServer = (MaxSubServer + 1);					
 					end
 				end--IF-END CONFIGPATH
 			end--IF-END EXEPATH
@@ -1431,7 +1435,7 @@ Group.AddObject("ConfigPanel", "CONFIG_FRAME2");</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>142</DesignCodeLine>
+<DesignCodeLine>59</DesignCodeLine>
 <DesignCodeCol>7</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
@@ -1457,7 +1461,7 @@ Group.AddObject("ConfigPanel", "CONFIG_FRAME2");</Script>
 	if(tblModulesEnvironment[Module].TIMER == e_ID)then
 		if(LaneStatus(Module) == "done")then
 			Page.StopTimer(e_ID);
-	
+			
 			Paragraph.SetProperties(string.upper(Module).."_STATUS", {BGColor = Math.HexColorToNumber(Theme.RedColor)});
 			Paragraph.SetText(string.upper(Module).."_PORT", "");
 			xButton.SetText(string.upper(Module).."_ACTION", "START");
@@ -1531,6 +1535,19 @@ Group.AddObject("ConfigPanel", "CONFIG_FRAME2");</Script>
 			
 			if(IsStopcalled == nil or IsStopcalled == false)then
 				PrintLog(Module.." -&gt; stopped unexpectedly.", "", "ERROR");
+			elseif(IsStopcalled == nil or IsStopcalled == true)then
+				Page.StopTimer(tblModulesEnvironment[Module].TIMER);
+
+				PrintLog(Module.." -&gt; successfully stopped.", "", "SUCCESS");
+
+				Paragraph.SetProperties(string.upper(Module).."_STATUS", {BGColor = Math.HexColorToNumber(Theme.BackgroundColor)});
+				Paragraph.SetText(string.upper(Module).."_PORT", "");
+				xButton.SetText(string.upper(Module).."_ACTION", "START");
+
+				tblTrayMenu[tblModulesEnvironment[Module].TIMER+2].IconID = (0);
+
+				tblModulesEnvironment[Module].PORT = (nil);
+				--tblModulesEnvironment[Module].PID = (nil);
 			end
 			
 			CheckIsRunning();
@@ -1600,8 +1617,8 @@ end</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>132</DesignCodeLine>
-<DesignCodeCol>88</DesignCodeCol>
+<DesignCodeLine>90</DesignCodeLine>
+<DesignCodeCol>48</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -10878,7 +10895,7 @@ end</Script>
 <Event>
 <Name>On Click</Name>
 <Args/>
-<Script>if(getServerFolderPath ~= "" and Folder.DoesExist(getServerFolderPath))then
+<Script>if(ServerFolderPath ~= "" and Folder.DoesExist(ServerFolderPath))then
 	if(Input.GetText("CONFIG_SALT") ~= "")then
 		--local Start = (os.clock());
 		StatusDlg.Show(MB_ICONNONE, false);
@@ -10888,7 +10905,7 @@ end</Script>
 		for _, Module in pairs(tblModules)do
 			StatusDlg.SetStatusText("(".._.."/"..#tblModules..") - "..Module);
 			
-			local EXEPath = File.Find(getServerFolderPath.."\\", GetConfig("Key_Names", Module.."EXE"), true, false, nil, nil);
+			local EXEPath = File.Find(ServerFolderPath.."\\", GetConfig("Key_Names", Module.."EXE"), true, false, nil, nil);
 			if(EXEPath ~= nil)then
 				local SplitEXEPath = String.SplitPath(EXEPath[1]);
 				local CONFIGPath = File.Find(SplitEXEPath.Drive..SplitEXEPath.Folder.."\\", GetConfig("Key_Names", Module.."CONFIG"), true, false, nil, nil);
@@ -11068,8 +11085,8 @@ end</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>183</DesignCodeLine>
-<DesignCodeCol>4</DesignCodeCol>
+<DesignCodeLine>0</DesignCodeLine>
+<DesignCodeCol>3</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
