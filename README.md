@@ -13,4 +13,5 @@ Programmed in Lua 5.1 but curiously stable. with the implementation of Lua-lanes
 
 ![main](https://user-images.githubusercontent.com/5092697/136848972-ba2b1bc3-5c8c-47ce-b6fb-60d44872563a.png)
 ![settings](https://user-images.githubusercontent.com/5092697/136848974-7e1a3ebc-49b9-4f28-ba44-f9726116f0d6.jpg)
+![settings2](https://user-images.githubusercontent.com/5092697/136849513-816e61af-6f04-41b6-995e-b7ad8ba13851.jpg)
 ![TrayMenu](https://user-images.githubusercontent.com/5092697/136321062-a103151d-b476-4224-90e4-de8d15eb6c45.jpg)
