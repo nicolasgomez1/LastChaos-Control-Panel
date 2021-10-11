@@ -359,19 +359,33 @@ function ShowHideModule(Module, Action)
 		local EXEPath = File.Find(ServerFolderPath.."\\", EXENAME, true, false, nil, nil);
 		if(EXEPath ~= nil)then
 			if(Action == "HIDE")then
-				for WH, WindowdTitle in pairs(Window.EnumerateTitles(false)) do
-					if(string.lower(WindowdTitle) == string.lower(EXEPath[1]))then
-						Window.Hide(WH);
-						break;
+				for WH, WindowTitle in pairs(Window.EnumerateTitles(false)) do
+					if(Module == "CashServer")then
+						if(String.Find(WindowTitle, "CashServer", 1, false) ~= -1)then
+							Window.Hide(WH);
+							break;
+						end
+					else
+						if(string.lower(WindowTitle) == string.lower(EXEPath[1]))then
+							Window.Hide(WH);
+							break;
+						end
 					end
 				end
 			end
 
 			if(Action == "SHOW")then
-				for WH, WindowdTitle in pairs(Window.EnumerateTitles(false)) do
-					if(string.lower(WindowdTitle) == string.lower(EXEPath[1]))then
-						Window.Show(WH);
-						break;
+				for WH, WindowTitle in pairs(Window.EnumerateTitles(false)) do
+					if(Module == "CashServer")then
+						if(String.Find(WindowTitle, "CashServer", 1, false) ~= -1)then
+							Window.Show(WH);
+							break;
+						end
+					else
+						if(string.lower(WindowTitle) == string.lower(EXEPath[1]))then
+							Window.Show(WH);
+							break;
+						end
 					end
 				end
 			end
@@ -393,6 +407,7 @@ function Start(Module)
 			Application.Sleep(100);
 
 			if(LaneStatus(Module) == "running")then
+				_G[Module.."StopCall"] = (false);
 				_G[Module.."ReUpTrys"] = (0);
 				
 				PrintLog(Module.." -&gt; ran successfully and is running in the background.", "", "SUCCESS");
@@ -689,8 +704,8 @@ function LoadProfiles()
 end</Script>
 <BookMarks count="0">
 </BookMarks>
-<DesignCodeLine>399</DesignCodeLine>
-<DesignCodeCol>4</DesignCodeCol>
+<DesignCodeLine>300</DesignCodeLine>
+<DesignCodeCol>13</DesignCodeCol>
 </Globals>
 <Defaults>
 <StartupPage>_PageFirst</StartupPage>
@@ -998,8 +1013,6 @@ function Scan()
 	end
 end
 
-Scan();
-
 ListBoxEx.AddItem("Menu", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;Start All&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", "", "Start All", "", 1, LBXITEM_HTML, 0, {Math.HexColorToNumber(Theme.ObjectItemNormalColor)}, nil, nil);
 
 ListBoxEx.AddItem("Menu", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;Launch Game&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", "&lt;p&gt;&lt;b&gt;Right click for more Options.&lt;/b&gt;&lt;/b&gt;&lt;/p&gt;", "", "", 3, LBXITEM_HTML, 0, {Math.HexColorToNumber(Theme.ObjectItemNormalColor)}, nil, nil);
@@ -1012,6 +1025,8 @@ ListBoxEx.AddItem("Menu", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(T
 
 ListBoxEx.AddItem("Menu", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;Start Web Server&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", "Right click for open htcdocs", "", "", 7, LBXITEM_HTML, 0, {Math.HexColorToNumber(Theme.ObjectItemNormalColor)}, nil, nil);
 ListBoxEx.AddItem("Menu", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;PhpMyAdmin&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", "", "", "", 9, LBXITEM_HTML, 0, {Math.HexColorToNumber(Theme.ObjectItemNormalColor)}, nil, nil);
+
+Scan();
 
 local CompatList = ("");
 for _, Text in pairs(DelimitedToTable(TextFile.ReadToString(_SourceFolder.."\\Compat.txt"), "\n"))do
@@ -1069,6 +1084,7 @@ if(ServerFolderPath ~= "" and Folder.DoesExist(ServerFolderPath))then
 
 							tblTrayMenu[tblModulesEnvironment[Module].TIMER+2].IconID = (1);
 							
+							_G[Module.."StopCall"] = (false);
 							_G[Module.."ReUpTrys"] = (0);
 							
 							Page.StartTimer(GetConfig("General", "CheckInterval"), tblModulesEnvironment[Module].TIMER);
@@ -1435,8 +1451,8 @@ Group.AddObject("ConfigPanel", "CONFIG_FRAME2");</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>59</DesignCodeLine>
-<DesignCodeCol>7</DesignCodeCol>
+<DesignCodeLine>139</DesignCodeLine>
+<DesignCodeCol>40</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -1613,12 +1629,12 @@ if(e_ID == 11)then
 	end
 end</Script>
 <TreeStates>
-<TreeState>2</TreeState>
+<TreeState>0</TreeState>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>90</DesignCodeLine>
-<DesignCodeCol>48</DesignCodeCol>
+<DesignCodeLine>14</DesignCodeLine>
+<DesignCodeCol>25</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -12381,8 +12397,7 @@ end</Script>
 </Action>
 </Actions>
 <Options>
-<Text>SET COMMON IP
-FOR ALL</Text>
+<Text>SET COMMON IP FOR ALL</Text>
 <TextColor format="hex">000000</TextColor>
 <EnableMarkup>0</EnableMarkup>
 <ButtonImage/>
