@@ -1,4 +1,4 @@
-# LastChaos Control Panel <img align="left" src="https://user-images.githubusercontent.com/5092697/136836589-b655f88e-f67e-433d-bc2a-12c0534e05d9.png" width="110px">
+# LastChaos Control Panel <img align="left" src="https://user-images.githubusercontent.com/5092697/136836589-b655f88e-f67e-433d-bc2a-12c0534e05d9.png" width="120px">
 
 Files manager style XAMPP <br/>
 Programmed in Lua 5.1 but curiously stable. with the implementation of Lua-lanes to monitor the execution status of the different modules.<br/>
