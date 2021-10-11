@@ -4,7 +4,7 @@ Files Manager style XAMPP.<br/>
 Programmed in Lua 5.1 but curiously stable. with the implementation of Lua-lanes to monitor the execution status of the different modules.<br/>
 
 # Informations
-Designed around the November archives.<br/>
+ * Designed around the November archives.<br/>
 Compatibility with Wizatek / Rezas CashServers.<br/>
 Ability to add more Database Sections in the INI files of the different Modules.<br/>
 
