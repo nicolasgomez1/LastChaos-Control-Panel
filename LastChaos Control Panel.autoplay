@@ -2151,7 +2151,7 @@ ListBoxEx.SelectNone(this);</Script>
 <Script>if(e_Index == 2)then
 	local tblLaunchOptions = ({});
 	table.insert(tblLaunchOptions, #tblLaunchOptions+1, {Text = "Launch NKSP", ID = 1, IconID = 4});
-	table.insert(tblLaunchOptions, #tblLaunchOptions+1, {Text = "Launch Launcher", ID = 2, IconID = 3});
+	table.insert(tblLaunchOptions, #tblLaunchOptions+1, {Text = "Start Launcher", ID = 2, IconID = 3});
 
 	local Ret = System.GetMousePosition(false, nil);
 	local ID = Application.ShowPopupMenu(Ret.X, Ret.Y, tblLaunchOptions, TPM_CENTERALIGN, TPM_TOPALIGN, true, false);
@@ -2194,8 +2194,8 @@ ListBoxEx.SelectNone(this);</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>4</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
+<DesignCodeLine>3</DesignCodeLine>
+<DesignCodeCol>67</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
