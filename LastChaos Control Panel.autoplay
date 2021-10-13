@@ -689,7 +689,7 @@ end
 function LoadProfiles()
 	ComboBox.ResetContent("CONFIG_MYSQL_PROFILESELECTOR");
 	
-	for _, Profile in pairs(INIFile.GetValueNames(_SourceFolder.."\\config.ini", "MySQL_Profiles")) do
+	for _, Profile in pairs(INIFile.GetValueNames(SettingsFile, "MySQL_Profiles")) do
 		local getValue = DelimitedToTable(GetConfig("MySQL_Profiles", Profile), ",");
 
 		ComboBox.AddItem("CONFIG_MYSQL_PROFILESELECTOR", Profile, getValue[1]..","..getValue[2]..","..getValue[3]..","..getValue[4]..","..getValue[5]..","..getValue[6]);
@@ -704,8 +704,8 @@ function LoadProfiles()
 end</Script>
 <BookMarks count="0">
 </BookMarks>
-<DesignCodeLine>300</DesignCodeLine>
-<DesignCodeCol>13</DesignCodeCol>
+<DesignCodeLine>626</DesignCodeLine>
+<DesignCodeCol>59</DesignCodeCol>
 </Globals>
 <Defaults>
 <StartupPage>_PageFirst</StartupPage>
@@ -1618,7 +1618,7 @@ if(e_ID == 11)then
 					return false;
 				end
 				
-				ClientHandle:send("HTTP/1.1 200 OK\r\n\r\n"..[[]]..ParseLuaTag(TextFile.ReadToString("AutoPlay\\htcdocs\\index.html"))..[[]]);
+				ClientHandle:send("HTTP/1.1 200 OK\r\n\r\n"..[[]]..ParseLuaTag(TextFile.ReadToString("AutoPlay\\htdocs\\index.html"))..[[]]);
 				ClientHandle:close();
 			end
 		else
@@ -1633,8 +1633,8 @@ end</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>14</DesignCodeLine>
-<DesignCodeCol>25</DesignCodeCol>
+<DesignCodeLine>145</DesignCodeLine>
+<DesignCodeCol>102</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -2183,7 +2183,7 @@ ListBoxEx.SelectNone(this);</Script>
 end
 
 if(e_Index == 7)then
-	local IndexPath = (_SourceFolder.."\\Data\\htcdocs");
+	local IndexPath = (_SourceFolder.."\\Data\\htdocs");
 	PrintLog("Executing : '"..IndexPath.."'.", "", "INFO");
 	Shell.Execute(IndexPath, "explore", "", "", SW_SHOWNORMAL, false);
 end
@@ -2194,8 +2194,8 @@ ListBoxEx.SelectNone(this);</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>3</DesignCodeLine>
-<DesignCodeCol>67</DesignCodeCol>
+<DesignCodeLine>35</DesignCodeLine>
+<DesignCodeCol>0</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -11233,9 +11233,9 @@ end</Script>
 if(getSelectedProfile ~= -1)then
 	local getProfile = ComboBox.GetItemText("CONFIG_MYSQL_PROFILESELECTOR", getSelectedProfile);
 	
-	INIFile.SetValue(_SourceFolder.."\\config.ini", "MySQL_Profiles", getProfile, Input.GetText("CONFIG_MYSQL_HOST")..","..Input.GetText("CONFIG_MYSQL_USERNAME")..","..Crypto.BlowfishEncryptString(Input.GetText("CONFIG_MYSQL_PASS"), "iddqd", 0)..","..Input.GetText("CONFIG_MYSQL_DATA")..","..Input.GetText("CONFIG_MYSQL_USER")..","..Input.GetText("CONFIG_MYSQL_AUTH"));
+	INIFile.SetValue(SettingsFile, "MySQL_Profiles", getProfile, Input.GetText("CONFIG_MYSQL_HOST")..","..Input.GetText("CONFIG_MYSQL_USERNAME")..","..Crypto.BlowfishEncryptString(Input.GetText("CONFIG_MYSQL_PASS"), "iddqd", 0)..","..Input.GetText("CONFIG_MYSQL_DATA")..","..Input.GetText("CONFIG_MYSQL_USER")..","..Input.GetText("CONFIG_MYSQL_AUTH"));
 		
-	INIFile.SetValue(_SourceFolder.."\\config.ini", "General", "SelectedProfile", getProfile);
+	INIFile.SetValue(SettingsFile, "General", "SelectedProfile", getProfile);
 	
 	Dialog.TimedMessage("MySQL Setup Profile", "Profile : "..ComboBox.GetItemText("CONFIG_MYSQL_PROFILESELECTOR", getSelectedProfile).." updated.", 1200, MB_ICONINFORMATION);
 	
@@ -11246,8 +11246,8 @@ end</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>11</DesignCodeLine>
-<DesignCodeCol>1</DesignCodeCol>
+<DesignCodeLine>5</DesignCodeLine>
+<DesignCodeCol>176</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -11379,7 +11379,7 @@ local getUSERNAME = Input.GetText("CONFIG_MYSQL_USERNAME");
 if(getHOST ~= "" and getUSERNAME ~= "")then
 	StatusDlg.Show(MB_ICONNONE, false);
 	StatusDlg.ShowProgressMeter(false);
-	StatusDlg.SetTitle("MySQL Test Connection");
+	StatusDlg.SetTitle("MySQL Connection Test");
 	StatusDlg.SetMessage("Please wait...");
 
 	for _, DB in pairs({"DATA", "USER", "AUTH"})do
@@ -11403,8 +11403,8 @@ end</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>16</DesignCodeLine>
-<DesignCodeCol>64</DesignCodeCol>
+<DesignCodeLine>6</DesignCodeLine>
+<DesignCodeCol>42</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -11510,7 +11510,7 @@ end</Script>
 <VisibleAtRunTime>0</VisibleAtRunTime>
 <Locked>0</Locked>
 <Enabled>1</Enabled>
-<ToolTip>Select Profile with MySQL setup.</ToolTip>
+<ToolTip>Select MySQL Profile.</ToolTip>
 <Cursor>0</Cursor>
 <Group>44</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
