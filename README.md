@@ -1,7 +1,7 @@
 # LastChaos Control Panel <img align="left" src="https://user-images.githubusercontent.com/5092697/136836589-b655f88e-f67e-433d-bc2a-12c0534e05d9.png" width="120px">
 
 Files Manager style XAMPP.<br/>
-Programmed in Lua 5.1 but curiously stable. with the implementation of [Lua-Lanes](https://github.com/LuaLanes/lanes) to monitor the execution status of the different modules.<br/>
+Programmed in Lua 5.1 but curiously stable. with the implementation of <a href="https://github.com/LuaLanes/lanes" target="_blank">Lua-Lanes</a> to monitor the execution status of the different modules.<br/>
 
 # Information
 * Designed around the __November__ files.<br/>
