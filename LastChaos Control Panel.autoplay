@@ -109,29 +109,6 @@ end
 table.insert(tblTrayMenu, #tblTrayMenu+1, {Text = "---", ID = 0});
 table.insert(tblTrayMenu, #tblTrayMenu+1, {Text = "&amp;Exit", ID = 12, IconID = 2});
 
---[[
-	Desc	:	Print logs on console.
-	Arg 1	:	Text(string)
-	Arg 2	:	Tooltip(string)
-	Arg 3	:	Log type(String) INFO / ERROR / SUCCESS / WARNING
-]]
-function PrintLog(Text, Tooltip, Type)
-	local Hint = ("");
-	
-	if(Type == "INFO")then			Type = ("&lt;font color='"..String.Replace(Theme.BlueColor, "0x", "#", false).."'&gt;INFO&lt;/font&gt;");
-	elseif(Type == "ERROR")then		Type = ("&lt;font color='"..String.Replace(Theme.RedColor, "0x", "#", false).."'&gt;ERROR&lt;/font&gt;");
-	elseif(Type == "SUCCESS")then	Type = ("&lt;font color='"..String.Replace(Theme.GreenColor, "0x", "#", false).."'&gt;SUCCESS&lt;/font&gt;");
-	elseif(Type == "WARNING")then	Type = ("&lt;font color='"..String.Replace(Theme.YellowColor, "0x", "#", false).."'&gt;WARNING&lt;/font&gt;");	end
-	
-	if(Tooltip ~= "")then	Hint = (" (*)");	end
-	
-	local ItemColor = ListBoxEx.GetItemColor("Logs", ListBoxEx.GetTotalItems("Logs"), LBXISTATE_NORMAL);
-	if(ItemColor[1] == -1 or ItemColor[1] == Math.HexColorToNumber(Theme.ObjectItemNormalColor))then	ListBoxEx.AddItem("Logs", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;"..System.GetTime(TIME_FMT_MIL).."&lt;/font&gt; "..Type.." &lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;- "..Text..Hint.."&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", Tooltip, "", "", 0, LBXITEM_HTML, 0, {Math.HexColorToNumber(Theme.ObjectItemNormalColorB)}, nil, nil);
-	elseif(ItemColor[1] == Math.HexColorToNumber(Theme.ObjectItemNormalColorB))then		ListBoxEx.AddItem("Logs", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;"..System.GetTime(TIME_FMT_MIL).."&lt;/font&gt; "..Type.." &lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;- "..Text..Hint.."&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", Tooltip, "", "", 0, LBXITEM_HTML, 0, {Math.HexColorToNumber(Theme.ObjectItemNormalColor)}, nil, nil);		end
-	
-	ListBoxEx.EnsureVisible("Logs", ListBoxEx.GetTotalItems("Logs"));
-end
-
 function DelimitedToTable(String, Delimiter)
 	if not(Delimiter or #Delimiter &lt; 1)then
 		return nil
@@ -168,6 +145,29 @@ function ParseLuaTag(String)
 	);
 	
 	return String;
+end
+
+--[[
+	Desc	:	Print logs on console.
+	Arg 1	:	Text(string)
+	Arg 2	:	Tooltip(string)
+	Arg 3	:	Log type(String) INFO / ERROR / SUCCESS / WARNING
+]]
+function PrintLog(Text, Tooltip, Type)
+	local Hint = ("");
+	
+	if(Type == "INFO")then			Type = ("&lt;font color='"..String.Replace(Theme.BlueColor, "0x", "#", false).."'&gt;INFO&lt;/font&gt;");
+	elseif(Type == "ERROR")then		Type = ("&lt;font color='"..String.Replace(Theme.RedColor, "0x", "#", false).."'&gt;ERROR&lt;/font&gt;");
+	elseif(Type == "SUCCESS")then	Type = ("&lt;font color='"..String.Replace(Theme.GreenColor, "0x", "#", false).."'&gt;SUCCESS&lt;/font&gt;");
+	elseif(Type == "WARNING")then	Type = ("&lt;font color='"..String.Replace(Theme.YellowColor, "0x", "#", false).."'&gt;WARNING&lt;/font&gt;");	end
+	
+	if(Tooltip ~= "")then	Hint = (" (*)");	end
+	
+	local ItemColor = ListBoxEx.GetItemColor("Logs", ListBoxEx.GetTotalItems("Logs"), LBXISTATE_NORMAL);
+	if(ItemColor[1] == -1 or ItemColor[1] == Math.HexColorToNumber(Theme.ObjectItemNormalColor))then	ListBoxEx.AddItem("Logs", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;"..System.GetTime(TIME_FMT_MIL).."&lt;/font&gt; "..Type.." &lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;- "..Text..Hint.."&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", Tooltip, "", "", 0, LBXITEM_HTML, 0, {Math.HexColorToNumber(Theme.ObjectItemNormalColorB)}, nil, nil);
+	elseif(ItemColor[1] == Math.HexColorToNumber(Theme.ObjectItemNormalColorB))then		ListBoxEx.AddItem("Logs", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;"..System.GetTime(TIME_FMT_MIL).."&lt;/font&gt; "..Type.." &lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;- "..Text..Hint.."&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", Tooltip, "", "", 0, LBXITEM_HTML, 0, {Math.HexColorToNumber(Theme.ObjectItemNormalColor)}, nil, nil);		end
+	
+	ListBoxEx.EnsureVisible("Logs", ListBoxEx.GetTotalItems("Logs"));
 end
 
 --[[
@@ -704,8 +704,8 @@ function LoadProfiles()
 end</Script>
 <BookMarks count="0">
 </BookMarks>
-<DesignCodeLine>626</DesignCodeLine>
-<DesignCodeCol>59</DesignCodeCol>
+<DesignCodeLine>136</DesignCodeLine>
+<DesignCodeCol>0</DesignCodeCol>
 </Globals>
 <Defaults>
 <StartupPage>_PageFirst</StartupPage>
@@ -971,7 +971,7 @@ for _, Obj in pairs({"Menu", "Logs"})do
 	ListBoxEx.SetSeparatorsColor(Obj, Math.HexColorToNumber(Theme.ObjectBackgroundColor));
 	ListBoxEx.SetTooltipProperties(Obj, Math.HexColorToNumber(Theme.TextColor), Math.HexColorToNumber(Theme.ObjectBackgroundColor), Math.HexColorToNumber(Theme.ObjectBackgroundColor), Math.HexColorToNumber(Theme.ObjectBackgroundColor), 790);
 end
---INIT
+
 ListBoxEx.AddItem("Logs", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;Initializing LastChaos Control Panel...&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", "", "", "", 0, LBXITEM_HTML, 0, nil, nil, nil);
 
 function Scan()
@@ -980,7 +980,7 @@ function Scan()
 			local EXENAME = GetConfig("Key_Names", Module.."EXE");
 			local EXEPATH = File.Find(ServerFolderPath.."\\", EXENAME, true, false, nil, nil);
 			if(EXEPATH ~= nil)then
-			--conflicto, se se estan ejecutando los modulos y se cambi ade settings a el control panel nuevamente, se cambia el estados de los indicadores. yo me entiendo.
+			--conflicto, si se estan ejecutando los modulos y se cambia de settings al control panel nuevamente, se cambia el estados de los indicadores.
 			--[[
 				Paragraph.SetProperties(string.upper(Module).."_STATUS", {BGColor = Math.HexColorToNumber(Theme.BackgroundColor)});
 				Paragraph.SetText(string.upper(Module).."_PORT", "");
@@ -1024,7 +1024,6 @@ ListBoxEx.AddItem("Menu", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(T
 ListBoxEx.AddItem("Menu", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;Client Folder&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", "", "", "", 6, LBXITEM_HTML, 0, {Math.HexColorToNumber(Theme.ObjectItemNormalColor)}, nil, nil);
 
 ListBoxEx.AddItem("Menu", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;Start Web Server&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", "Right click for open htcdocs", "", "", 7, LBXITEM_HTML, 0, {Math.HexColorToNumber(Theme.ObjectItemNormalColor)}, nil, nil);
-ListBoxEx.AddItem("Menu", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;PhpMyAdmin&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", "", "", "", 9, LBXITEM_HTML, 0, {Math.HexColorToNumber(Theme.ObjectItemNormalColor)}, nil, nil);
 
 Scan();
 
@@ -1451,8 +1450,8 @@ Group.AddObject("ConfigPanel", "CONFIG_FRAME2");</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>139</DesignCodeLine>
-<DesignCodeCol>40</DesignCodeCol>
+<DesignCodeLine>7</DesignCodeLine>
+<DesignCodeCol>101</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -2002,15 +2001,14 @@ ListBoxEx.AddIcon(this, "AutoPlay\\Icons\\home-512.ico");
 ListBoxEx.AddIcon(this, "AutoPlay\\Icons\\cog-512.ico");
 ListBoxEx.AddIcon(this, "AutoPlay\\Icons\\Folder_Fill-256.ico");
 ListBoxEx.AddIcon(this, "AutoPlay\\Icons\\Server-32.ico");
-ListBoxEx.AddIcon(this, "AutoPlay\\Icons\\Server_running-32.ico");
-ListBoxEx.AddIcon(this, "AutoPlay\\Icons\\favicon.ico");</Script>
+ListBoxEx.AddIcon(this, "AutoPlay\\Icons\\Server_running-32.ico");</Script>
 <TreeStates>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>34</DesignCodeCol>
+<DesignCodeLine>9</DesignCodeLine>
+<DesignCodeCol>66</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -2126,8 +2124,8 @@ ListBoxEx.SelectNone(this);</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>76</DesignCodeLine>
-<DesignCodeCol>40</DesignCodeCol>
+<DesignCodeLine>45</DesignCodeLine>
+<DesignCodeCol>1</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -10239,7 +10237,7 @@ end</Script>
 </Action>
 </Actions>
 <Text>
-<Body>MySQL Host</Body>
+<Body>MySQL Hostname</Body>
 <NormalColor>0</NormalColor>
 <HighlightColor>0</HighlightColor>
 <MouseDownColor>0</MouseDownColor>
@@ -11375,8 +11373,23 @@ end</Script>
 <Args/>
 <Script>local getHOST = Input.GetText("CONFIG_MYSQL_HOST");
 local getUSERNAME = Input.GetText("CONFIG_MYSQL_USERNAME");
+local MakeTest = (false);
 
-if(getHOST ~= "" and getUSERNAME ~= "")then
+if(getHOST ~= "")then
+	MakeTest = (true);
+else
+	MakeTest = (false);
+	Input.SetProperties("CONFIG_MYSQL_HOST", {BackgroundColor = Math.HexColorToNumber(Theme.RedColor)});
+end
+
+if(getUSERNAME ~= "")then
+	MakeTest = (true);
+else
+	MakeTest = (false);
+	Input.SetProperties("CONFIG_MYSQL_USERNAME", {BackgroundColor = Math.HexColorToNumber(Theme.RedColor)});
+end
+
+if(MakeTest == true)then
 	StatusDlg.Show(MB_ICONNONE, false);
 	StatusDlg.ShowProgressMeter(false);
 	StatusDlg.SetTitle("MySQL Connection Test");
@@ -11391,7 +11404,7 @@ if(getHOST ~= "" and getUSERNAME ~= "")then
 		if(TEST and STATUS == nil)then
 			PrintLog(DB.." -&gt; Connection established successfully.", "", "INFO");
 		else
-			PrintLog(DB.." -&gt; "..STATUS..".", "", "WARNING");
+			PrintLog(DB.." -&gt; "..STATUS..".", "", "INFO");
 		end
 	end
 	
@@ -11403,8 +11416,8 @@ end</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>6</DesignCodeLine>
-<DesignCodeCol>42</DesignCodeCol>
+<DesignCodeLine>8</DesignCodeLine>
+<DesignCodeCol>101</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -11533,21 +11546,23 @@ end</Script>
 <Script>local getValue = DelimitedToTable(ComboBox.GetItemData(this, e_Selection), ",");
 
 Input.SetText("CONFIG_MYSQL_HOST", getValue[1]);
+Page.SetFocus("CONFIG_MYSQL_HOST");
 Input.SetText("CONFIG_MYSQL_USERNAME", getValue[2]);
+Page.SetFocus("CONFIG_MYSQL_USERNAME");
 Input.SetText("CONFIG_MYSQL_PASS", Crypto.BlowfishDecryptString(getValue[3], "iddqd"));
 
 Input.SetText("CONFIG_MYSQL_DATA", getValue[4]);
 Input.SetText("CONFIG_MYSQL_USER", getValue[5]);
 Input.SetText("CONFIG_MYSQL_AUTH", getValue[6]);
 
-INIFile.SetValue(_SourceFolder.."\\config.ini", "General", "SelectedProfile", ComboBox.GetItemText(this, e_Selection));</Script>
+INIFile.SetValue(SettingsFile, "General", "SelectedProfile", ComboBox.GetItemText(this, e_Selection));</Script>
 <TreeStates>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>4</DesignCodeLine>
-<DesignCodeCol>85</DesignCodeCol>
+<DesignCodeLine>3</DesignCodeLine>
+<DesignCodeCol>33</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -12126,22 +12141,22 @@ Input.SetProperties("CONFIG_MYSQL_PASS", {InputStyle = 1});</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>4079394</DesignCodeLine>
-<DesignCodeCol>7300137</DesignCodeCol>
+<DesignCodeLine>0</DesignCodeLine>
+<DesignCodeCol>0</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
 <Event>
 <Name>On Focus</Name>
 <Args/>
-<Script/>
+<Script>Input.SetProperties(this, {BackgroundColor = Math.HexColorToNumber(Theme.ObjectBackgroundColor)});</Script>
 <TreeStates>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
 <DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
+<DesignCodeCol>98</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -12222,22 +12237,22 @@ Input.SetProperties("CONFIG_MYSQL_PASS", {InputStyle = 1});</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>4079394</DesignCodeLine>
-<DesignCodeCol>7300137</DesignCodeCol>
+<DesignCodeLine>0</DesignCodeLine>
+<DesignCodeCol>0</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
 <Event>
 <Name>On Focus</Name>
 <Args/>
-<Script/>
+<Script>Input.SetProperties(this, {BackgroundColor = Math.HexColorToNumber(Theme.ObjectBackgroundColor)});</Script>
 <TreeStates>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
 <DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
+<DesignCodeCol>98</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -15549,7 +15564,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Args/>
 <Script>local TextEditorPath = Dialog.FileBrowse(false, "Select Text Editor", _DesktopFolder, "Executables (*.exe)|*.exe*|All Files (*.*)|*.*|", "", "", false, true);
 if(TextEditorPath[1] ~= "CANCEL" and TextEditorPath ~= nil)then
-	INIFile.SetValue(_SourceFolder.."\\config.ini", "General", "TextEditorPath", TextEditorPath[1]);
+	INIFile.SetValue(SettingsFile, "General", "TextEditorPath", TextEditorPath[1]);
 	Input.SetText("CONFIG_TEXTEDITORPATH", String.AbbreviateFilePath(TextEditorPath[1], 24));
 	Input.SetProperties("CONFIG_TEXTEDITORPATH", {TooltipText = TextEditorPath[1]});
 end</Script>
@@ -15558,8 +15573,8 @@ end</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>4</DesignCodeLine>
-<DesignCodeCol>78</DesignCodeCol>
+<DesignCodeLine>2</DesignCodeLine>
+<DesignCodeCol>30</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -15755,7 +15770,7 @@ end</Script>
 <Args/>
 <Script>local ClientFolder = Dialog.FolderBrowse("Select Client Folder", _DesktopFolder);
 if(ClientFolder ~= "CANCEL")then
-	INIFile.SetValue(_SourceFolder.."\\config.ini", "General", "ClientFolderPath", ClientFolder);
+	INIFile.SetValue(SettingsFile, "General", "ClientFolderPath", ClientFolder);
 	Input.SetText("CONFIG_CLIENTFOLDERPATH", String.AbbreviateFilePath(ClientFolder, 24));
 	Input.SetProperties("CONFIG_CLIENTFOLDERPATH", {TooltipText = ClientFolder});
 end</Script>
@@ -15764,8 +15779,8 @@ end</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
+<DesignCodeLine>2</DesignCodeLine>
+<DesignCodeCol>30</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -15963,7 +15978,7 @@ end</Script>
 if(ServerFolder ~= "CANCEL")then
 	local Ret = Dialog.Message("Warning", "Changes could be made to the configuration files as they are found, do you want to continue?.", MB_YESNO, MB_ICONEXCLAMATION, MB_DEFBUTTON1);
 	if(Ret == 6)then
-		INIFile.SetValue(_SourceFolder.."\\config.ini", "General", "ServerFolderPath", ServerFolder);
+		INIFile.SetValue(SettingsFile, "General", "ServerFolderPath", ServerFolder);
 		Input.SetText("CONFIG_SERVERFOLDERPATH", String.AbbreviateFilePath(ServerFolder, 24));
 		Input.SetProperties("CONFIG_SERVERFOLDERPATH", {TooltipText = ServerFolder});
 		
@@ -15986,8 +16001,8 @@ end</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>19</DesignCodeLine>
-<DesignCodeCol>2</DesignCodeCol>
+<DesignCodeLine>4</DesignCodeLine>
+<DesignCodeCol>31</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -19691,6 +19706,8 @@ end</Script>
 		CheckBox.SetProperties(Object, {ColorNormal = Math.HexColorToNumber(Theme.TextColor), ColorHighlight = Math.HexColorToNumber(Theme.TextColor)});
 	elseif(ObjType == OBJECT_XBUTTON)then
 		xButton.SetProperties(Object, {TextColor = Math.HexColorToNumber(Theme.TextColor)});
+	elseif(ObjType == OBJECT_INPUT)then
+		Input.SetProperties(Object, {FontColor = Math.HexColorToNumber(Theme.TextColor), BackgroundColor = Math.HexColorToNumber(Theme.ObjectBackgroundColor)});
 	end
 end
 
@@ -19891,8 +19908,8 @@ end</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>6</DesignCodeLine>
-<DesignCodeCol>146</DesignCodeCol>
+<DesignCodeLine>10</DesignCodeLine>
+<DesignCodeCol>154</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
