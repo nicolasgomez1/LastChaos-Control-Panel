@@ -19,7 +19,7 @@
 <WindowStyles>
 <Width>730</Width>
 <Height>448</Height>
-<WindowTitle>LastChaos Control Panel</WindowTitle>
+<WindowTitle>LastChaos Control Panel (Release 3 [BETA])</WindowTitle>
 <WindowStyle>0</WindowStyle>
 <FillColor>0</FillColor>
 </WindowStyles>
@@ -834,14 +834,14 @@ Tray.Destroy(TrayHandle);</Script>
 <ReplaceIcon>1</ReplaceIcon>
 <IconFilename>AutoPlay\Icons\NG.ico</IconFilename>
 <ReplaceVersionInfo>1</ReplaceVersionInfo>
-<FileVer1>1</FileVer1>
+<FileVer1>3</FileVer1>
 <FileVer2>0</FileVer2>
 <FileVer3>0</FileVer3>
 <FileVer4>0</FileVer4>
 <ProductVer1>2</ProductVer1>
 <ProductVer2>0</ProductVer2>
 <ProductVer3>2</ProductVer3>
-<ProductVer4>2</ProductVer4>
+<ProductVer4>1</ProductVer4>
 <Comments>Created with AutoPlay Media Studio</Comments>
 <Company>NicolasG</Company>
 <FileDescription>LastChaos Control Panel</FileDescription>
@@ -954,7 +954,7 @@ Tray.Destroy(TrayHandle);</Script>
 	elseif(ObjType == OBJECT_INPUT)then
 		Input.SetProperties(Object, {FontColor = Math.HexColorToNumber(Theme.TextColor), BackgroundColor = Math.HexColorToNumber(Theme.ObjectBackgroundColor)});
 	elseif(ObjType == OBJECT_CHECKBOX)then
-		CheckBox.SetProperties(Object, {ColorNormal = Math.HexColorToNumber(Theme.TextColor), ColorHighlight = Math.HexColorToNumber(Theme.TextColor)});
+		CheckBox.SetProperties(Object, {ColorNormal = Math.HexColorToNumber(Theme.TextColor), ColorHighlight = Math.HexColorToNumber(Theme.TextColor), ColorDown = Math.HexColorToNumber(Theme.TextColor)});
 	elseif(ObjType == OBJECT_COMBOBOX)then
 		ComboBox.SetProperties(Object, {BackgroundColor = Math.HexColorToNumber(Theme.BackgroundColor), TextColor = Math.HexColorToNumber(Theme.TextColor)});
 	end
@@ -1379,6 +1379,8 @@ function LoadSettings()
 								INIFile.SetValue(CONFIGPATH[1], "Server", "NON_PK", "TRUE");
 								CheckBox.SetChecked("CONFIG_"..string.upper(Module).."_PK", false);
 							end
+							
+							CheckBox.SetEnabled("CONFIG_"..string.upper(Module).."_PK", true);
 						else
 							PrintLog(Module.." -&gt; 'NON_PK' does not exist in the configuration file : '"..CONFIGNAME.."', the value was created and 'TRUE' was defined by default.", "", "INFO");
 							INIFile.SetValue(CONFIGPATH[1], "Server", "NON_PK", "TRUE");
@@ -1420,6 +1422,7 @@ function LoadSettings()
 			Input.SetText("CONFIG_"..string.upper(Module).."_IP", "");
 			Input.SetText("CONFIG_"..string.upper(Module).."_PORT", "");
 			CheckBox.SetChecked("CONFIG_"..string.upper(Module).."_PK", false);
+			CheckBox.SetEnabled("CONFIG_"..string.upper(Module).."_PK", false);
 		end
 		
 		CheckBox.SetChecked("CONFIG_HARDCORE", false);
@@ -1450,8 +1453,8 @@ Group.AddObject("ConfigPanel", "CONFIG_FRAME2");</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>7</DesignCodeLine>
-<DesignCodeCol>101</DesignCodeCol>
+<DesignCodeLine>477</DesignCodeLine>
+<DesignCodeCol>68</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -10915,6 +10918,7 @@ end</Script>
 		StatusDlg.Show(MB_ICONNONE, false);
 		StatusDlg.SetTitle("Saving Server files");
 		StatusDlg.ShowProgressMeter(false);
+		StatusDlg.SetAutoSize(true);
 		
 		for _, Module in pairs(tblModules)do
 			StatusDlg.SetStatusText("(".._.."/"..#tblModules..") - "..Module);
@@ -11099,8 +11103,8 @@ end</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>0</DesignCodeLine>
-<DesignCodeCol>3</DesignCodeCol>
+<DesignCodeLine>6</DesignCodeLine>
+<DesignCodeCol>30</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -11555,14 +11559,15 @@ Input.SetText("CONFIG_MYSQL_DATA", getValue[4]);
 Input.SetText("CONFIG_MYSQL_USER", getValue[5]);
 Input.SetText("CONFIG_MYSQL_AUTH", getValue[6]);
 
-INIFile.SetValue(SettingsFile, "General", "SelectedProfile", ComboBox.GetItemText(this, e_Selection));</Script>
+INIFile.SetValue(SettingsFile, "General", "SelectedProfile", ComboBox.GetItemText(this, e_Selection));
+Page.SetFocus("");</Script>
 <TreeStates>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>3</DesignCodeLine>
-<DesignCodeCol>33</DesignCodeCol>
+<DesignCodeLine>13</DesignCodeLine>
+<DesignCodeCol>18</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -13141,7 +13146,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
 <Locked>0</Locked>
-<Enabled>1</Enabled>
+<Enabled>0</Enabled>
 <ToolTip>Player kill.</ToolTip>
 <Cursor>0</Cursor>
 <Group>44</Group>
@@ -13453,7 +13458,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
 <Locked>0</Locked>
-<Enabled>1</Enabled>
+<Enabled>0</Enabled>
 <ToolTip>Player kill.</ToolTip>
 <Cursor>0</Cursor>
 <Group>44</Group>
@@ -13765,7 +13770,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
 <Locked>0</Locked>
-<Enabled>1</Enabled>
+<Enabled>0</Enabled>
 <ToolTip>Player kill.</ToolTip>
 <Cursor>0</Cursor>
 <Group>44</Group>
@@ -14077,7 +14082,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <VisibleAtDesignTime>1</VisibleAtDesignTime>
 <VisibleAtRunTime>0</VisibleAtRunTime>
 <Locked>0</Locked>
-<Enabled>1</Enabled>
+<Enabled>0</Enabled>
 <ToolTip>Player kill.</ToolTip>
 <Cursor>0</Cursor>
 <Group>44</Group>
