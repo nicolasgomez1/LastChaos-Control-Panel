@@ -4,19 +4,20 @@ Files Manager style XAMPP.<br/>
 Programmed in Lua 5.1 but curiously stable. with the implementation of <a href="https://github.com/LuaLanes/lanes" onclick="return ! window.open(this.href);">Lua-Lanes</a> to monitor the execution status of the different modules.<br/>
 
 # Information / Features
-```
 * Designed around the __November__ files.<br/>
 * Compatibility with  __Wizatek__ / __Rezas__ CashServers.<br/>
 * Ability to add more Database Sections in the INI files of the different Modules.<br/>
 * Web Interface for remote commanding on LAN Connections
-```
+
 # Warning
 * Execution arguments for Nksp.exe are 'fkzktlfgod!', probably not compatible with EP2 and below Versions.
 * Function Tool Server Replacer are bugged at the moment.
 
 # Pics
 __Main Panel__<br/>
+<p align="center">
 ![controlpanel](https://user-images.githubusercontent.com/5092697/137599798-c59b8695-db6b-42ac-bca8-5eea8832e827.png)<br/>
+  </p>
 __Settings Panel__<br/>
 ![settings](https://user-images.githubusercontent.com/5092697/137599910-13f7e7fb-ce98-4ade-bdbc-07aae0e5aa21.jpg)<br/>
 __MySQL Sections Editor Dialog__<br/>
