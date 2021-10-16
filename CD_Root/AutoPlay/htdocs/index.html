@@ -1,18 +1,23 @@
-<html>
+<!doctype html>
+<html lang="en">
 	<head>
+		<meta charset="utf-8">
+		<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>LastChaos Control Panel</title>
 		<link rel="icon" type="image/png" href="https://assets.frontend.gamigo.com/lastchaos_logo_970e302e-0c69-11e4-8310-f04da23e1770.png"/>
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function() {
-				$("#myForm").submit(function(e) {
-						$.ajax({
-							type: $(this).attr('method'),
-							url: $(this).attr('action'),
-							data: $(this).serialize(),
-							success: function(response) {
-							}
-						});
+				$(".SendCommand").submit(function(e) {
+					$.ajax({
+						type: $(this).attr('method'),
+						url: $(this).attr('action'),
+						data: $(this).serialize(),
+						success: function(response) {
+							window.location.reload();
+						}
+					});
 					return false;
 				});
 			});
@@ -21,7 +26,7 @@
 	<body style="background-color: #4C5E66; color: #FE9652; font-family: Segoe UI; text-align: center; width: 100%;">
 		<h3>LastChaos Web Control Panel</h3>
 		<table border="1" bordercolor="#646464" style="margin: 0 auto; border-collapse: collapse;">
-			<th>
+			<th colspan="3">
 				<form action="stopwebserver" method="get">
 					<input type="submit" name="" value="Stop Web Server"/>
 				</form>
@@ -33,25 +38,53 @@
 			</tr>
 			<tr>
 				<td>Messenger</td>
-				<td align="middle"><%luaeasyLanes.GetStatus(_G['MessengerLaneID'])%></td>
-				<td>
-					<form id="myForm" action="stop=Messenger" method="get">
-						<input type="submit" name="messenger" value="Restart"/>
-					</form>
-				</td>
+				<td align="middle"><%lua LaneStatus('Messenger');%></td>
+				<td><%lua StatusForWeb('Messenger');%></td>
 			</tr>
 			<tr>
-				<td>GameServer 1</td>
-				<td align="middle">
-					<%lua
-						easyLanes.GetStatus(_G['GameServer1LaneID']);
-					%>
-				</td>
-				<td>
-					<form id="myForm" action="stop=GameServer1" method="get">
-						<input type="submit" name="gameserver1" value="Restart"/>
-					</form>
-				</td>
+				<td>Connector</td>
+				<td align="middle"><%lua LaneStatus('Connector');%></td>
+				<td><%lua StatusForWeb('Connector');%></td>
+			</tr>
+			<tr>
+				<td>Helper</td>
+				<td align="middle"><%lua LaneStatus('Helper');%></td>
+				<td><%lua StatusForWeb('Helper');%></td>
+			</tr>
+			<tr>
+				<td>SubHelper</td>
+				<td align="middle"><%lua LaneStatus('SubHelper');%></td>
+				<td><%lua StatusForWeb('SubHelper');%></td>
+			</tr>
+			<tr>
+				<td>LoginServer</td>
+				<td align="middle"><%lua LaneStatus('LoginServer');%></td>
+				<td><%lua StatusForWeb('LoginServer');%></td>
+			</tr>
+			<tr>
+				<td>CashServer</td>
+				<td align="middle"><%lua LaneStatus('CashServer');%></td>
+				<td><%lua StatusForWeb('CashServer');%></td>
+			</tr>
+			<tr>
+				<td>GameServer1</td>
+				<td align="middle"><%lua LaneStatus('GameServer1');%></td>
+				<td><%lua StatusForWeb('GameServer1');%></td>
+			</tr>
+			<tr>
+				<td>GameServer2</td>
+				<td align="middle"><%lua LaneStatus('GameServer2');%></td>
+				<td><%lua StatusForWeb('GameServer2');%></td>
+			</tr>
+			<tr>
+				<td>GameServer3</td>
+				<td align="middle"><%lua LaneStatus('GameServer3');%></td>
+				<td><%lua StatusForWeb('GameServer3');%></td>
+			</tr>
+			<tr>
+				<td>GameServer4</td>
+				<td align="middle"><%lua LaneStatus('GameServer4');%></td>
+				<td><%lua StatusForWeb('GameServer4');%></td>
 			</tr>
 		</table>
 	</body>

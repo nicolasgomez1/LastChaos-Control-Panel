@@ -219,22 +219,22 @@ if(Theme == "1")then --LIGHT
 		GreenColor = ("0x18A05E"),
 		BlueColor = ("0x4A8AF4"),
 		YellowColor	= ("0xFFCD43"),
-		BarColor = ("0x26A0DA")
+		BarColor = ("0x10536D")
 	});
 elseif(Theme == "0")then	--DARK
 	Theme = ({
-		BackgroundColor	= ("0x4C5E66"),
+		BackgroundColor	= ("0x445760"),
 		ObjectBackgroundColor =	("0x38454C"),
 		ObjectItemNormalColor =	("0x38454C"),
 		ObjectItemNormalColorB = ("0x404C53"),
-		ObjectItemHighLightColor = ("0x557D9C"),
+		ObjectItemHighLightColor = ("0x5B6C74"),
 		ObjectItemSelectionColor = ("0x385368"),
 		TextColor = ("0xFE9653"),
 		RedColor = ("0xDD5145"),
 		GreenColor = ("0x18A05E"),
 		BlueColor = ("0x4A8AF4"),
 		YellowColor = ("0xFFCD43"),
-		BarColor = ("0x26A0DA")
+		BarColor = ("0x10536D")
 	});
 end
 
@@ -256,7 +256,23 @@ LaneStatus = function(Module)
 	if(Status ~= nil)then
 		return(Status.status);
 	else
-		return("");
+		return("OFF");
+	end
+end
+
+StatusForWeb = function(Module)
+	if(LaneStatus(Module) == "OFF" or LaneStatus(Module) == "done")then
+		return([[
+			&lt;form class="SendCommand" action="start=]]..Module..[[" method="get"&gt;
+				&lt;input type="submit" name="]]..Module..[[" value="Start"/&gt;
+			&lt;/form&gt;
+		]]);
+	elseif(LaneStatus(Module) == "running" or LaneStatus(Module) == "pending")then
+		return([[
+			&lt;form class="SendCommand" action="stop=]]..Module..[[" method="get"&gt;
+				&lt;input type="submit" name="]]..Module..[[" value="Stop"/&gt;
+			&lt;/form&gt;
+		]]);
 	end
 end
 
@@ -704,8 +720,8 @@ function LoadProfiles()
 end</Script>
 <BookMarks count="0">
 </BookMarks>
-<DesignCodeLine>136</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
+<DesignCodeLine>222</DesignCodeLine>
+<DesignCodeCol>3</DesignCodeCol>
 </Globals>
 <Defaults>
 <StartupPage>_PageFirst</StartupPage>
@@ -960,11 +976,6 @@ Tray.Destroy(TrayHandle);</Script>
 	end
 end
 
-ListBoxEx.DeleteAllItems("Menu");
-ListBoxEx.DeleteAllItems("Logs");
-
-Page.Redraw();
-
 for _, Obj in pairs({"Menu", "Logs"})do
 	ListBoxEx.SetBackGroundColor(Obj, Math.HexColorToNumber(Theme.ObjectBackgroundColor));
 	ListBoxEx.SetDefaultItemColors(Obj, Math.HexColorToNumber(Theme.ObjectItemNormalColor), Math.HexColorToNumber(Theme.ObjectItemSelectionColor), Math.HexColorToNumber(Theme.ObjectItemHighLightColor));
@@ -972,7 +983,17 @@ for _, Obj in pairs({"Menu", "Logs"})do
 	ListBoxEx.SetTooltipProperties(Obj, Math.HexColorToNumber(Theme.TextColor), Math.HexColorToNumber(Theme.ObjectBackgroundColor), Math.HexColorToNumber(Theme.ObjectBackgroundColor), Math.HexColorToNumber(Theme.ObjectBackgroundColor), 790);
 end
 
-ListBoxEx.AddItem("Logs", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;Initializing LastChaos Control Panel...&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", "", "", "", 0, LBXITEM_HTML, 0, nil, nil, nil);
+Group.Create("ControlPanel");
+Group.AddObject("ControlPanel", "CONTROLPANEL_FRAME");
+---
+Group.Create("ConfigPanel");
+Group.AddObject("ConfigPanel", "CONFIG_FRAME");
+Group.AddObject("ConfigPanel", "CONFIG_FRAME2");
+
+ListBoxEx.DeleteAllItems("Menu");
+ListBoxEx.DeleteAllItems("Logs");
+
+ListBoxEx.AddItem("Logs", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;"..System.GetTime(TIME_FMT_MIL).." Initializing LastChaos Control Panel...&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", "", "", "", 0, LBXITEM_HTML, 0, nil, nil, nil);
 
 function Scan()
 	if(ServerFolderPath ~= "" and Folder.DoesExist(ServerFolderPath))then
@@ -1013,6 +1034,8 @@ function Scan()
 	end
 end
 
+Scan();
+
 ListBoxEx.AddItem("Menu", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;Start All&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", "", "Start All", "", 1, LBXITEM_HTML, 0, {Math.HexColorToNumber(Theme.ObjectItemNormalColor)}, nil, nil);
 
 ListBoxEx.AddItem("Menu", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;Launch Game&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", "&lt;p&gt;&lt;b&gt;Right click for more Options.&lt;/b&gt;&lt;/b&gt;&lt;/p&gt;", "", "", 3, LBXITEM_HTML, 0, {Math.HexColorToNumber(Theme.ObjectItemNormalColor)}, nil, nil);
@@ -1024,9 +1047,7 @@ ListBoxEx.AddItem("Menu", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(T
 ListBoxEx.AddItem("Menu", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;Client Folder&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", "", "", "", 6, LBXITEM_HTML, 0, {Math.HexColorToNumber(Theme.ObjectItemNormalColor)}, nil, nil);
 
 ListBoxEx.AddItem("Menu", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;Start Web Server&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", "Right click for open htcdocs", "", "", 7, LBXITEM_HTML, 0, {Math.HexColorToNumber(Theme.ObjectItemNormalColor)}, nil, nil);
-
-Scan();
-
+--[[
 local CompatList = ("");
 for _, Text in pairs(DelimitedToTable(TextFile.ReadToString(_SourceFolder.."\\Compat.txt"), "\n"))do
 	if(CompatList == "")then
@@ -1037,7 +1058,7 @@ for _, Text in pairs(DelimitedToTable(TextFile.ReadToString(_SourceFolder.."\\Co
 end
 
 ListBoxEx.AddItem("Logs", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;Compatibility information :\r\n"..CompatList.."&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", "", "", "", 0, LBXITEM_HTML, 0, nil, nil, nil);
-
+]]
 if(ServerFolderPath ~= "" and Folder.DoesExist(ServerFolderPath))then
 	PrintLog("Checking for running Modules...", "", "INFO");
 	
@@ -1101,10 +1122,9 @@ if(ServerFolderPath ~= "" and Folder.DoesExist(ServerFolderPath))then
 	end
 end
 
-
 ListBoxEx.AddItem("Logs", "&lt;p&gt;&lt;b&gt;&lt;font color='#00F2F2'&gt;LastChaos Control Panel Ready.&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", "", "", "", 0, LBXITEM_HTML, 0, nil, nil, nil);
 ListBoxEx.EnsureVisible("Logs", ListBoxEx.GetTotalItems("Logs"));
-
+--############################################################################################# SETTINGS #############################################################################################--
 --function v2
 function LoadSettings()
 	Input.SetText("CONFIG_SERVERFOLDERPATH", String.AbbreviateFilePath(GetConfig("General", "ServerFolderPath"), 24));
@@ -1438,23 +1458,14 @@ function LoadSettings()
 	LoadProfiles();
 	
 	Scan();
-end
-
-Group.Create("ControlPanel");
-
-Group.AddObject("ControlPanel", "CONTROLPANEL_FRAME");
-
-Group.Create("ConfigPanel");
-
-Group.AddObject("ConfigPanel", "CONFIG_FRAME");
-Group.AddObject("ConfigPanel", "CONFIG_FRAME2");</Script>
+end</Script>
 <TreeStates>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>477</DesignCodeLine>
-<DesignCodeCol>68</DesignCodeCol>
+<DesignCodeLine>86</DesignCodeLine>
+<DesignCodeCol>0</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -1580,7 +1591,8 @@ if(e_ID == 11)then
 	if(ClientHandle ~= nil)then
 		local ClientIP, ClientPort = ClientHandle:getsockname();
 
-		local ClientRequest, Error = ClientHandle:receive('*l');
+		--local ClientRequest, Error = ClientHandle:receive('*l');
+		local ClientRequest, Error = ClientHandle:receive();
 		if(ClientRequest ~= nil)then
 			local RequestTable = DelimitedToTable(ClientRequest, " ");
 			local Method   = (RequestTable[1]);
@@ -1621,7 +1633,6 @@ if(e_ID == 11)then
 				end
 				
 				ClientHandle:send("HTTP/1.1 200 OK\r\n\r\n"..[[]]..ParseLuaTag(TextFile.ReadToString("AutoPlay\\htdocs\\index.html"))..[[]]);
-				ClientHandle:close();
 			end
 		else
 			PrintLog("Web Server -&gt; Error receiving command : "..Error, "", "ERROR");
@@ -1635,8 +1646,8 @@ end</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>145</DesignCodeLine>
-<DesignCodeCol>102</DesignCodeCol>
+<DesignCodeLine>146</DesignCodeLine>
+<DesignCodeCol>4</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>

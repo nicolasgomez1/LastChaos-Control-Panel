@@ -1,3 +1,0 @@
-November Files (MySQL Section presets / Bin files etc)
-Wizatek CashServer(3.0)
-Rezas CashServer
