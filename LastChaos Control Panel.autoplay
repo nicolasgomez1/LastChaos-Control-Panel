@@ -19,7 +19,7 @@
 <WindowStyles>
 <Width>730</Width>
 <Height>448</Height>
-<WindowTitle>LastChaos Control Panel (Release 3 [BETA])</WindowTitle>
+<WindowTitle>LastChaos Control Panel (Release 3)</WindowTitle>
 <WindowStyle>0</WindowStyle>
 <FillColor>0</FillColor>
 </WindowStyles>
@@ -735,7 +735,7 @@ end</Script>
 <CustomSize>0</CustomSize>
 </TargetMedia>
 <Group>
-<CurrentGrounp>44</CurrentGrounp>
+<CurrentGrounp>45</CurrentGrounp>
 </Group>
 <ActionPlugins>
 <Plugin>Clipboard\Clipboard.lmd</Plugin>
@@ -1046,7 +1046,7 @@ ListBoxEx.AddItem("Menu", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(T
 ListBoxEx.AddItem("Menu", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;Server Folder&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", "", "", "", 6, LBXITEM_HTML, 0, {Math.HexColorToNumber(Theme.ObjectItemNormalColor)}, nil, nil);
 ListBoxEx.AddItem("Menu", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;Client Folder&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", "", "", "", 6, LBXITEM_HTML, 0, {Math.HexColorToNumber(Theme.ObjectItemNormalColor)}, nil, nil);
 
-ListBoxEx.AddItem("Menu", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;Start Web Server&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", "Right click for open htcdocs", "", "", 7, LBXITEM_HTML, 0, {Math.HexColorToNumber(Theme.ObjectItemNormalColor)}, nil, nil);
+ListBoxEx.AddItem("Menu", "&lt;p&gt;&lt;b&gt;&lt;font color='"..String.Replace(Theme.TextColor, "0x", "#", false).."'&gt;Start Web Server&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;", "Right click for open htdocs", "", "", 7, LBXITEM_HTML, 0, {Math.HexColorToNumber(Theme.ObjectItemNormalColor)}, nil, nil);
 --[[
 local CompatList = ("");
 for _, Text in pairs(DelimitedToTable(TextFile.ReadToString(_SourceFolder.."\\Compat.txt"), "\n"))do
@@ -1464,8 +1464,8 @@ end</Script>
 <TreeState>0</TreeState>
 <TreeState>0</TreeState>
 </TreeStates>
-<DesignCodeLine>86</DesignCodeLine>
-<DesignCodeCol>0</DesignCodeCol>
+<DesignCodeLine>85</DesignCodeLine>
+<DesignCodeCol>161</DesignCodeCol>
 <BookMarks count="0">
 </BookMarks>
 </Event>
@@ -7872,7 +7872,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -7962,7 +7962,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -8322,7 +8322,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -8445,7 +8445,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -8568,7 +8568,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -8576,8 +8576,8 @@ end</Script>
 <Coordinates>
 <Top>20</Top>
 <Bottom>41</Bottom>
-<Left>360</Left>
-<Right>461</Right>
+<Left>375</Left>
+<Right>476</Right>
 </Coordinates>
 <Ratios>
 <WidthRatio>-1.000000</WidthRatio>
@@ -8691,7 +8691,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -8699,8 +8699,8 @@ end</Script>
 <Coordinates>
 <Top>20</Top>
 <Bottom>41</Bottom>
-<Left>530</Left>
-<Right>631</Right>
+<Left>560</Left>
+<Right>661</Right>
 </Coordinates>
 <Ratios>
 <WidthRatio>-1.000000</WidthRatio>
@@ -8814,7 +8814,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -8937,7 +8937,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -9060,7 +9060,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -9183,7 +9183,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -9306,7 +9306,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -9429,7 +9429,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -9552,7 +9552,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -9675,7 +9675,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -9798,7 +9798,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -9921,7 +9921,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -10044,7 +10044,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -10167,7 +10167,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -10290,7 +10290,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -10413,7 +10413,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -10536,7 +10536,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -10659,7 +10659,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -10782,7 +10782,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip>User / Char / DB</ToolTip>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -10905,7 +10905,7 @@ end</Script>
 <Enabled>0</Enabled>
 <ToolTip>Save on Server files.</ToolTip>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -11223,7 +11223,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip>Save on Profile.</ToolTip>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -11368,7 +11368,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip>Test MySQL Connection(Setup from fields, not need be saved on first place).</ToolTip>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -11540,7 +11540,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip>Select MySQL Profile.</ToolTip>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -11642,7 +11642,7 @@ Page.SetFocus("");</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -11738,7 +11738,7 @@ Page.SetFocus("");</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -11834,7 +11834,7 @@ Page.SetFocus("");</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -11930,7 +11930,7 @@ Page.SetFocus("");</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>1</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>1</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -12037,7 +12037,7 @@ Input.SetProperties("CONFIG_MYSQL_PASS", {InputStyle = 1});</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -12133,7 +12133,7 @@ Input.SetProperties("CONFIG_MYSQL_PASS", {InputStyle = 1});</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -12229,7 +12229,7 @@ Input.SetProperties("CONFIG_MYSQL_PASS", {InputStyle = 1});</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -12325,7 +12325,7 @@ Input.SetProperties("CONFIG_MYSQL_PASS", {InputStyle = 1});</Script>
 <Enabled>1</Enabled>
 <ToolTip>Set common IP for ALL Modules.</ToolTip>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -12463,7 +12463,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -12597,7 +12597,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -12717,7 +12717,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip>Allow External IP (External Connections) for ALL Modules.</ToolTip>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -12837,7 +12837,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip>Enable Hardcore on Connector and All GameServers.</ToolTip>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -12957,7 +12957,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>1</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>1</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -13064,7 +13064,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -13160,7 +13160,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Enabled>0</Enabled>
 <ToolTip>Player kill.</ToolTip>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -13280,7 +13280,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -13376,7 +13376,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -13472,7 +13472,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Enabled>0</Enabled>
 <ToolTip>Player kill.</ToolTip>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -13592,7 +13592,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -13688,7 +13688,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -13784,7 +13784,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Enabled>0</Enabled>
 <ToolTip>Player kill.</ToolTip>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -13904,7 +13904,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -14000,7 +14000,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -14096,7 +14096,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Enabled>0</Enabled>
 <ToolTip>Player kill.</ToolTip>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -14216,7 +14216,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -14312,7 +14312,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -14408,7 +14408,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -14504,7 +14504,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -14600,7 +14600,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -14696,7 +14696,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -14792,7 +14792,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -14888,7 +14888,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -14984,7 +14984,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -15080,7 +15080,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -15176,7 +15176,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -15272,7 +15272,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -15368,7 +15368,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -15464,7 +15464,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -15560,7 +15560,7 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>1</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>1</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -15568,8 +15568,8 @@ Input.SetProperties("CONFIG_SALT", {InputStyle = 1});</Script>
 <Coordinates>
 <Top>41</Top>
 <Bottom>59</Bottom>
-<Left>662</Left>
-<Right>680</Right>
+<Left>693</Left>
+<Right>711</Right>
 </Coordinates>
 <Ratios>
 <WidthRatio>-1.000000</WidthRatio>
@@ -15670,7 +15670,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -15678,8 +15678,8 @@ end</Script>
 <Coordinates>
 <Top>40</Top>
 <Bottom>61</Bottom>
-<Left>530</Left>
-<Right>660</Right>
+<Left>560</Left>
+<Right>690</Right>
 </Coordinates>
 <Ratios>
 <WidthRatio>-1.000000</WidthRatio>
@@ -15766,7 +15766,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>1</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>1</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -15774,8 +15774,8 @@ end</Script>
 <Coordinates>
 <Top>41</Top>
 <Bottom>59</Bottom>
-<Left>492</Left>
-<Right>510</Right>
+<Left>508</Left>
+<Right>526</Right>
 </Coordinates>
 <Ratios>
 <WidthRatio>-1.000000</WidthRatio>
@@ -15876,7 +15876,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -15884,8 +15884,8 @@ end</Script>
 <Coordinates>
 <Top>40</Top>
 <Bottom>61</Bottom>
-<Left>360</Left>
-<Right>490</Right>
+<Left>375</Left>
+<Right>505</Right>
 </Coordinates>
 <Ratios>
 <WidthRatio>-1.000000</WidthRatio>
@@ -15972,7 +15972,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>1</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>1</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
@@ -15980,8 +15980,8 @@ end</Script>
 <Coordinates>
 <Top>41</Top>
 <Bottom>59</Bottom>
-<Left>322</Left>
-<Right>340</Right>
+<Left>323</Left>
+<Right>341</Right>
 </Coordinates>
 <Ratios>
 <WidthRatio>-1.000000</WidthRatio>
@@ -16098,7 +16098,7 @@ end</Script>
 <Enabled>1</Enabled>
 <ToolTip/>
 <Cursor>0</Cursor>
-<Group>44</Group>
+<Group>45</Group>
 <MaintainAspectRatio>0</MaintainAspectRatio>
 <Pin>0</Pin>
 <TabIndex>-1</TabIndex>
