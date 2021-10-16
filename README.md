@@ -11,6 +11,7 @@ Programmed in Lua 5.1 but curiously stable. with the implementation of <a href="
 
 # Warning
 * Execution arguments for Nksp.exe are 'fkzktlfgod!', probably not compatible with EP2 and below Versions.
+* Function Tool Server Replacer are bugged at the moment.
 
 # Pics
 ![controlpanel](https://user-images.githubusercontent.com/5092697/137599798-c59b8695-db6b-42ac-bca8-5eea8832e827.png)<br/>
