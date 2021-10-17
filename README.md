@@ -7,7 +7,7 @@ Programmed in Lua 5.1 but curiously stable. with the implementation of <a href="
 * Designed around the __November__ files.<br/>
 * Compatibility with  __Wizatek__ / __Rezas__ CashServers.<br/>
 * Ability to add more Database Sections in the INI files of the different Modules.<br/>
-* Web Interface for remote commanding on LAN Connections
+* Web Interface for remote commanding on LAN connections.
 
 # Warning
 * Execution arguments for Nksp.exe are 'fkzktlfgod!', probably not compatible with EP2 and below Versions.
