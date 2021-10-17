@@ -4,6 +4,9 @@ Files Manager style XAMPP.<br/>
 Programmed in Lua 5.1 but curiously stable.<br/>
 Now with the implementation of <a href="https://github.com/LuaLanes/lanes" onclick="return ! window.open(this.href);">Lua-Lanes</a> to monitor the execution status of the different modules.<br/>
 
+# Quick Start
+Define the folder where the server files are located, you will get a message to confirm the name of the .exe / .bin files. Well this is it, then simply configure your files using the fields.
+
 # Information / Features
 * Designed around the __November__ files.<br/>
 * Compatibility with  __Wizatek__ / __Rezas__ CashServers.<br/>
