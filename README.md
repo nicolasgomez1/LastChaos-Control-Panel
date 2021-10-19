@@ -17,7 +17,7 @@ By default the application is compatible with the November files, in case of hav
 * Web Interface for remote commanding on LAN connections.
 
 # Warning
-* Execution arguments for Nksp.exe are 'fkzktlfgod!', probably not compatible with EP2 and below Versions.
+* Execution arguments for __Nksp.exe__ are 'fkzktlfgod!', probably not compatible with EP2 and below Versions.
 * Function Tool Server Replacer are bugged at the moment.
 
 # Pics
