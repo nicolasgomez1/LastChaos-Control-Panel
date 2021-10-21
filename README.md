@@ -1,7 +1,7 @@
 # LastChaos Control Panel <img align="left" src="https://user-images.githubusercontent.com/5092697/136836589-b655f88e-f67e-433d-bc2a-12c0534e05d9.png" width="120px"> <img src="https://img.shields.io/badge/Version-RELEASE-orange"></img>
 
 LastChaos Server files Manager.<br/>
-Programmed in <a href="https://www.lua.org/versions.html#5.1">Lua 5.1</a> but curiously stable.<br/>
+Programmed in <a href="https://www.lua.org/versions.html#5.1">Lua 5.1</a>.<br/>
 Now with the implementation of <a href="https://github.com/LuaLanes/lanes" onclick="return ! window.open(this.href);">Lua-Lanes</a> to monitor the execution status of different modules.<br/>
 
 # Quick Start
