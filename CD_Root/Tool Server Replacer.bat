@@ -1,1 +1,0 @@
-start "" "LCControl Panel.exe" -serverreplacer
