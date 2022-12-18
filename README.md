@@ -18,7 +18,6 @@ By default the application is compatible with the November files, in case of hav
 
 # Warning
 * Execution arguments for __Nksp.exe__ are 'fkzktlfgod!', probably not compatible with EP2 and below Versions.
-* Function Tool Server Replacer are bugged at the moment.
 
 # Pics
 __Main Panel__<br/>
