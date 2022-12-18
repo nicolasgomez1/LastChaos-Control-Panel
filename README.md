@@ -12,7 +12,7 @@ By default the application is compatible with the November files, in case of hav
 
 # Information / Features
 * Designed around the __November__ files.<br/>
-* Compatibility with  __Wizatek__ / __Rezas__ CashServers.<br/>
+* Compatibility with  __Wizatek__ / __Rezas__ / __Barunson Billing__ CashServers.<br/>
 * Ability to add more Database Sections in the Config files of the different Modules.<br/>
 * Web Interface for remote commanding on LAN connections.
 
