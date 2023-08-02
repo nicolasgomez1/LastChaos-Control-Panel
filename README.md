@@ -8,7 +8,7 @@ Now with the implementation of <a href="https://github.com/LuaLanes/lanes" oncli
 Define the folder where the server files are located, you will get a message to confirm the name of the .exe / .bin files. Well this is it, then simply configure your files using the fields.
 
 # Notes
-By default the application is compatible with the November files, in case of having a different configuration you can price 'EDIT MySQL SECTIONS' to add more sections, however the sections such as Server / Connector Server etc cannot be customized.
+By default the application is compatible with the November files, in case of having a different configuration you can press 'EDIT MySQL SECTIONS' to add more sections, however the sections such as Server / Connector Server etc cannot be customized.
 
 # Information / Features
 * Designed around the __November__ files.<br/>
